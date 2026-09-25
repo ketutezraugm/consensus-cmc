@@ -36,18 +36,22 @@ export async function POST(req: Request) {
     try {
       const r = await cmc('/v5/cryptocurrency/derivatives/market-pairs/list/latest', { crypto_id: id, category: 'perpetual', limit: 250 });
       credits += r.credits;
+      const seen = new Map<string, number>();
       for (const p of r.data.market_pairs ?? []) {
         if (p.market_pair_base?.crypto_id !== Number(id)) continue; // drop quote-side pairs
         const q = p.quotes?.[0], x = p.exchange_reported_quotes?.[0];
         if (!q?.price || !q?.volume_24h) continue;
+        // CMC sometimes returns one market_id twice with conflicting prices; keep both, suffix the repeat.
+        const key = `${p.exchange.exchange_id}:${p.market_id}`, n = (seen.get(key) ?? 0) + 1;
+        seen.set(key, n);
         obs.push({
           captured_at: at, crypto_id: Number(id), symbol: sym, layer: 'forward',
-          venue_id: `${p.exchange.exchange_id}:${p.market_id}`, venue_name: p.exchange.exchange_name,
+          venue_id: n > 1 ? `${key}#${n}` : key, venue_name: p.exchange.exchange_name,
           price: q.price, volume_24h: q.volume_24h,
           extra: {
             pair: p.market_pair_symbol, oi: q.open_interest ?? null, index_price: x?.index_price ?? null,
             basis: x?.index_basis ?? null, funding: x?.funding_rate ?? null, reported_price: x?.price ?? null,
-            outlier: !!p.outlier_detected, exclusions: p.exclusions ?? [], updated: q.last_updated,
+            dup: n > 1, outlier: !!p.outlier_detected, exclusions: p.exclusions ?? [], updated: q.last_updated,
           },
         });
       }

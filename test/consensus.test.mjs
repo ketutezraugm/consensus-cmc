@@ -46,3 +46,13 @@ test('price-excluded venues do not move dispersion', () => {
   const r = score([mk(), mk({ id: 2, price: 500, priceExcluded: true, excluded: true })]);
   assert.equal(r.dispersionBps, 0);
 });
+
+test('one stale venue among many does not zero freshness', () => {
+  const now = 10_000_000, fresh = mk({ updated: now - 1000 });
+  const r = score([fresh, mk({ id: 2, updated: now - 1000 }), mk({ id: 3, updated: now - 1000 }), mk({ id: 4, updated: now - 2_000_000, volume: 1 })], now);
+  assert.ok(r.parts.freshness > 0.9 && r.staleShare > 0);
+});
+test('a dominant venue off-consensus lowers agreement', () => {
+  const r = score([mk({ volume: 1000, price: 100.9 }), mk({ id: 2 }), mk({ id: 3 }), mk({ id: 4 })]);
+  assert.ok(r.agreeingShare < 0.1);
+});

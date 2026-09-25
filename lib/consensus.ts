@@ -67,17 +67,23 @@ export function score(venues: Venue[], now = Date.now()) {
   const funding = wmean(venues.map((v) => v.funding), oi);   // per funding interval, OI-weighted
   const basis = wmean(venues.map((v) => v.basis), oi);
 
+  const STALE_MS = 600_000;
   const stalest = venues.reduce((m, v) => Math.max(m, v.updated && !v.excluded ? now - v.updated : 0), 0);
+  const staleShare = sum(venues.map((v, i) => (!v.excluded && v.updated && now - v.updated > STALE_MS ? shares[i] : 0)));
+  // Share of price-trusted volume quoting within 50 bps of the trusted-venue median.
+  const ref = [...base].map((v) => v.price).sort((a, b) => a - b)[base.length >> 1];
+  const bvol = sum(base.map((v) => v.volume));
+  const agreeingShare = bvol > 0 ? sum(base.map((v) => (Math.abs(v.price / ref - 1) <= 0.005 ? v.volume : 0))) / bvol : 0;
   const excludedShare = sum(venues.map((v, i) => (v.excluded ? shares[i] : 0)));
 
   // Transparent 0-100 blend; each term is 0..1, higher = more trustworthy.
   const parts = {
     spread: 1 - hhi,
-    agreement: Math.max(0, 1 - dispersionBps / 50),
-    freshness: Math.max(0, 1 - stalest / 600_000),
+    agreement: agreeingShare,
+    freshness: 1 - staleShare,
     cleanliness: 1 - excludedShare,
   };
   const confidence = Math.round(100 * (0.4 * parts.spread + 0.3 * parts.agreement + 0.15 * parts.freshness + 0.15 * parts.cleanliness));
 
-  return { venues: venues.length, vwap, hhi, effectiveVenues: 1 / hhi, top, dispersionBps, funding, basis, excludedShare, stalestMs: stalest, parts, confidence };
+  return { venues: venues.length, vwap, hhi, effectiveVenues: 1 / hhi, top, dispersionBps, funding, basis, excludedShare, agreeingShare, staleShare, stalestMs: stalest, parts, confidence };
 }
