@@ -1,0 +1,475 @@
+{
+  "data": {
+    "cryptocurrencies": [
+      {
+        "name": "Bitcoin",
+        "symbol": "BTC",
+        "slug": "bitcoin",
+        "quotes": [
+          {
+            "symbol": "USD",
+            "crypto_id": 2781,
+            "total_liquidations_1h": 1789639.0302,
+            "long_liquidations_1h": 970871.58241,
+            "short_liquidations_1h": 818767.44779,
+            "total_liquidations_4h": 31250686.10209432,
+            "long_liquidations_4h": 26604891.14290432,
+            "short_liquidations_4h": 4645794.95919,
+            "total_liquidations_24h": 64519332.40264394,
+            "long_liquidations_24h": 45401199.87929432,
+            "short_liquidations_24h": 19118132.52334962,
+            "last_updated": "2026-09-25T16:34:00.000Z"
+          }
+        ],
+        "crypto_id": 1,
+        "cmc_rank": 1
+      },
+      {
+        "name": "Ethereum",
+        "symbol": "ETH",
+        "slug": "ethereum",
+        "quotes": [
+          {
+            "symbol": "USD",
+            "crypto_id": 2781,
+            "total_liquidations_1h": 3903796.3645,
+            "long_liquidations_1h": 2891878.41884,
+            "short_liquidations_1h": 1011917.9456600001,
+            "total_liquidations_4h": 16631144.234219,
+            "long_liquidations_4h": 12206640.701679,
+            "short_liquidations_4h": 4424503.53254,
+            "total_liquidations_24h": 59680875.040727,
+            "long_liquidations_24h": 28537464.917959,
+            "short_liquidations_24h": 31143410.122768,
+            "last_updated": "2026-09-25T16:34:00.000Z"
+          }
+        ],
+        "crypto_id": 1027,
+        "cmc_rank": 2
+      },
+      {
+        "name": "Solana",
+        "symbol": "SOL",
+        "slug": "solana",
+        "quotes": [
+          {
+            "symbol": "USD",
+            "crypto_id": 2781,
+            "total_liquidations_1h": 1178798.8238,
+            "long_liquidations_1h": 453823.214,
+            "short_liquidations_1h": 724975.6098,
+            "total_liquidations_4h": 4740713.014951,
+            "long_liquidations_4h": 2341694.993001,
+            "short_liquidations_4h": 2399018.02195,
+            "total_liquidations_24h": 21513485.596331,
+            "long_liquidations_24h": 4324800.048096,
+            "short_liquidations_24h": 17188685.548235003,
+            "last_updated": "2026-09-25T16:34:00.000Z"
+          }
+        ],
+        "crypto_id": 5426,
+        "cmc_rank": 7
+      },
+      {
+        "name": "XRP",
+        "symbol": "XRP",
+        "slug": "xrp",
+        "quotes": [
+          {
+            "symbol": "USD",
+            "crypto_id": 2781,
+            "total_liquidations_1h": 743060.0105300004,
+            "long_liquidations_1h": 714252.9014500005,
+            "short_liquidations_1h": 28807.10908,
+            "total_liquidations_4h": 4728969.174690001,
+            "long_liquidations_4h": 4149442.8912100005,
+            "short_liquidations_4h": 579526.28348,
+            "total_liquidations_24h": 16000034.065974016,
+            "long_liquidations_24h": 6507757.790930004,
+            "short_liquidations_24h": 9492276.275044013,
+            "last_updated": "2026-09-25T16:34:00.000Z"
+          }
+        ],
+        "crypto_id": 52,
+        "cmc_rank": 5
+      },
+      {
+        "name": "Zcash",
+        "symbol": "ZEC",
+        "slug": "zcash",
+        "quotes": [
+          {
+            "symbol": "USD",
+            "crypto_id": 2781,
+            "total_liquidations_1h": 845022.67416,
+            "long_liquidations_1h": 829759.50146,
+            "short_liquidations_1h": 15263.1727,
+            "total_liquidations_4h": 3482026.1258842,
+            "long_liquidations_4h": 1712790.5050472,
+            "short_liquidations_4h": 1769235.620837,
+            "total_liquidations_24h": 10978438.8121237,
+            "long_liquidations_24h": 3248265.0726311,
+            "short_liquidations_24h": 7730173.7394926,
+            "last_updated": "2026-09-25T16:34:00.000Z"
+          }
+        ],
+        "crypto_id": 1437,
+        "cmc_rank": 9
+      },
+      {
+        "name": "NEAR Protocol",
+        "symbol": "NEAR",
+        "slug": "near-protocol",
+        "quotes": [
+          {
+            "symbol": "USD",
+            "crypto_id": 2781,
+            "total_liquidations_1h": 285074.97674999957,
+            "long_liquidations_1h": 46979.9531,
+            "short_liquidations_1h": 238095.02364999955,
+            "total_liquidations_4h": 1663102.2158587307,
+            "long_liquidations_4h": 270919.63500000024,
+            "short_liquidations_4h": 1392182.5808587305,
+            "total_liquidations_24h": 6235170.279636897,
+            "long_liquidations_24h": 1959941.3032699998,
+            "short_liquidations_24h": 4275228.976366897,
+            "last_updated": "2026-09-25T16:34:00.000Z"
+          }
+        ],
+        "crypto_id": 6535,
+        "cmc_rank": 18
+      },
+      {
+        "name": "Sui",
+        "symbol": "SUI",
+        "slug": "sui",
+        "quotes": [
+          {
+            "symbol": "USD",
+            "crypto_id": 2781,
+            "total_liquidations_1h": 78185.7159968,
+            "long_liquidations_1h": 69309.6492863,
+            "short_liquidations_1h": 8876.0667105,
+            "total_liquidations_4h": 1056856.2289657004,
+            "long_liquidations_4h": 947535.0378157006,
+            "short_liquidations_4h": 109321.19114999978,
+            "total_liquidations_24h": 5946222.835429092,
+            "long_liquidations_24h": 2253179.2301488,
+            "short_liquidations_24h": 3693043.6052802913,
+            "last_updated": "2026-09-25T16:34:00.000Z"
+          }
+        ],
+        "crypto_id": 20947,
+        "cmc_rank": 25
+      },
+      {
+        "name": "SanDisk Corporation (Derivatives)",
+        "symbol": "SNDK",
+        "slug": "sandisk-corporation-derivatives",
+        "quotes": [
+          {
+            "symbol": "USD",
+            "crypto_id": 2781,
+            "total_liquidations_1h": 74819.1550773,
+            "long_liquidations_1h": 56681.3158915,
+            "short_liquidations_1h": 18137.8391858,
+            "total_liquidations_4h": 2532441.333128,
+            "long_liquidations_4h": 1586568.5921958,
+            "short_liquidations_4h": 945872.7409322,
+            "total_liquidations_24h": 5004894.4146182,
+            "long_liquidations_24h": 3174672.4912263,
+            "short_liquidations_24h": 1830221.9233919,
+            "last_updated": "2026-09-25T16:34:00.000Z"
+          }
+        ],
+        "crypto_id": 39507,
+        "cmc_rank": 4116
+      },
+      {
+        "name": "Ondo",
+        "symbol": "ONDO",
+        "slug": "ondo-finance",
+        "quotes": [
+          {
+            "symbol": "USD",
+            "crypto_id": 2781,
+            "total_liquidations_1h": 178121.8847275899,
+            "long_liquidations_1h": 160770.0046984699,
+            "short_liquidations_1h": 17351.88002912,
+            "total_liquidations_4h": 551590.9936369497,
+            "long_liquidations_4h": 457209.13558184967,
+            "short_liquidations_4h": 94381.8580551,
+            "total_liquidations_24h": 4950179.02133354,
+            "long_liquidations_24h": 2115500.4708034913,
+            "short_liquidations_24h": 2834678.5505300486,
+            "last_updated": "2026-09-25T16:34:00.000Z"
+          }
+        ],
+        "crypto_id": 21159,
+        "cmc_rank": 36
+      },
+      {
+        "name": "Plasma",
+        "symbol": "XPL",
+        "slug": "plasma-xpl",
+        "quotes": [
+          {
+            "symbol": "USD",
+            "crypto_id": 2781,
+            "total_liquidations_1h": 145597.8406800099,
+            "long_liquidations_1h": 10298.8145179,
+            "short_liquidations_1h": 135299.0261621099,
+            "total_liquidations_4h": 749000.5462900163,
+            "long_liquidations_4h": 528450.860623707,
+            "short_liquidations_4h": 220549.6856663094,
+            "total_liquidations_24h": 4717549.351335245,
+            "long_liquidations_24h": 1992489.49293821,
+            "short_liquidations_24h": 2725059.858397035,
+            "last_updated": "2026-09-25T16:34:00.000Z"
+          }
+        ],
+        "crypto_id": 36645,
+        "cmc_rank": 114
+      },
+      {
+        "name": "Dogecoin",
+        "symbol": "DOGE",
+        "slug": "dogecoin",
+        "quotes": [
+          {
+            "symbol": "USD",
+            "crypto_id": 2781,
+            "total_liquidations_1h": 360705.71368,
+            "long_liquidations_1h": 345351.20285,
+            "short_liquidations_1h": 15354.51083,
+            "total_liquidations_4h": 1032957.3940010186,
+            "long_liquidations_4h": 740078.8626180172,
+            "short_liquidations_4h": 292878.5313830013,
+            "total_liquidations_24h": 4044739.193358028,
+            "long_liquidations_24h": 2570781.0652730595,
+            "short_liquidations_24h": 1473958.1280849683,
+            "last_updated": "2026-09-25T16:34:00.000Z"
+          }
+        ],
+        "crypto_id": 74,
+        "cmc_rank": 11
+      },
+      {
+        "name": "Ethena",
+        "symbol": "ENA",
+        "slug": "ethena",
+        "quotes": [
+          {
+            "symbol": "USD",
+            "crypto_id": 2781,
+            "total_liquidations_1h": 412195.72990829934,
+            "long_liquidations_1h": 60401.5572456,
+            "short_liquidations_1h": 351794.17266269936,
+            "total_liquidations_4h": 1662528.4999853019,
+            "long_liquidations_4h": 262995.3572221,
+            "short_liquidations_4h": 1399533.1427632018,
+            "total_liquidations_24h": 3922571.5547739016,
+            "long_liquidations_24h": 643998.8240794052,
+            "short_liquidations_24h": 3278572.7306944965,
+            "last_updated": "2026-09-25T16:34:00.000Z"
+          }
+        ],
+        "crypto_id": 30171,
+        "cmc_rank": 37
+      },
+      {
+        "name": "Saga",
+        "symbol": "SAGA",
+        "slug": "saga",
+        "quotes": [
+          {
+            "symbol": "USD",
+            "crypto_id": 2781,
+            "total_liquidations_1h": 742.2496998,
+            "long_liquidations_1h": 673.7448468,
+            "short_liquidations_1h": 68.504853,
+            "total_liquidations_4h": 52966.80215714685,
+            "long_liquidations_4h": 44036.28720392685,
+            "short_liquidations_4h": 8930.51495322,
+            "total_liquidations_24h": 3417497.9716130234,
+            "long_liquidations_24h": 1699706.3096202824,
+            "short_liquidations_24h": 1717791.6619927413,
+            "last_updated": "2026-09-25T16:34:00.000Z"
+          }
+        ],
+        "crypto_id": 30372,
+        "cmc_rank": 785
+      },
+      {
+        "name": "Pepe",
+        "symbol": "PEPE",
+        "slug": "pepe",
+        "quotes": [
+          {
+            "symbol": "USD",
+            "crypto_id": 2781,
+            "total_liquidations_1h": 132409.4532569,
+            "long_liquidations_1h": 129186.9249781,
+            "short_liquidations_1h": 3222.5282788,
+            "total_liquidations_4h": 577728.2989599,
+            "long_liquidations_4h": 485622.1111742,
+            "short_liquidations_4h": 92106.1877857,
+            "total_liquidations_24h": 2995131.9266533,
+            "long_liquidations_24h": 2348933.4100981,
+            "short_liquidations_24h": 646198.5165552,
+            "last_updated": "2026-09-25T16:34:00.000Z"
+          }
+        ],
+        "crypto_id": 24478,
+        "cmc_rank": 46
+      },
+      {
+        "name": "Crude Oil Futures (Derivatives)",
+        "symbol": "CL",
+        "slug": "crude-oil-futures-derivatives",
+        "quotes": [
+          {
+            "symbol": "USD",
+            "crypto_id": 2781,
+            "total_liquidations_1h": 449524.31773360004,
+            "long_liquidations_1h": 431580.38873360003,
+            "short_liquidations_1h": 17943.929,
+            "total_liquidations_4h": 842019.8819006,
+            "long_liquidations_4h": 591246.8701006001,
+            "short_liquidations_4h": 250773.01179999998,
+            "total_liquidations_24h": 2519448.804983,
+            "long_liquidations_24h": 1685440.6010791,
+            "short_liquidations_24h": 834008.2039039,
+            "last_updated": "2026-09-25T16:34:00.000Z"
+          }
+        ],
+        "crypto_id": 39487,
+        "cmc_rank": 7624
+      },
+      {
+        "name": "Direxion Daily Semiconductor ETF (Derivatives)",
+        "symbol": "SOXL",
+        "slug": "direxion-daily-semiconductor-etf-derivatives",
+        "quotes": [
+          {
+            "symbol": "USD",
+            "crypto_id": 2781,
+            "total_liquidations_1h": 155357.3028729,
+            "long_liquidations_1h": 16394.1713374,
+            "short_liquidations_1h": 138963.1315355,
+            "total_liquidations_4h": 576352.7194443,
+            "long_liquidations_4h": 363177.6826688,
+            "short_liquidations_4h": 213175.0367755,
+            "total_liquidations_24h": 1991092.9661458,
+            "long_liquidations_24h": 856177.3168189,
+            "short_liquidations_24h": 1134915.6493269,
+            "last_updated": "2026-09-25T16:34:00.000Z"
+          }
+        ],
+        "crypto_id": 39964,
+        "cmc_rank": 7735
+      },
+      {
+        "name": "Uniswap",
+        "symbol": "UNI",
+        "slug": "uniswap",
+        "quotes": [
+          {
+            "symbol": "USD",
+            "crypto_id": 2781,
+            "total_liquidations_1h": 11000.5293,
+            "long_liquidations_1h": 8577.9117,
+            "short_liquidations_1h": 2422.6176,
+            "total_liquidations_4h": 579012.760700004,
+            "long_liquidations_4h": 497533.39190000074,
+            "short_liquidations_4h": 81479.36880000313,
+            "total_liquidations_24h": 1960769.9030717919,
+            "long_liquidations_24h": 1006535.1357000003,
+            "short_liquidations_24h": 954234.7673717916,
+            "last_updated": "2026-09-25T16:34:00.000Z"
+          }
+        ],
+        "crypto_id": 7083,
+        "cmc_rank": 19
+      },
+      {
+        "name": "Quant",
+        "symbol": "QNT",
+        "slug": "quant",
+        "quotes": [
+          {
+            "symbol": "USD",
+            "crypto_id": 2781,
+            "total_liquidations_1h": 15793.9841546,
+            "long_liquidations_1h": 7632.6029952,
+            "short_liquidations_1h": 8161.3811594,
+            "total_liquidations_4h": 186439.251035,
+            "long_liquidations_4h": 131365.1160832,
+            "short_liquidations_4h": 55074.1349518,
+            "total_liquidations_24h": 1621437.263475,
+            "long_liquidations_24h": 646574.8704461,
+            "short_liquidations_24h": 974862.3930289,
+            "last_updated": "2026-09-25T16:34:00.000Z"
+          }
+        ],
+        "crypto_id": 3155,
+        "cmc_rank": 60
+      },
+      {
+        "name": "Gold (Derivatives)",
+        "symbol": "XAU",
+        "slug": "gold-derivatives",
+        "quotes": [
+          {
+            "symbol": "USD",
+            "crypto_id": 2781,
+            "total_liquidations_1h": 46812.725204,
+            "long_liquidations_1h": 2568.391314,
+            "short_liquidations_1h": 44244.33389,
+            "total_liquidations_4h": 518799.6576443,
+            "long_liquidations_4h": 467299.6253143,
+            "short_liquidations_4h": 51500.03233,
+            "total_liquidations_24h": 1593947.6243178,
+            "long_liquidations_24h": 613937.6897163,
+            "short_liquidations_24h": 980009.9346015,
+            "last_updated": "2026-09-25T16:34:00.000Z"
+          }
+        ],
+        "crypto_id": 39344,
+        "cmc_rank": 7591
+      },
+      {
+        "name": "Lisk",
+        "symbol": "LSK",
+        "slug": "lisk",
+        "quotes": [
+          {
+            "symbol": "USD",
+            "crypto_id": 2781,
+            "total_liquidations_1h": 32447.913736,
+            "long_liquidations_1h": 30822.565596,
+            "short_liquidations_1h": 1625.34814,
+            "total_liquidations_4h": 42793.69800300057,
+            "long_liquidations_4h": 38722.901051,
+            "short_liquidations_4h": 4070.79695200057,
+            "total_liquidations_24h": 1561605.7003920032,
+            "long_liquidations_24h": 939423.8323300002,
+            "short_liquidations_24h": 622181.8680620029,
+            "last_updated": "2026-09-25T16:34:00.000Z"
+          }
+        ],
+        "crypto_id": 1214,
+        "cmc_rank": 284
+      }
+    ],
+    "total_size": 930,
+    "has_more": true
+  },
+  "status": {
+    "timestamp": "2026-09-25T16:34:30.055Z",
+    "error_code": "0",
+    "error_message": "",
+    "elapsed": 7,
+    "credit_count": 1
+  }
+}

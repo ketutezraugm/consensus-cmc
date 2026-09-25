@@ -1,0 +1,5073 @@
+{
+  "data": {
+    "crypto_id": 1,
+    "crypto_name": "Bitcoin",
+    "symbol": "BTC",
+    "num_market_pairs": 193,
+    "market_pairs": [
+      {
+        "market_id": 1308539,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 9449,
+          "exchange_name": "Echobit",
+          "exchange_slug": "echobit"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84010.5,
+            "volume_24h_base": 188177.1383,
+            "volume_24h_quote": 15808855477.15215,
+            "open_interest": 1491519093.4353175,
+            "index_price": 83987.94101325,
+            "index_basis": -0.00003375293541,
+            "funding_rate": -5.34001496481e-7,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83990.7758528,
+            "volume_24h": 15805143843.576454,
+            "open_interest": 1491519093.4353175,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 979173,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 21,
+          "exchange_name": "BTCC",
+          "exchange_slug": "btcc"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84033.01,
+            "volume_24h_base": 179812.77422108,
+            "volume_24h_quote": 15110208654.24794,
+            "open_interest": 8017632595.093529,
+            "index_price": 84012.47501646,
+            "index_basis": 0.00000286256094,
+            "funding_rate": 0.000048,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84012.23452563,
+            "volume_24h": 15106472958.565987,
+            "open_interest": 8017632595.093529,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 47150,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 270,
+          "exchange_name": "Binance",
+          "exchange_slug": "binance"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84010.5,
+            "volume_24h_base": 143569.47344261,
+            "volume_24h_quote": 12061343248.65,
+            "open_interest": 8029545739.7715,
+            "index_price": 83989.97051718,
+            "index_basis": 0.00000286256089,
+            "funding_rate": 0.00001055,
+            "last_updated": "2026-09-25T16:33:17.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83989.73009078,
+            "volume_24h": 12058390617.721788,
+            "open_interest": 8029545739.7715,
+            "last_updated": "2026-09-25T16:33:17.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1621789,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": true,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 32686,
+          "exchange_name": "SunX",
+          "exchange_slug": "sunx"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84010.4,
+            "volume_24h_base": 130756.94164056,
+            "volume_24h_quote": 10984942970,
+            "open_interest": 2196451720.1617727,
+            "index_price": 84012.53978324,
+            "index_basis": 0.00027269343122,
+            "funding_rate": 0.00001055,
+            "last_updated": "2026-09-25T16:33:19.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83989.6301155,
+            "volume_24h": 10982227163.424557,
+            "open_interest": 2196451720.1617727,
+            "last_updated": "2026-09-25T16:33:19.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 83657,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "price"
+        ],
+        "exchange": {
+          "exchange_id": 407,
+          "exchange_name": "DigiFinex",
+          "exchange_slug": "digifinex"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84010.5,
+            "volume_24h_base": 129085.999,
+            "volume_24h_quote": 10844579318.9895,
+            "open_interest": 3395043952.897,
+            "index_price": 84016.46404143,
+            "index_basis": 0.00031819895012,
+            "funding_rate": 0.00013,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83989.73009078,
+            "volume_24h": 10841898214.508314,
+            "open_interest": 3395043952.897,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1236927,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 5751,
+          "exchange_name": "WEEX",
+          "exchange_slug": "weex"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84010.1,
+            "volume_24h_base": 111931.09873448,
+            "volume_24h_quote": 9403342797.793652,
+            "open_interest": 3877147537.7186294,
+            "index_price": 83989.57061493,
+            "index_basis": 0.00000726462175,
+            "funding_rate": 0.00003512,
+            "last_updated": "2026-09-25T16:33:17.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83988.96046247,
+            "volume_24h": 9400976626.130758,
+            "open_interest": 3877147537.7186294,
+            "last_updated": "2026-09-25T16:33:17.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 975959,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "price"
+        ],
+        "exchange": {
+          "exchange_id": 1645,
+          "exchange_name": "Tapbit",
+          "exchange_slug": "tapbit"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84008,
+            "volume_24h_base": 111520.6496,
+            "volume_24h_quote": 9368626731.5968,
+            "open_interest": 2007416547.1112185,
+            "index_price": 83987.4711281,
+            "index_basis": 0.00000726462181,
+            "funding_rate": 0.000006,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83986.86099089,
+            "volume_24h": 9366269295.56908,
+            "open_interest": 2007416547.1112185,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1091788,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 406,
+          "exchange_name": "BitMart",
+          "exchange_slug": "bitmart"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84263.3,
+            "volume_24h_base": 106606.48501979,
+            "volume_24h_quote": 8983014229.168,
+            "open_interest": 6214956222.677498,
+            "index_price": 84276.20946547,
+            "index_basis": 0.00058447554314,
+            "funding_rate": 0.0000492,
+            "last_updated": "2026-09-24T15:36:16.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84226.95208217,
+            "volume_24h": 8979145588.23709,
+            "open_interest": 6214956222.677498,
+            "last_updated": "2026-09-24T15:36:16.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1641240,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 33206,
+          "exchange_name": "CrypFine",
+          "exchange_slug": "crypfine"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84017.4,
+            "volume_24h_base": 101651.216,
+            "volume_24h_quote": 8540470875.1584,
+            "open_interest": 61566187,
+            "index_price": 83996.86883104,
+            "index_basis": -0.00000958847355,
+            "funding_rate": 0.000009,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83997.6742328,
+            "volume_24h": 8538465726.93636,
+            "open_interest": 61566187,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1324522,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "price"
+        ],
+        "exchange": {
+          "exchange_id": 9867,
+          "exchange_name": "KCEX",
+          "exchange_slug": "kcex"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84010.5,
+            "volume_24h_base": 92785.91093452,
+            "volume_24h_quote": 7794990770.56424,
+            "open_interest": 61283156.00290789,
+            "index_price": 84015.4642858,
+            "index_basis": 0.0002938558182,
+            "funding_rate": 0.000009,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83990.7758528,
+            "volume_24h": 7793159348.726947,
+            "open_interest": 61283156.00290789,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 48215,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 294,
+          "exchange_name": "OKX",
+          "exchange_slug": "okx"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83928.9,
+            "volume_24h_base": 85401.2754,
+            "volume_24h_quote": 7167635102.91906,
+            "open_interest": 2405108922.316265,
+            "index_price": 83962.17731062,
+            "index_basis": 0.0006308493029,
+            "funding_rate": 0.0000343320378104,
+            "last_updated": "2026-09-25T16:32:29.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83909.20982959,
+            "volume_24h": 7165964991.756517,
+            "open_interest": 2405108922.316265,
+            "last_updated": "2026-09-25T16:32:29.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1334851,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "price"
+        ],
+        "exchange": {
+          "exchange_id": 10153,
+          "exchange_name": "Ourbit",
+          "exchange_slug": "ourbit"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84010.4,
+            "volume_24h_base": 78387.55409393,
+            "volume_24h_quote": 6585369774.45308,
+            "open_interest": 421541579.7602161,
+            "index_price": 84016.86394368,
+            "index_basis": 0.00031170012988,
+            "funding_rate": 0.000009,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83990.67587628,
+            "volume_24h": 6583823648.637802,
+            "open_interest": 421541579.7602161,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1362808,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 11090,
+          "exchange_name": "x.me Exchange",
+          "exchange_slug": "voox-exchange"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84010.5,
+            "volume_24h_base": 77786.907,
+            "volume_24h_quote": 6534916950.5235,
+            "open_interest": 4384484781.9664135,
+            "index_price": 83997.56865999,
+            "index_basis": 0.00009772066392,
+            "funding_rate": 0.00016805,
+            "last_updated": "2026-09-25T16:33:20.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83989.36036181,
+            "volume_24h": 6533272563.453903,
+            "open_interest": 4384484781.9664135,
+            "last_updated": "2026-09-25T16:33:20.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1341892,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": true,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 10361,
+          "exchange_name": "CoinUp.io",
+          "exchange_slug": "coinup-io"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84010.5,
+            "volume_24h_base": 67849.69949453,
+            "volume_24h_quote": 5700087179.385,
+            "open_interest": 232854480.31898168,
+            "index_price": 84010.91539767,
+            "index_basis": 0.00023972533543,
+            "funding_rate": -0.0000068,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83990.7758528,
+            "volume_24h": 5698748901.924625,
+            "open_interest": 232854480.31898168,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 74338,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "price"
+        ],
+        "exchange": {
+          "exchange_id": 302,
+          "exchange_name": "Gate",
+          "exchange_slug": "gate"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83996,
+            "volume_24h_base": 67341.76267918,
+            "volume_24h_quote": 5656438698,
+            "open_interest": 4856349467.42136,
+            "index_price": 84017.79371642,
+            "index_basis": 0.00050655984797,
+            "funding_rate": -0.000002,
+            "last_updated": "2026-09-25T16:33:20.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83975.23367561,
+            "volume_24h": 5655040257.11127,
+            "open_interest": 4856349467.42136,
+            "last_updated": "2026-09-25T16:33:20.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 50905,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 521,
+          "exchange_name": "Bybit",
+          "exchange_slug": "bybit"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83999.9,
+            "volume_24h_base": 66450.53505227,
+            "volume_24h_quote": 5581838299.3373,
+            "open_interest": 2462237386.803902,
+            "index_price": 84016.89393635,
+            "index_basis": 0.00044944799996,
+            "funding_rate": 0.00003723,
+            "last_updated": "2026-09-25T16:33:17.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83979.13271141,
+            "volume_24h": 5580480814.746069,
+            "open_interest": 2462237386.803902,
+            "last_updated": "2026-09-25T16:33:17.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1233805,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 6137,
+          "exchange_name": "Toobit",
+          "exchange_slug": "toobit"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84010.5,
+            "volume_24h_base": 65098.32910237,
+            "volume_24h_quote": 5468943177.05486,
+            "open_interest": 1016492300.3608438,
+            "index_price": 84012.53978324,
+            "index_basis": 0.00025905573733,
+            "funding_rate": 0.00000953,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83990.7758528,
+            "volume_24h": 5467657394.24181,
+            "open_interest": 1016492300.3608438,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1252754,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 790,
+          "exchange_name": "Pionex",
+          "exchange_slug": "pionex"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84010.5,
+            "volume_24h_base": 58436.21631328,
+            "volume_24h_quote": 4909255750.5866585,
+            "open_interest": 118368753.04485,
+            "index_price": 84017.64721223,
+            "index_basis": 0.00033227687727,
+            "funding_rate": 0.0000270493,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83989.73009078,
+            "volume_24h": 4908284155.047831,
+            "open_interest": 118368753.04485,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1385789,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "price"
+        ],
+        "exchange": {
+          "exchange_id": 937,
+          "exchange_name": "Biconomy.com",
+          "exchange_slug": "biconomy"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83944.3,
+            "volume_24h_base": 56624.47839915,
+            "volume_24h_quote": 4753302202.08156,
+            "open_interest": 188971291.3150258,
+            "index_price": 84016.96391925,
+            "index_basis": 0.00112117270969,
+            "funding_rate": 0.00008919,
+            "last_updated": "2026-09-25T16:33:23.649Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83922.76639215,
+            "volume_24h": 4752082872.76926,
+            "open_interest": 188971291.3150258,
+            "last_updated": "2026-09-25T16:33:23.649Z"
+          }
+        ]
+      },
+      {
+        "market_id": 980603,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 517,
+          "exchange_name": "CoinW",
+          "exchange_slug": "coinw"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84010.4,
+            "volume_24h_base": 50994.39925331,
+            "volume_24h_quote": 4284059879.03,
+            "open_interest": 1425523578.1007333,
+            "index_price": 83989.87054162,
+            "index_basis": 0.00000286256092,
+            "funding_rate": 0.00001055,
+            "last_updated": "2026-09-25T16:33:18.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83989.6301155,
+            "volume_24h": 4283012968.441626,
+            "open_interest": 1425523578.1007333,
+            "last_updated": "2026-09-25T16:33:18.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1274996,
+        "market_pair_symbol": "BTC/USDC",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 7893,
+          "exchange_name": "Coinbase International Exchange",
+          "exchange_slug": "coinbase-international-exchange"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 3408,
+          "symbol": "USDC",
+          "exchange_symbol": "USDC",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84035.2,
+            "volume_24h_base": 49445.00573341,
+            "volume_24h_quote": 4155120945.80866,
+            "open_interest": 91008689.89717267,
+            "index_price": 84012.34061812,
+            "index_basis": -0.00016545389178,
+            "funding_rate": 0.000005,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84026.24078683,
+            "volume_24h": 4154677957.4621754,
+            "open_interest": 91008689.89717267,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1353839,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": true,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 10783,
+          "exchange_name": "HyperPay Futures",
+          "exchange_slug": "hyperpay-futures"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84010.4,
+            "volume_24h_base": 47859.4812547,
+            "volume_24h_quote": 4020694164,
+            "open_interest": 803942326.9543111,
+            "index_price": 84012.53978324,
+            "index_basis": 0.00027269343122,
+            "funding_rate": -0.00001055,
+            "last_updated": "2026-09-25T16:33:17.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83989.6301155,
+            "volume_24h": 4019700128.1021113,
+            "open_interest": 803942326.9543111,
+            "last_updated": "2026-09-25T16:33:17.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1223561,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 943,
+          "exchange_name": "Hotcoin",
+          "exchange_slug": "hotcoin-global"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84010.5,
+            "volume_24h_base": 47542.23830355,
+            "volume_24h_quote": 3994047211,
+            "open_interest": 302793248.4255,
+            "index_price": 83989.97051718,
+            "index_basis": 0.00000286256089,
+            "funding_rate": 0.0000068,
+            "last_updated": "2026-09-25T16:33:20.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83989.73009078,
+            "volume_24h": 3993058039.106252,
+            "open_interest": 302793248.4255,
+            "last_updated": "2026-09-25T16:33:20.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1698484,
+        "market_pair_symbol": "MSTRX/BTC",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 790,
+          "exchange_name": "Pionex",
+          "exchange_slug": "pionex"
+        },
+        "market_pair_base": {
+          "crypto_id": 37003,
+          "symbol": "MSTRX",
+          "exchange_symbol": "MSTRX",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 0.0018945,
+            "volume_24h_base": 22827595.93210874,
+            "volume_24h_quote": 43246.88049338,
+            "open_interest": 6.52213832,
+            "index_price": 83833.25229937,
+            "index_basis": -0.00191595933802,
+            "funding_rate": 0.0001479132,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 159.12639316,
+            "volume_24h": 3632296602.6778865,
+            "open_interest": 6.52213832,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 78764,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 544,
+          "exchange_name": "MEXC",
+          "exchange_slug": "mexc"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84007.7,
+            "volume_24h_base": 40565.83801859,
+            "volume_24h_quote": 3407842750.51425,
+            "open_interest": 2345010695.1680737,
+            "index_price": 84015.36431024,
+            "index_basis": 0.00033843246946,
+            "funding_rate": 0.000009,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83986.93078302,
+            "volume_24h": 3407002005.8496485,
+            "open_interest": 2345010695.1680737,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1458107,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 32491,
+          "exchange_name": "CZR Exchange",
+          "exchange_slug": "czr-exchange"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84011.8,
+            "volume_24h_base": 39802.27254056,
+            "volume_24h_quote": 3343860560.223,
+            "open_interest": 244322005.34363252,
+            "index_price": 84013.66472566,
+            "index_basis": 0.00025697222175,
+            "funding_rate": 0.00001,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83992.07554758,
+            "volume_24h": 3343075482.1921644,
+            "open_interest": 244322005.34363252,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1647684,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 33326,
+          "exchange_name": "Ulink",
+          "exchange_slug": "ulink"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 66545.2,
+            "volume_24h_base": 50122.85449589,
+            "volume_24h_quote": 3335435377,
+            "open_interest": 666924060.6262411,
+            "index_price": 84012.53978324,
+            "index_basis": 0.20809945085265,
+            "funding_rate": -0.00001055,
+            "last_updated": "2026-09-25T16:33:18.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 66529.57638961,
+            "volume_24h": 3334652277.049929,
+            "open_interest": 666924060.6262411,
+            "last_updated": "2026-09-25T16:33:18.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1447096,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 12596,
+          "exchange_name": "WOO X Pro",
+          "exchange_slug": "wooxpro"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84010.4,
+            "volume_24h_base": 39446.60680344,
+            "volume_24h_quote": 3313925216.2,
+            "open_interest": 39687282.22534299,
+            "index_price": 84012.24420331,
+            "index_basis": 0.0002567283761,
+            "funding_rate": 3e-7,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83990.67587628,
+            "volume_24h": 3313147062.200301,
+            "open_interest": 39687282.22534299,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1300655,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 9298,
+          "exchange_name": "BiKing",
+          "exchange_slug": "biking"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84007.3,
+            "volume_24h_base": 38656.24,
+            "volume_24h_quote": 3247406350.552,
+            "open_interest": 1658684084.316151,
+            "index_price": 83986.47137247,
+            "index_basis": -0.0000131596388,
+            "funding_rate": -0.000011,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83987.5766041,
+            "volume_24h": 3246643918.2265196,
+            "open_interest": 1658684084.316151,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1351165,
+        "market_pair_symbol": "BTC/USDC",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 8112,
+          "exchange_name": "Hyperliquid",
+          "exchange_slug": "hyperliquid"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 3408,
+          "symbol": "USDC",
+          "exchange_symbol": "USDC",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84022,
+            "volume_24h_base": 38639.88467541,
+            "volume_24h_quote": 3246600390.196895,
+            "open_interest": 1659037643.3500464,
+            "index_price": 84027.43907985,
+            "index_basis": 0.00013969935985,
+            "funding_rate": 0.0000125,
+            "last_updated": "2026-09-25T16:33:26.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84015.7005004,
+            "volume_24h": 3246356978.259003,
+            "open_interest": 1659037643.3500464,
+            "last_updated": "2026-09-25T16:33:26.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1250152,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 1247,
+          "exchange_name": "FameEX",
+          "exchange_slug": "fameex"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84000.1,
+            "volume_24h_base": 37479.262,
+            "volume_24h_quote": 3148261755.9262,
+            "open_interest": 5154038277.75255,
+            "index_price": 84004.07207037,
+            "index_basis": 0.00029890326712,
+            "funding_rate": -0.0000068,
+            "last_updated": "2026-09-25T16:33:21.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83978.96297878,
+            "volume_24h": 3147469555.9698195,
+            "open_interest": 5154038277.75255,
+            "last_updated": "2026-09-25T16:33:21.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1364202,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": true,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 11136,
+          "exchange_name": "IBIT Global",
+          "exchange_slug": "ibit-global"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84003.4,
+            "volume_24h_base": 36294.17709027,
+            "volume_24h_quote": 3048834275.785,
+            "open_interest": 39964983.94963484,
+            "index_price": 83982.8722522,
+            "index_basis": 0.00000726462184,
+            "funding_rate": 0.0002,
+            "last_updated": "2026-09-25T16:33:17.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83982.26214839,
+            "volume_24h": 3048067094.855479,
+            "open_interest": 39964983.94963484,
+            "last_updated": "2026-09-25T16:33:17.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1267284,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 8125,
+          "exchange_name": "OrangeX",
+          "exchange_slug": "orangex"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84009,
+            "volume_24h_base": 35542.95065053,
+            "volume_24h_quote": 2985927741.2,
+            "open_interest": 1144008371.7564697,
+            "index_price": 84016.86394368,
+            "index_basis": 0.00032835953901,
+            "funding_rate": 0.000073,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83989.27620497,
+            "volume_24h": 2985226699.326674,
+            "open_interest": 1144008371.7564697,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1294495,
+        "market_pair_symbol": "BTC/USDC",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 270,
+          "exchange_name": "Binance",
+          "exchange_slug": "binance"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 3408,
+          "symbol": "USDC",
+          "exchange_symbol": "USDC",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83999.2,
+            "volume_24h_base": 34723.21570324,
+            "volume_24h_quote": 2916722340.5,
+            "open_interest": 1608014577.4296,
+            "index_price": 83990.64282874,
+            "index_basis": 0.00000251731495,
+            "funding_rate": -0.00000218,
+            "last_updated": "2026-09-25T16:33:17.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83990.43139784,
+            "volume_24h": 2916400599.7453394,
+            "open_interest": 1608014577.4296,
+            "last_updated": "2026-09-25T16:33:17.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1389412,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 11608,
+          "exchange_name": "CEEX exchange",
+          "exchange_slug": "ceex-exchange"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84005.25,
+            "volume_24h_base": 34427.01221519,
+            "volume_24h_quote": 2892049767.89,
+            "open_interest": 1612819734.94,
+            "index_price": 83985.58158996,
+            "index_basis": 0.00001750189797,
+            "funding_rate": -0.0001,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83984.11168288,
+            "volume_24h": 2891322038.788168,
+            "open_interest": 1612819734.94,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1657427,
+        "market_pair_symbol": "BTC/USD",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 33551,
+          "exchange_name": "MSX",
+          "exchange_slug": "msx"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 2781,
+          "symbol": "USD",
+          "exchange_symbol": "USD",
+          "currency_type": "fiat"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84001.8,
+            "volume_24h_base": 34403.16684065,
+            "volume_24h_quote": 2889927940.31478,
+            "open_interest": 0,
+            "index_price": 84032.80413043,
+            "index_basis": 0.00101972151467,
+            "funding_rate": 0.00000648,
+            "last_updated": "2026-09-25T16:30:17.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83947.11407212,
+            "volume_24h": 2888053276.2205834,
+            "open_interest": 0,
+            "last_updated": "2026-09-25T16:30:17.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1297268,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 9181,
+          "exchange_name": "UZX",
+          "exchange_slug": "uzx"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83929.3,
+            "volume_24h_base": 34077.8498665,
+            "volume_24h_quote": 2860130084.8004,
+            "open_interest": 3299754.058365,
+            "index_price": 83948.68060959,
+            "index_basis": 0.00048732593887,
+            "funding_rate": 0.00000771,
+            "last_updated": "2026-09-25T16:30:15.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83907.77023999,
+            "volume_24h": 2859396396.871225,
+            "open_interest": 3299754.058365,
+            "last_updated": "2026-09-25T16:30:15.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1300787,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 1133,
+          "exchange_name": "TruBit Pro Exchange",
+          "exchange_slug": "trubit-exchange"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84010.4,
+            "volume_24h_base": 32913.7268243,
+            "volume_24h_quote": 2765095356,
+            "open_interest": 47659310,
+            "index_price": 84011.36528771,
+            "index_basis": 0.00026311797996,
+            "funding_rate": -0.00001,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83989.26038698,
+            "volume_24h": 2764399572.551789,
+            "open_interest": 47659310,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1442418,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": true,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 12779,
+          "exchange_name": "Cofinex",
+          "exchange_slug": "cofinex"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83981,
+            "volume_24h_base": 31924.15245514,
+            "volume_24h_quote": 2681022247.33498,
+            "open_interest": 2682153344.074008,
+            "index_price": 83988.36790891,
+            "index_basis": 0.00033933418027,
+            "funding_rate": 0.000094,
+            "last_updated": "2026-09-25T16:33:17.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83959.86778493,
+            "volume_24h": 2680350446.4739456,
+            "open_interest": 2682153344.074008,
+            "last_updated": "2026-09-25T16:33:17.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 64187,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 513,
+          "exchange_name": "Bitget",
+          "exchange_slug": "bitget"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84014.9,
+            "volume_24h_base": 31895.99728733,
+            "volume_24h_quote": 2679739022.49494,
+            "open_interest": 1341491343.810973,
+            "index_price": 84019.11039459,
+            "index_basis": 0.00029732987533,
+            "funding_rate": 0.000095,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83994.12900297,
+            "volume_24h": 2679085958.608716,
+            "open_interest": 1341491343.810973,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 969107,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "price"
+        ],
+        "exchange": {
+          "exchange_id": 1653,
+          "exchange_name": "Zoomex",
+          "exchange_slug": "zoomex"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83946.7,
+            "volume_24h_base": 31920.49304132,
+            "volume_24h_quote": 2679620053.19177,
+            "open_interest": 253865072.41428348,
+            "index_price": 83954.90908717,
+            "index_basis": 0.0003493860171,
+            "funding_rate": 0.000027,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83925.57641587,
+            "volume_24h": 2678961852.7491407,
+            "open_interest": 253865072.41428348,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1299141,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 9218,
+          "exchange_name": "Hibt",
+          "exchange_slug": "hibt"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83968.3,
+            "volume_24h_base": 31428.38351777,
+            "volume_24h_quote": 2638987935.7351,
+            "open_interest": 166341139.73492417,
+            "index_price": 83947.78082952,
+            "index_basis": 0.00003970648781,
+            "funding_rate": 0.0000142,
+            "last_updated": "2026-09-25T16:30:18.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83944.44755798,
+            "volume_24h": 2638238292.039422,
+            "open_interest": 166341139.73492417,
+            "last_updated": "2026-09-25T16:30:18.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1289175,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 9015,
+          "exchange_name": "Websea",
+          "exchange_slug": "websea"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83974.7,
+            "volume_24h_base": 28674.84774939,
+            "volume_24h_quote": 2407961737.301,
+            "open_interest": 11904285.6093855,
+            "index_price": 83957.66395728,
+            "index_basis": 0.00004876966425,
+            "funding_rate": 0.0001,
+            "last_updated": "2026-09-25T16:33:18.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83953.5693702,
+            "volume_24h": 2407355819.708645,
+            "open_interest": 11904285.6093855,
+            "last_updated": "2026-09-25T16:33:18.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1252755,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 501,
+          "exchange_name": "WhiteBIT",
+          "exchange_slug": "whitebit"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83906.4,
+            "volume_24h_base": 27841.16542477,
+            "volume_24h_quote": 2336051962.597,
+            "open_interest": 1567390637.72,
+            "index_price": 83950.88007198,
+            "index_basis": 0.00078622115169,
+            "funding_rate": 0.00008761,
+            "last_updated": "2026-09-25T16:30:15.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83884.87611436,
+            "volume_24h": 2335452712.5363154,
+            "open_interest": 1567390637.72,
+            "last_updated": "2026-09-25T16:30:15.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1314656,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 1379,
+          "exchange_name": "Batonex",
+          "exchange_slug": "wisebitcoin"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84010.5,
+            "volume_24h_base": 27359.02510755,
+            "volume_24h_quote": 2298445378.79782,
+            "open_interest": 220109769.2623495,
+            "index_price": 83989.97051718,
+            "index_basis": 0.00000726462184,
+            "funding_rate": 0.00051362469387906,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83989.36036181,
+            "volume_24h": 2297867018.9059215,
+            "open_interest": 220109769.2623495,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1260226,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 7302,
+          "exchange_name": "Bitunix",
+          "exchange_slug": "bitunix"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84005.9,
+            "volume_24h_base": 26270.91399997,
+            "volume_24h_quote": 2206911774.39,
+            "open_interest": 385621372.16469395,
+            "index_price": 84019.2633572,
+            "index_basis": 0.00043877938924,
+            "funding_rate": -0.00000918,
+            "last_updated": "2026-09-25T16:27:17.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83982.39743614,
+            "volume_24h": 2206300256.4158244,
+            "open_interest": 385621372.16469395,
+            "last_updated": "2026-09-25T16:27:17.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 988354,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 1182,
+          "exchange_name": "Deepcoin",
+          "exchange_slug": "deepcoin"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84009.5,
+            "volume_24h_base": 26024.695,
+            "volume_24h_quote": 2186321614.6025,
+            "open_interest": 1225888664,
+            "index_price": 84017.08388992,
+            "index_basis": 0.00034187423739,
+            "funding_rate": 0.00011594,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83988.36061344,
+            "volume_24h": 2185771468.5149136,
+            "open_interest": 1225888664,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1639035,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 33113,
+          "exchange_name": "KTX",
+          "exchange_slug": "ktx"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83929.5,
+            "volume_24h_base": 26030.97447009,
+            "volume_24h_quote": 2184766671.787054,
+            "open_interest": 22188235.8481812,
+            "index_price": 83916.38850267,
+            "index_basis": 0.00007857383583,
+            "funding_rate": 0.0001,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83909.79487014,
+            "volume_24h": 2184253728.0546136,
+            "open_interest": 22188235.8481812,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1259658,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 7618,
+          "exchange_name": "BVOX",
+          "exchange_slug": "bvox"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83987,
+            "volume_24h_base": 25846.10298973,
+            "volume_24h_quote": 2170736651.7985,
+            "open_interest": 1527905062.4375029,
+            "index_price": 83747.55976911,
+            "index_basis": -0.00261059832949,
+            "funding_rate": 0,
+            "last_updated": "2026-09-25T16:27:15.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83966.19100874,
+            "volume_24h": 2170198820.467394,
+            "open_interest": 1527905062.4375029,
+            "last_updated": "2026-09-25T16:27:15.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1635689,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 33080,
+          "exchange_name": "OneEx",
+          "exchange_slug": "oneex"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84010.5,
+            "volume_24h_base": 22396.4412,
+            "volume_24h_quote": 1881536223.4326,
+            "open_interest": 1006370.18055,
+            "index_price": 83986.48636881,
+            "index_basis": -0.00005107350216,
+            "funding_rate": -3.33712165174e-7,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83990.7758528,
+            "volume_24h": 1881094472.7295923,
+            "open_interest": 1006370.18055,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1425979,
+        "market_pair_symbol": "BTC/USDC",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 517,
+          "exchange_name": "CoinW",
+          "exchange_slug": "coinw"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 3408,
+          "symbol": "USDC",
+          "exchange_symbol": "USDC",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83999.2,
+            "volume_24h_base": 21801.09456685,
+            "volume_24h_quote": 1831274502.74,
+            "open_interest": 506545230.7599995,
+            "index_price": 84001.84168777,
+            "index_basis": 0.00013583380679,
+            "funding_rate": 0.00005649,
+            "last_updated": "2026-09-25T16:33:18.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83990.43139784,
+            "volume_24h": 1831071100.4208736,
+            "open_interest": 506545230.7599995,
+            "last_updated": "2026-09-25T16:33:18.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 988394,
+        "market_pair_symbol": "BTC/USD",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 525,
+          "exchange_name": "XT.COM",
+          "exchange_slug": "xt"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 2781,
+          "symbol": "USD",
+          "exchange_symbol": "USD",
+          "currency_type": "fiat"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83907.1,
+            "volume_24h_base": 21276.3711295,
+            "volume_24h_quote": 1785238600,
+            "open_interest": 59856900,
+            "index_price": 83963.8606286,
+            "index_basis": 0.00069366140675,
+            "funding_rate": 0.000623,
+            "last_updated": "2026-09-25T16:30:42.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83905.61813892,
+            "volume_24h": 1785245079.1767008,
+            "open_interest": 59856900,
+            "last_updated": "2026-09-25T16:30:42.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 46956,
+        "market_pair_symbol": "BTC/USD",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 522,
+          "exchange_name": "Deribit",
+          "exchange_slug": "deribit"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 2781,
+          "symbol": "USD",
+          "exchange_symbol": "USD",
+          "currency_type": "fiat"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83973,
+            "volume_24h_base": 20877.26388244,
+            "volume_24h_quote": 1753126480,
+            "open_interest": 897826280,
+            "index_price": 83959.91,
+            "index_basis": -0.00027976728763,
+            "funding_rate": -1e-7,
+            "last_updated": "2026-09-25T16:13:03.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83983.39923629,
+            "volume_24h": 1753342186.0455232,
+            "open_interest": 897826280,
+            "last_updated": "2026-09-25T16:13:03.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1355750,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 10922,
+          "exchange_name": "MGBX",
+          "exchange_slug": "mgbx"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84004,
+            "volume_24h_base": 20440.22751943,
+            "volume_24h_quote": 1717060872.54251,
+            "open_interest": 5943934.08471523,
+            "index_price": 83951.0800231,
+            "index_basis": -0.00040116434415,
+            "funding_rate": -0.00000953,
+            "last_updated": "2026-09-25T16:33:28.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83984.75820306,
+            "volume_24h": 1716667565.8351347,
+            "open_interest": 5943934.08471523,
+            "last_updated": "2026-09-25T16:33:28.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 976697,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 433,
+          "exchange_name": "Bitrue",
+          "exchange_slug": "bitrue"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84012.3,
+            "volume_24h_base": 17340.3254175,
+            "volume_24h_quote": 1456800621.07291,
+            "open_interest": 61445172.6957708,
+            "index_price": 84014.99440065,
+            "index_basis": 0.00027929246511,
+            "funding_rate": 0.00001067,
+            "last_updated": "2026-09-25T16:33:17.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83991.52964576,
+            "volume_24h": 1456440456.3714068,
+            "open_interest": 61445172.6957708,
+            "last_updated": "2026-09-25T16:33:17.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 984903,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 525,
+          "exchange_name": "XT.COM",
+          "exchange_slug": "xt"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83928.9,
+            "volume_24h_base": 17288.160672,
+            "volume_24h_quote": 1450976308.22457,
+            "open_interest": 1448952266.1881375,
+            "index_price": 83941.22856587,
+            "index_basis": 0.00037909256733,
+            "funding_rate": -0.0000072,
+            "last_updated": "2026-09-25T16:30:42.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83909.40707003,
+            "volume_24h": 1450604690.9907472,
+            "open_interest": 1448952266.1881375,
+            "last_updated": "2026-09-25T16:30:42.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1336556,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 1110,
+          "exchange_name": "PrimeXBT",
+          "exchange_slug": "primexbt"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83980.7,
+            "volume_24h_base": 17039.033,
+            "volume_24h_quote": 1430949918.6631,
+            "open_interest": 1074178816.8823943,
+            "index_price": 83952.07977873,
+            "index_basis": -0.00008919471317,
+            "funding_rate": 0.000008,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83959.56786041,
+            "volume_24h": 1430589879.8119059,
+            "open_interest": 1074178816.8823943,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1649242,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 33355,
+          "exchange_name": "idax exchange",
+          "exchange_slug": "idax-exchange"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84010.4,
+            "volume_24h_base": 13265.75808972,
+            "volume_24h_quote": 1114461643.4205,
+            "open_interest": 152622113.04173166,
+            "index_price": 84013.66472566,
+            "index_basis": 0.00027363226514,
+            "funding_rate": 0.0001,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83990.67587628,
+            "volume_24h": 1114199987.9666615,
+            "open_interest": 152622113.04173166,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1665021,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 1277,
+          "exchange_name": "Blockfinex",
+          "exchange_slug": "blockfinex"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84010.4,
+            "volume_24h_base": 13265.75808972,
+            "volume_24h_quote": 1114461643.4205,
+            "open_interest": 98983343.56172664,
+            "index_price": 84013.66472566,
+            "index_basis": 0.00029048058743,
+            "funding_rate": 0.0001,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83989.26038698,
+            "volume_24h": 1114180516.35197,
+            "open_interest": 98983343.56172664,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1409175,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 9717,
+          "exchange_name": "Koinbay",
+          "exchange_slug": "koinbay"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83947.8,
+            "volume_24h_base": 13245.6856,
+            "volume_24h_quote": 1111946165.61168,
+            "open_interest": 0,
+            "index_price": 83960.914286,
+            "index_basis": 0.00039094038757,
+            "funding_rate": 0.000097,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83928.09057363,
+            "volume_24h": 1111685100.7465723,
+            "open_interest": 0,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1410083,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 12030,
+          "exchange_name": "CoinP",
+          "exchange_slug": "coinp"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84010.6,
+            "volume_24h_base": 12353.42057168,
+            "volume_24h_quote": 1037818274.27907,
+            "open_interest": 1396373986.6856713,
+            "index_price": 83993.56963746,
+            "index_basis": 0.00004892399296,
+            "funding_rate": 0.00007,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83989.46033665,
+            "volume_24h": 1037557127.1269735,
+            "open_interest": 1396373986.6856713,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 69639,
+        "market_pair_symbol": "BTC/USD",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 270,
+          "exchange_name": "Binance",
+          "exchange_slug": "binance"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 2781,
+          "symbol": "USD",
+          "exchange_symbol": "USD",
+          "currency_type": "fiat"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83926.2,
+            "volume_24h_base": 11469.41002929,
+            "volume_24h_quote": 962584000,
+            "open_interest": 1266566300,
+            "index_price": 83928.0279177,
+            "index_basis": 0.00007112014446,
+            "funding_rate": 0.00001071,
+            "last_updated": "2026-09-25T16:30:50.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83922.05894423,
+            "volume_24h": 962486260.9463644,
+            "open_interest": 1266566300,
+            "last_updated": "2026-09-25T16:30:50.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1430206,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": true,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 12404,
+          "exchange_name": "Aivora Exchange",
+          "exchange_slug": "aivora-exchange"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83998,
+            "volume_24h_base": 11045.94,
+            "volume_24h_quote": 927836868.12,
+            "open_interest": 536723572.26981884,
+            "index_price": 84010.58881083,
+            "index_basis": 0.00038459465314,
+            "funding_rate": -0.0000525627429384,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83978.27878757,
+            "volume_24h": 927649671.6908188,
+            "open_interest": 536723572.26981884,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 65603,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 1064,
+          "exchange_name": "BingX",
+          "exchange_slug": "bingx"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84003.9,
+            "volume_24h_base": 10081.90589306,
+            "volume_24h_quote": 846919414.45,
+            "open_interest": 720280656.0315825,
+            "index_price": 84017.16387037,
+            "index_basis": 0.00040946214093,
+            "funding_rate": 0.000093,
+            "last_updated": "2026-09-25T16:33:19.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83982.76202258,
+            "volume_24h": 846700857.9716027,
+            "open_interest": 720280656.0315825,
+            "last_updated": "2026-09-25T16:33:19.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1620972,
+        "market_pair_symbol": "BTC/USDC",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 32521,
+          "exchange_name": "Lighter",
+          "exchange_slug": "lighter"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 3408,
+          "symbol": "USDC",
+          "exchange_symbol": "USDC",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84015,
+            "volume_24h_base": 9541.8633014,
+            "volume_24h_quote": 801659645.266737,
+            "open_interest": 165944347.312772,
+            "index_price": 84032.03861124,
+            "index_basis": 0.00030935428032,
+            "funding_rate": 0.000012,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84006.04294041,
+            "volume_24h": 801574178.2285131,
+            "open_interest": 165944347.312772,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1414842,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": true,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 12131,
+          "exchange_name": "BitradeX",
+          "exchange_slug": "bitradex"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84010.5,
+            "volume_24h_base": 9505.95667208,
+            "volume_24h_quote": 798600173,
+            "open_interest": 64727737.30359406,
+            "index_price": 84024.46208649,
+            "index_basis": 0.00041775601777,
+            "funding_rate": 0.0001,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83989.36036181,
+            "volume_24h": 798399220.5153393,
+            "open_interest": 64727737.30359406,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1677517,
+        "market_pair_symbol": "BTC/USD",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 33897,
+          "exchange_name": "Kalshi",
+          "exchange_slug": "kalshi"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 2781,
+          "symbol": "USD",
+          "exchange_symbol": "USD",
+          "currency_type": "fiat"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84041,
+            "volume_24h_base": 7919.68626728,
+            "volume_24h_quote": 665578353.5885,
+            "open_interest": 20377471.6946,
+            "index_price": 84022,
+            "index_basis": 0.00009594443348,
+            "funding_rate": 0,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84013.93855681,
+            "volume_24h": 665323631.3830621,
+            "open_interest": 20377471.6946,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1680083,
+        "market_pair_symbol": "BTC/USDC",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 34039,
+          "exchange_name": "Variational",
+          "exchange_slug": "variational"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 3408,
+          "symbol": "USDC",
+          "exchange_symbol": "USDC",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83963.95,
+            "volume_24h_base": 7372.677998,
+            "volume_24h_quote": 619039166.79,
+            "open_interest": 203346672.87069714,
+            "index_price": 83982.73363455,
+            "index_basis": 0.00033024944972,
+            "funding_rate": 0.00005443,
+            "last_updated": "2026-09-25T16:33:17.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83954.99838298,
+            "volume_24h": 618973169.4001569,
+            "open_interest": 203346672.87069714,
+            "last_updated": "2026-09-25T16:33:17.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1376108,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 11339,
+          "exchange_name": "YUBIT",
+          "exchange_slug": "yubit"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84010.3,
+            "volume_24h_base": 6940.55478816,
+            "volume_24h_quote": 583078089.92,
+            "open_interest": 180734554.9222932,
+            "index_price": 84014.66448129,
+            "index_basis": 0.00030356687503,
+            "funding_rate": 0.000283,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83989.16041214,
+            "volume_24h": 582933504.1459672,
+            "open_interest": 180734554.9222932,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1433823,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 12544,
+          "exchange_name": "YEX",
+          "exchange_slug": "yex"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84010.4,
+            "volume_24h_base": 6402.90530834,
+            "volume_24h_quote": 537910636.116,
+            "open_interest": 90508997.25745334,
+            "index_price": 84013.66472566,
+            "index_basis": 0.00029048058743,
+            "funding_rate": 0.00001,
+            "last_updated": "2026-09-25T16:33:17.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83989.26038698,
+            "volume_24h": 537776197.9481941,
+            "open_interest": 90508997.25745334,
+            "last_updated": "2026-09-25T16:33:17.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1428475,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 12386,
+          "exchange_name": "BitTap",
+          "exchange_slug": "bittap"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84002.1,
+            "volume_24h_base": 6307.93919403,
+            "volume_24h_quote": 529880138.970786,
+            "open_interest": 59375813.58301451,
+            "index_price": 83981.47259431,
+            "index_basis": 0.00000607418264,
+            "funding_rate": 0.000021,
+            "last_updated": "2026-09-25T16:33:19.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83980.96247551,
+            "volume_24h": 529746804.7516127,
+            "open_interest": 59375813.58301451,
+            "last_updated": "2026-09-25T16:33:19.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1422014,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 12266,
+          "exchange_name": "BlockFin",
+          "exchange_slug": "blockfin"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83974.9,
+            "volume_24h_base": 6262.60434222,
+            "volume_24h_quote": 525901573.37729,
+            "open_interest": 1606719413.1752386,
+            "index_price": 84016.46404143,
+            "index_basis": 0.00074621947348,
+            "funding_rate": 0.00003436,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83953.76931987,
+            "volume_24h": 525769240.28817964,
+            "open_interest": 1606719413.1752386,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1431435,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 12456,
+          "exchange_name": "Bitbaby",
+          "exchange_slug": "bitbabyexchange"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84005.2,
+            "volume_24h_base": 6196.6743,
+            "volume_24h_quote": 520552863.9063,
+            "open_interest": 301067283.66498524,
+            "index_price": 83991.22735284,
+            "index_basis": 0.00006846257493,
+            "funding_rate": 0.00008,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83985.47709714,
+            "volume_24h": 520421878.3611548,
+            "open_interest": 301067283.66498524,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1658858,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 33595,
+          "exchange_name": "AEGET",
+          "exchange_slug": "aeget"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83953.7,
+            "volume_24h_base": 6080.28173307,
+            "volume_24h_quote": 510462148.53332,
+            "open_interest": 508624153.1503283,
+            "index_price": 83933.18439729,
+            "index_basis": 0.00002226398347,
+            "funding_rate": 0,
+            "last_updated": "2026-09-25T16:31:25.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83931.31571026,
+            "volume_24h": 510326045.7453047,
+            "open_interest": 508624153.1503283,
+            "last_updated": "2026-09-25T16:31:25.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1414841,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 12099,
+          "exchange_name": "AstralX",
+          "exchange_slug": "astralx"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84000,
+            "volume_24h_base": 5940.4708465,
+            "volume_24h_quote": 498999551.106115,
+            "open_interest": 249499775.5530575,
+            "index_price": 83980.27288755,
+            "index_basis": 0.00001678827141,
+            "funding_rate": 0.0000345834120112,
+            "last_updated": "2026-09-25T16:33:17.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83978.86300394,
+            "volume_24h": 498873987.39722836,
+            "open_interest": 249499775.5530575,
+            "last_updated": "2026-09-25T16:33:17.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 46930,
+        "market_pair_symbol": "BTC/USD",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 294,
+          "exchange_name": "OKX",
+          "exchange_slug": "okx"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 2781,
+          "symbol": "USD",
+          "exchange_symbol": "USD",
+          "currency_type": "fiat"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83916.4,
+            "volume_24h_base": 5941.08183859,
+            "volume_24h_quote": 498554200,
+            "open_interest": 557951190,
+            "index_price": 83975.7,
+            "index_basis": 0.00076722224727,
+            "funding_rate": 0.0000252056803968,
+            "last_updated": "2026-09-25T16:32:29.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83911.27197473,
+            "volume_24h": 498512279.4607452,
+            "open_interest": 557951190,
+            "last_updated": "2026-09-25T16:32:29.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1235736,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 333,
+          "exchange_name": "LBank",
+          "exchange_slug": "lbank"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84010.4,
+            "volume_24h_base": 5820.83476862,
+            "volume_24h_quote": 489010657.2452607,
+            "open_interest": 320154011.00868,
+            "index_price": 84015.86418805,
+            "index_basis": 0.00031225141591,
+            "funding_rate": 0.00000953,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83989.6301155,
+            "volume_24h": 488889759.17942315,
+            "open_interest": 320154011.00868,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 181686,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 1452,
+          "exchange_name": "Aster",
+          "exchange_slug": "aster-pro"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83972.4,
+            "volume_24h_base": 5743.20313674,
+            "volume_24h_quote": 482270551.08,
+            "open_interest": 492493292.975561,
+            "index_price": 84011.67260389,
+            "index_basis": 0.00071897931644,
+            "funding_rate": 0.00004008,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83951.26994895,
+            "volume_24h": 482149213.30804634,
+            "open_interest": 492493292.975561,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1622517,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": true,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 32688,
+          "exchange_name": "OneBullEx",
+          "exchange_slug": "onebullex"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84010.4,
+            "volume_24h_base": 5292.21261609,
+            "volume_24h_quote": 444600898.76298,
+            "open_interest": 298896743.43190354,
+            "index_price": 83989.97051718,
+            "index_basis": -0.00000839813481,
+            "funding_rate": 0.0001,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83990.67587628,
+            "volume_24h": 444496514.5065727,
+            "open_interest": 298896743.43190354,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 253056,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 102,
+          "exchange_name": "HTX",
+          "exchange_slug": "htx"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83994.2,
+            "volume_24h_base": 5143.963979,
+            "volume_24h_quote": 432063139.2452,
+            "open_interest": 1066607152.2302,
+            "index_price": 84010.38267074,
+            "index_basis": 0.0004398093301,
+            "funding_rate": 0.0001,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83973.43412062,
+            "volume_24h": 431957527.25765496,
+            "open_interest": 1066607152.2302,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1654039,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 33450,
+          "exchange_name": "IMBX",
+          "exchange_slug": "imbx"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84010.4,
+            "volume_24h_base": 5140.49239999,
+            "volume_24h_quote": 431854822.72,
+            "open_interest": 213286.1969264,
+            "index_price": 84015.00439821,
+            "index_basis": 0.00030202084604,
+            "funding_rate": 0.00008,
+            "last_updated": "2026-09-25T16:33:23.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83989.6301155,
+            "volume_24h": 431748055.28657925,
+            "open_interest": 213286.1969264,
+            "last_updated": "2026-09-25T16:33:23.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1449101,
+        "market_pair_symbol": "LINK/BTC",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 790,
+          "exchange_name": "Pionex",
+          "exchange_slug": "pionex"
+        },
+        "market_pair_base": {
+          "crypto_id": 1975,
+          "symbol": "LINK",
+          "exchange_symbol": "LINK",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 0.00016544,
+            "volume_24h_base": 27417868.82972679,
+            "volume_24h_quote": 4536.01221919,
+            "open_interest": 0.15048422,
+            "index_price": 84012.80682277,
+            "index_basis": 0.00022536319226,
+            "funding_rate": 0.0000729507,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 13.89594642,
+            "volume_24h": 380978446.90755117,
+            "open_interest": 0.15048422,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 70533,
+        "market_pair_symbol": "XBT/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 311,
+          "exchange_name": "KuCoin",
+          "exchange_slug": "kucoin"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "XBT",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83991.7,
+            "volume_24h_base": 4463.3618118,
+            "volume_24h_quote": 374885346.2878,
+            "open_interest": 990472626.2002,
+            "index_price": 84015.93417095,
+            "index_basis": 0.0005356059263,
+            "funding_rate": 0.000032,
+            "last_updated": "2026-09-25T16:33:19.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83970.9347387,
+            "volume_24h": 374793171.20455366,
+            "open_interest": 990472626.2002,
+            "last_updated": "2026-09-25T16:33:19.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 47233,
+        "market_pair_symbol": "XBT/USD",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 24,
+          "exchange_name": "Kraken",
+          "exchange_slug": "kraken"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "XBT",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 2781,
+          "symbol": "USD",
+          "exchange_symbol": "USD",
+          "currency_type": "fiat"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84027,
+            "volume_24h_base": 4301.0603,
+            "volume_24h_quote": 361405193.8281,
+            "open_interest": 2299745,
+            "index_price": 104712,
+            "index_basis": 0.19768131997479,
+            "funding_rate": 0.000018829576533579,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84012.3936228,
+            "volume_24h": 361342370.919,
+            "open_interest": 2299745,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 46958,
+        "market_pair_symbol": "BTC/USD",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 521,
+          "exchange_name": "Bybit",
+          "exchange_slug": "bybit"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 2781,
+          "symbol": "USD",
+          "exchange_symbol": "USD",
+          "currency_type": "fiat"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83958.2,
+            "volume_24h_base": 4232.61676644,
+            "volume_24h_quote": 355362885,
+            "open_interest": 232012186,
+            "index_price": 84025.38,
+            "index_basis": 0.00048306330754,
+            "funding_rate": 0.00001775,
+            "last_updated": "2026-09-25T16:33:17.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83984.79042202,
+            "volume_24h": 355452919.1179987,
+            "open_interest": 232012186,
+            "last_updated": "2026-09-25T16:33:17.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1435187,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": true,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 12578,
+          "exchange_name": "EasiCoin",
+          "exchange_slug": "easicoin"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84010.6,
+            "volume_24h_base": 4168.02356595,
+            "volume_24h_quote": 350158160.59,
+            "open_interest": 255590712.4771878,
+            "index_price": 84015.16435911,
+            "index_basis": 0.0003059450357,
+            "funding_rate": 0.0001,
+            "last_updated": "2026-09-25T16:33:17.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83989.46033665,
+            "volume_24h": 350070049.9749841,
+            "open_interest": 255590712.4771878,
+            "last_updated": "2026-09-25T16:33:17.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1282919,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 955,
+          "exchange_name": "Phemex",
+          "exchange_slug": "phemex"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84000,
+            "volume_24h_base": 4140.65628568,
+            "volume_24h_quote": 347815127.9973,
+            "open_interest": 185435210.73778403,
+            "index_price": 84015.68615748,
+            "index_basis": 0.00043388886593,
+            "funding_rate": 0.0001,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83979.23268669,
+            "volume_24h": 347752168.2219367,
+            "open_interest": 185435210.73778403,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1460045,
+        "market_pair_symbol": "BTC/USD",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": true,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 32600,
+          "exchange_name": "Pacifica",
+          "exchange_slug": "pacifica"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 2781,
+          "symbol": "USD",
+          "exchange_symbol": "USD",
+          "currency_type": "fiat"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84025,
+            "volume_24h_base": 4057.5178699,
+            "volume_24h_quote": 340932939.0183,
+            "open_interest": 42322892.55125,
+            "index_price": 84035.570903,
+            "index_basis": 0.00032808708257,
+            "funding_rate": 0.0000125,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84007.99991771,
+            "volume_24h": 340867356.67247975,
+            "open_interest": 42322892.55125,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1620601,
+        "market_pair_symbol": "BTC/USD",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 32674,
+          "exchange_name": "EVEDEX",
+          "exchange_slug": "evedex"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 2781,
+          "symbol": "USD",
+          "exchange_symbol": "USD",
+          "currency_type": "fiat"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84030.3,
+            "volume_24h_base": 3946.6654415,
+            "volume_24h_quote": 331639481.0485,
+            "open_interest": 294836418.28048503,
+            "index_price": 84026.1953961,
+            "index_basis": 0.0002245357195,
+            "funding_rate": 0.0001,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84007.32851386,
+            "volume_24h": 331554773.1023405,
+            "open_interest": 294836418.28048503,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1644365,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 33178,
+          "exchange_name": "ASTX",
+          "exchange_slug": "astx"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84010.5,
+            "volume_24h_base": 3807.74383136,
+            "volume_24h_quote": 319890463.144697,
+            "open_interest": 223505778.07121596,
+            "index_price": 83989.97051718,
+            "index_basis": -0.00000958847361,
+            "funding_rate": 0,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83990.7758528,
+            "volume_24h": 319815358.6448635,
+            "open_interest": 223505778.07121596,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1448690,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 10520,
+          "exchange_name": "ApeX Omni",
+          "exchange_slug": "apex-omni"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84004.4,
+            "volume_24h_base": 3706.01108983,
+            "volume_24h_quote": 311321237.9947,
+            "open_interest": 130971292.95720287,
+            "index_price": 84018.86345495,
+            "index_basis": 0.00041933269053,
+            "funding_rate": 0.0000125,
+            "last_updated": "2026-09-25T16:33:17.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83983.63159888,
+            "volume_24h": 311244270.0698295,
+            "open_interest": 130971292.95720287,
+            "last_updated": "2026-09-25T16:33:17.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1661429,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 33662,
+          "exchange_name": "Bitbase",
+          "exchange_slug": "bitbase-com"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83929,
+            "volume_24h_base": 3641.17969896,
+            "volume_24h_quote": 305600570.95376,
+            "open_interest": 189606841.45081782,
+            "index_price": 83941.10633635,
+            "index_basis": 0.00041211033078,
+            "funding_rate": 0.00000771,
+            "last_updated": "2026-09-25T16:30:17.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83906.51333925,
+            "volume_24h": 305518204.98329806,
+            "open_interest": 189606841.45081782,
+            "last_updated": "2026-09-25T16:30:17.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 83659,
+        "market_pair_symbol": "BTC/USD",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "price"
+        ],
+        "exchange": {
+          "exchange_id": 1149,
+          "exchange_name": "Crypto.com Exchange",
+          "exchange_slug": "crypto-com-exchange"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 2781,
+          "symbol": "USD",
+          "exchange_symbol": "USD",
+          "currency_type": "fiat"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83905.9,
+            "volume_24h_base": 3548.69756155,
+            "volume_24h_quote": 297756662.73,
+            "open_interest": 512019669.98897,
+            "index_price": 83911.06,
+            "index_basis": -0.00004309104759,
+            "funding_rate": -0.000004352,
+            "last_updated": "2026-09-25T14:57:18.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83914.67581548,
+            "volume_24h": 297794363.2762761,
+            "open_interest": 512019669.98897,
+            "last_updated": "2026-09-25T14:57:18.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1224732,
+        "market_pair_symbol": "BTC/USD",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 943,
+          "exchange_name": "Hotcoin",
+          "exchange_slug": "hotcoin-global"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 2781,
+          "symbol": "USD",
+          "exchange_symbol": "USD",
+          "currency_type": "fiat"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83979.9,
+            "volume_24h_base": 3540,
+            "volume_24h_quote": 297288846,
+            "open_interest": 500,
+            "index_price": 83980,
+            "index_basis": -0.00010963181472,
+            "funding_rate": 0.000003471,
+            "last_updated": "2026-09-25T16:33:20.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83989.2068798,
+            "volume_24h": 297323516.15809405,
+            "open_interest": 500,
+            "last_updated": "2026-09-25T16:33:20.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1383341,
+        "market_pair_symbol": "ADA/BTC",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 790,
+          "exchange_name": "Pionex",
+          "exchange_slug": "pionex"
+        },
+        "market_pair_base": {
+          "crypto_id": 2010,
+          "symbol": "ADA",
+          "exchange_symbol": "ADA",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 0.00000306,
+            "volume_24h_base": 1154020110.6252046,
+            "volume_24h_quote": 3525.53143796,
+            "open_interest": 0.66272726,
+            "index_price": 83807.72685359,
+            "index_basis": -0.00058348554758,
+            "funding_rate": 0.0000729507,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 0.25660128,
+            "volume_24h": 296104968.6365128,
+            "open_interest": 0.66272726,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1401336,
+        "market_pair_symbol": "BTC/USDC",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 6137,
+          "exchange_name": "Toobit",
+          "exchange_slug": "toobit"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 3408,
+          "symbol": "USDC",
+          "exchange_symbol": "USDC",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83999.2,
+            "volume_24h_base": 3519.55822032,
+            "volume_24h_quote": 295640074.8603,
+            "open_interest": 51825404.915284,
+            "index_price": 84020.41665348,
+            "index_basis": 0.00035910353451,
+            "funding_rate": -0.00000265,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83990.24462489,
+            "volume_24h": 295610329.6834946,
+            "open_interest": 51825404.915284,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1653140,
+        "market_pair_symbol": "BTC/USDT",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 9365,
+          "exchange_name": "AlphaX",
+          "exchange_slug": "alphax"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 825,
+          "symbol": "USDT",
+          "exchange_symbol": "USDT",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 84004.3,
+            "volume_24h_base": 3484.50625372,
+            "volume_24h_quote": 292713508.6894,
+            "open_interest": 31446438.87513991,
+            "index_price": 84017.21085889,
+            "index_basis": 0.00038841506525,
+            "funding_rate": 0.000093,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83984.57730845,
+            "volume_24h": 292644784.8473432,
+            "open_interest": 31446438.87513991,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 47233,
+        "market_pair_symbol": "XBT/USD",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 24,
+          "exchange_name": "Kraken",
+          "exchange_slug": "kraken"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "XBT",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 2781,
+          "symbol": "USD",
+          "exchange_symbol": "USD",
+          "currency_type": "fiat"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 66922,
+            "volume_24h_base": 4320.3829,
+            "volume_24h_quote": 289128664.4338,
+            "open_interest": 184529182.2927,
+            "index_price": 104712,
+            "index_basis": 0.36054241653927,
+            "funding_rate": -0.00000395541686,
+            "last_updated": "2026-09-25T16:33:16.312Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 66958.88247934,
+            "volume_24h": 289221109.78085244,
+            "open_interest": 184529182.2927,
+            "last_updated": "2026-09-25T16:33:16.312Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1638357,
+        "market_pair_symbol": "BTC/USDC",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [
+          "price",
+          "volume"
+        ],
+        "exchange": {
+          "exchange_id": 12404,
+          "exchange_name": "Aivora Exchange",
+          "exchange_slug": "aivora-exchange"
+        },
+        "market_pair_base": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 3408,
+          "symbol": "USDC",
+          "exchange_symbol": "USDC",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83999.1,
+            "volume_24h_base": 3370.41999998,
+            "volume_24h_quote": 283112246.62,
+            "open_interest": 109236507.5572978,
+            "index_price": 84017.54508787,
+            "index_basis": 0.00032612774266,
+            "funding_rate": -0.0000205733392145,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 83990.14463555,
+            "volume_24h": 283051420.3805274,
+            "open_interest": 109236507.5572978,
+            "last_updated": "2026-09-25T16:33:15.000Z"
+          }
+        ]
+      },
+      {
+        "market_id": 1309559,
+        "market_pair_symbol": "XRP/BTC",
+        "category": "perpetual",
+        "fee_type": "percentage",
+        "outlier_detected": false,
+        "exclusions": [],
+        "exchange": {
+          "exchange_id": 790,
+          "exchange_name": "Pionex",
+          "exchange_slug": "pionex"
+        },
+        "market_pair_base": {
+          "crypto_id": 52,
+          "symbol": "XRP",
+          "exchange_symbol": "XRP",
+          "currency_type": "cryptocurrency"
+        },
+        "market_pair_quote": {
+          "crypto_id": 1,
+          "symbol": "BTC",
+          "exchange_symbol": "BTC",
+          "currency_type": "cryptocurrency"
+        },
+        "exchange_reported_quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 0.00001879,
+            "volume_24h_base": 177113249.4766418,
+            "volume_24h_quote": 3328.32989549,
+            "open_interest": 2.24580629,
+            "index_price": 84012.96199304,
+            "index_basis": 0.00011547284848,
+            "funding_rate": -0.0000206027,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ],
+        "quotes": [
+          {
+            "convert_id": 2781,
+            "convert_symbol": "USD",
+            "price": 1.57842127,
+            "volume_24h": 279555977.151989,
+            "open_interest": 2.24580629,
+            "last_updated": "2026-09-25T16:33:16.000Z"
+          }
+        ]
+      }
+    ]
+  },
+  "status": {
+    "timestamp": "2026-09-25T16:34:29.708Z",
+    "error_code": "0",
+    "error_message": "",
+    "elapsed": 28,
+    "credit_count": 1
+  }
+}

@@ -1,0 +1,245 @@
+{
+  "data": {
+    "total_size": 7942,
+    "has_more": true,
+    "rwa_assets": [
+      {
+        "name": "Gold",
+        "symbol": "GOLD",
+        "slug": "gold",
+        "quotes": [
+          {
+            "symbol": "USD",
+            "crypto_id": 2781,
+            "average_tokenized_price": 4285.121221922322,
+            "tokenized_market_cap": 4623330031.120389,
+            "tokenized_volume_24h": 451368273.4425051,
+            "last_updated": "2026-09-25T16:33:03.000Z"
+          }
+        ],
+        "rwa_id": 1,
+        "asset_type": "commodity",
+        "rwa_rank": 1,
+        "has_tokens": true,
+        "average_tokenized_price": 4285.121221922322,
+        "tokenized_market_cap": 4623330031.120389,
+        "tokenized_volume_24h": 451368273.4425051,
+        "last_updated": "2026-09-25T16:33:40.000Z"
+      },
+      {
+        "name": "Nvidia Corp",
+        "symbol": "NVDA",
+        "slug": "nvidia",
+        "quotes": [
+          {
+            "symbol": "USD",
+            "crypto_id": 2781,
+            "average_tokenized_price": 224.90843457001887,
+            "tokenized_market_cap": 137491079.49579826,
+            "tokenized_volume_24h": 78119197.0546648,
+            "last_updated": "2026-09-25T16:33:03.000Z"
+          }
+        ],
+        "rwa_id": 2,
+        "asset_type": "stock",
+        "rwa_rank": 2,
+        "has_tokens": true,
+        "average_tokenized_price": 224.90843457001887,
+        "tokenized_market_cap": 137491079.49579826,
+        "tokenized_volume_24h": 78119197.0546648,
+        "last_updated": "2026-09-25T16:33:42.000Z"
+      },
+      {
+        "name": "Apple Inc.",
+        "symbol": "AAPL",
+        "slug": "apple",
+        "quotes": [
+          {
+            "symbol": "USD",
+            "crypto_id": 2781,
+            "average_tokenized_price": 340.0947197338511,
+            "tokenized_market_cap": 34713707.18058566,
+            "tokenized_volume_24h": 31851078.81139157,
+            "last_updated": "2026-09-25T16:33:03.000Z"
+          }
+        ],
+        "rwa_id": 3,
+        "asset_type": "stock",
+        "rwa_rank": 3,
+        "has_tokens": true,
+        "average_tokenized_price": 340.0947197338511,
+        "tokenized_market_cap": 34713707.18058566,
+        "tokenized_volume_24h": 31851078.81139157,
+        "last_updated": "2026-09-25T16:33:44.000Z"
+      },
+      {
+        "name": "Alphabet Inc Class A",
+        "symbol": "GOOGL",
+        "slug": "google",
+        "quotes": [
+          {
+            "symbol": "USD",
+            "crypto_id": 2781,
+            "average_tokenized_price": 344.8622940180648,
+            "tokenized_market_cap": 100064205.19709523,
+            "tokenized_volume_24h": 33787082.18071986,
+            "last_updated": "2026-09-25T16:33:03.000Z"
+          }
+        ],
+        "rwa_id": 4,
+        "asset_type": "stock",
+        "rwa_rank": 4,
+        "has_tokens": true,
+        "average_tokenized_price": 344.8622940180648,
+        "tokenized_market_cap": 100064205.19709523,
+        "tokenized_volume_24h": 33787082.18071986,
+        "last_updated": "2026-09-25T16:33:27.000Z"
+      },
+      {
+        "name": "Microsoft Corp",
+        "symbol": "MSFT",
+        "slug": "microsoft",
+        "quotes": [
+          {
+            "symbol": "USD",
+            "crypto_id": 2781,
+            "average_tokenized_price": 516.7044771675348,
+            "tokenized_market_cap": 23449748.07089765,
+            "tokenized_volume_24h": 12093382.29029757,
+            "last_updated": "2026-09-25T16:33:03.000Z"
+          }
+        ],
+        "rwa_id": 7,
+        "asset_type": "stock",
+        "rwa_rank": 5,
+        "has_tokens": true,
+        "average_tokenized_price": 516.7044771675348,
+        "tokenized_market_cap": 23449748.07089765,
+        "tokenized_volume_24h": 12093382.29029757,
+        "last_updated": "2026-09-25T16:33:29.000Z"
+      },
+      {
+        "name": "Silver",
+        "symbol": "SILVER",
+        "slug": "silver",
+        "quotes": [
+          {
+            "symbol": "USD",
+            "crypto_id": 2781,
+            "average_tokenized_price": 33.87160574108205,
+            "tokenized_market_cap": 0,
+            "tokenized_volume_24h": 133296.99442143,
+            "last_updated": "2026-09-25T16:33:03.000Z"
+          }
+        ],
+        "rwa_id": 5,
+        "asset_type": "commodity",
+        "rwa_rank": 6,
+        "has_tokens": true,
+        "average_tokenized_price": 33.87160574108205,
+        "tokenized_market_cap": 0,
+        "tokenized_volume_24h": 133296.99442143,
+        "last_updated": "2026-09-25T16:33:39.000Z"
+      },
+      {
+        "name": "Amazon.com Inc",
+        "symbol": "AMZN",
+        "slug": "amazon",
+        "quotes": [
+          {
+            "symbol": "USD",
+            "crypto_id": 2781,
+            "average_tokenized_price": 250.3778686238324,
+            "tokenized_market_cap": 22108169.516664978,
+            "tokenized_volume_24h": 13011810.25158641,
+            "last_updated": "2026-09-25T16:33:03.000Z"
+          }
+        ],
+        "rwa_id": 6,
+        "asset_type": "stock",
+        "rwa_rank": 7,
+        "has_tokens": true,
+        "average_tokenized_price": 250.3778686238324,
+        "tokenized_market_cap": 22108169.516664978,
+        "tokenized_volume_24h": 13011810.25158641,
+        "last_updated": "2026-09-25T16:33:26.000Z"
+      },
+      {
+        "name": "Taiwan Semiconductor Manufacturing Co Ltd",
+        "symbol": "TSM",
+        "slug": "tsm",
+        "quotes": [
+          {
+            "symbol": "USD",
+            "crypto_id": 2781,
+            "average_tokenized_price": 454.93733455920056,
+            "tokenized_market_cap": 14706476.274874508,
+            "tokenized_volume_24h": 5283114.05623,
+            "last_updated": "2026-09-25T16:33:03.000Z"
+          }
+        ],
+        "rwa_id": 8,
+        "asset_type": "stock",
+        "rwa_rank": 8,
+        "has_tokens": true,
+        "average_tokenized_price": 454.93733455920056,
+        "tokenized_market_cap": 14706476.274874508,
+        "tokenized_volume_24h": 5283114.05623,
+        "last_updated": "2026-09-25T16:33:33.000Z"
+      },
+      {
+        "name": "SpaceX",
+        "symbol": "SPCX",
+        "slug": "spacex",
+        "quotes": [
+          {
+            "symbol": "USD",
+            "crypto_id": 2781,
+            "average_tokenized_price": 148.80604444072085,
+            "tokenized_market_cap": 228271171.6543694,
+            "tokenized_volume_24h": 101897059.45852505,
+            "last_updated": "2026-09-25T16:33:03.000Z"
+          }
+        ],
+        "rwa_id": 9,
+        "asset_type": "stock",
+        "rwa_rank": 9,
+        "has_tokens": true,
+        "average_tokenized_price": 148.80604444072085,
+        "tokenized_market_cap": 228271171.6543694,
+        "tokenized_volume_24h": 101897059.45852505,
+        "last_updated": "2026-09-25T16:33:19.000Z"
+      },
+      {
+        "name": "Alphabet Inc.",
+        "symbol": "GOOG",
+        "slug": "alphabet-inc",
+        "quotes": [
+          {
+            "symbol": "USD",
+            "crypto_id": 2781,
+            "average_tokenized_price": null,
+            "tokenized_market_cap": null,
+            "tokenized_volume_24h": null,
+            "last_updated": "2026-09-25T16:33:03.000Z"
+          }
+        ],
+        "rwa_id": null,
+        "asset_type": "stock",
+        "rwa_rank": 9,
+        "has_tokens": null,
+        "average_tokenized_price": null,
+        "tokenized_market_cap": null,
+        "tokenized_volume_24h": null,
+        "last_updated": "2026-06-18T02:42:37.000Z"
+      }
+    ]
+  },
+  "status": {
+    "timestamp": "2026-09-25T16:34:32.655Z",
+    "error_code": "0",
+    "error_message": "",
+    "elapsed": 8,
+    "credit_count": 1
+  }
+}
