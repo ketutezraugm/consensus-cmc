@@ -26,3 +26,20 @@ Written from real calls (probe output in `scripts/out/`, run 2026-09-25 on the f
    market details, the academy article says they were deferred. The docs should agree.
 7. **Parameter names differ between endpoint families**: `symbol` (spot) vs `crypto_symbol` (derivatives).
 8. A per-response `crypto_id: 2781` appears inside every `quotes[]` entry; it is the *currency* (USD) id, easy to misread as the asset.
+
+## Added after building the recorder and the on-chain layer
+9. **Same `market_id` returned twice with conflicting prices.** `/v5/cryptocurrency/derivatives/market-pairs/list/latest?crypto_id=1`
+   returned Kraken market `47233` (XBT/USD perpetual) twice with identical timestamps, at $84,012 and $66,959. Neither row is
+   flagged by `outlier_detected` or `exclusions`. `market_id` is not a safe unique key for this endpoint.
+10. **Kraken `index_price` looked wrong**: $104,712 on both rows while BTC traded near $84,000.
+11. **`/v4/dex/networks/list` returned HTTP 500** with `credit_count: 0` on the free tier (2026-09-25).
+12. **`/v4/dex/spot-pairs/latest` requires `dex_slug`** but the error only says "provide either a dex id or dex slug". A network alone is
+    not enough, so there is no way to ask "the biggest pools on Ethereum" without already knowing DEX slugs.
+13. **`limit=200` silently returns 100 rows** (pagination via `scroll_id`). No warning that the limit was clamped.
+14. **Request `network_slug=ethereum`, response `network_slug: "Ethereum"`**: casing differs between input and output.
+15. **`/v4/dex/pairs/quotes/latest` returned an empty `data` array** (still charged 1 credit) for the widely used Uniswap v3 USDC/WETH pool
+    `0x88e6A0c2dDD26FEEb64F039a2c41296FcB3f5640`, while `spot-pairs/latest` lists other pools for the same tokens.
+16. **On-chain pool prices can be over an hour stale** (`last_updated` up to 64 minutes old on a $25M-liquidity WBTC pool). That is correct
+    for AMMs that only update on trades, but nothing in the response tells a consumer whether a quote is stale or just quiet.
+17. **DEX pairs carry `base_asset_ucid` for the wrapped token** (WBTC 3717, WETH 2396), not the underlying (BTC 1, ETH 1027). Joining
+    on-chain data to exchange data needs a hand-maintained mapping table.
