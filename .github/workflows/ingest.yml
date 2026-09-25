@@ -1,0 +1,11 @@
+name: ingest
+on:
+  schedule: [{ cron: '*/30 * * * *' }]
+  workflow_dispatch:
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          curl --fail-with-body -sS -X POST "${{ secrets.INGEST_URL }}" \
+            -H "Authorization: Bearer ${{ secrets.INGEST_SECRET }}" --max-time 90
