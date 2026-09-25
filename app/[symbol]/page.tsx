@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { captures, observations, liquidations, toVenue } from '@/lib/data';
-import { score } from '@/lib/consensus';
+import { captures, observations, liquidations, toVenue, type PoolObs } from '@/lib/data';
+import { score, onchain } from '@/lib/consensus';
 import { usd, pct, bps, ago } from '@/lib/fmt';
 
 export const revalidate = 60;
@@ -14,7 +14,7 @@ export default async function Asset({ params }: { params: Promise<{ symbol: stri
   const caps = await captures();
   if (!caps.length) notFound();
   const at = caps[0];
-  const [obs, liq] = await Promise.all([observations(at, symbol), liquidations(at)]);
+  const [obs, liq, poolObs] = await Promise.all([observations(at, symbol), liquidations(at), observations(at, symbol, 'onchain')]);
   if (!obs.length) notFound();
 
   const venues = obs.map(toVenue);
@@ -25,6 +25,9 @@ export default async function Asset({ params }: { params: Promise<{ symbol: stri
   const top = [...venues].sort((a, b) => b.volume - a.volume).slice(0, 12);
   const off = venues.filter((v) => !v.priceExcluded && Math.abs(v.price / ref - 1) > 0.01).sort((a, b) => b.volume - a.volume);
   const l = liq.find((x) => x.symbol === symbol);
+  const pools = (poolObs as PoolObs[]).map((o) => ({ name: o.venue_name, price: +o.price, liquidity: o.extra.liquidity, volume: +o.volume_24h, updated: o.extra.updated ? Date.parse(o.extra.updated) : 0 }));
+  const dex = onchain(pools, r.ref, Date.parse(at));
+  const token = (poolObs[0] as PoolObs | undefined)?.extra.token;
   const dupBadge = <span className="ml-1 rounded bg-red-500/15 px-1 text-xs text-red-500">dup</span>;
 
   return (
@@ -77,6 +80,33 @@ export default async function Asset({ params }: { params: Promise<{ symbol: stri
                   <td>{v.pair}</td>
                   <td className="text-right tabular-nums">{usd(v.volume)}</td>
                   <td className="text-right tabular-nums text-red-500">{bps((v.price / ref - 1) * 1e4)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
+      )}
+
+      {dex && (
+        <>
+          <h2 className="mt-10 text-lg font-semibold">On-chain vs exchanges</h2>
+          <p className="text-sm text-zinc-500">
+            Uniswap v3 pools on Ethereum, liquidity-weighted, against the exchange reference price above. The on-chain asset is {token}
+            {token !== symbol && ', a different token from the one perps track, so part of any gap can be wrapper risk'}. Pools only update when someone trades.
+          </p>
+          <div className="mt-3 grid grid-cols-2 gap-4 text-sm sm:grid-cols-4">
+            <div className={card}><div className="text-xs text-zinc-500">DEX vs exchanges</div><div className="mt-1 text-xl font-semibold tabular-nums">{bps(dex.gapBps)}</div></div>
+            <div className={card}><div className="text-xs text-zinc-500">Pools disagree by</div><div className="mt-1 text-xl font-semibold tabular-nums">{Math.round(dex.spreadBps)} bps</div></div>
+            <div className={card}><div className="text-xs text-zinc-500">Pool liquidity</div><div className="mt-1 text-xl font-semibold tabular-nums">{usd(dex.liquidity)}</div></div>
+            <div className={card}><div className="text-xs text-zinc-500">Liquidity not traded in 30 min</div><div className="mt-1 text-xl font-semibold tabular-nums">{pct(dex.staleShare, 0)}</div></div>
+          </div>
+          <table className="mt-3 w-full text-sm">
+            <thead className="text-left text-zinc-500"><tr><th className="py-1">Pool</th><th className="text-right">Liquidity</th><th className="text-right">vs exchanges</th></tr></thead>
+            <tbody>
+              {[...pools].sort((a, b) => b.liquidity - a.liquidity).map((p, i) => (
+                <tr key={i} className="border-t border-zinc-200 dark:border-zinc-800">
+                  <td className="py-1">{p.name}</td><td className="text-right tabular-nums">{usd(p.liquidity)}</td>
+                  <td className="text-right tabular-nums">{bps((p.price / r.ref - 1) * 1e4)}</td>
                 </tr>
               ))}
             </tbody>
