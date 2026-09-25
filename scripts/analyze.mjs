@@ -18,14 +18,14 @@ const caps = [...new Set((await get('observations?select=captured_at&crypto_id=e
 console.log('captures:', caps.length); caps.forEach((c, i) => console.log(' ', c, i ? `+${Math.round((Date.parse(c) - Date.parse(caps[i - 1])) / 60000)}m` : ''));
 
 const kr = await get('observations?select=captured_at,price,venue_id,extra&crypto_id=eq.1&venue_name=eq.Kraken&order=captured_at');
-const all = await get('observations?select=captured_at,price,venue_name&crypto_id=eq.1&order=captured_at');
+const all = await get('observations?select=captured_at,price,venue_name&layer=eq.forward&crypto_id=eq.1&order=captured_at');
 console.log('\nKraken BTC rows per capture:');
 for (const c of caps) {
   const px = all.filter((r) => r.captured_at === c).map((r) => +r.price).sort((a, b) => a - b), med = px[px.length >> 1];
   for (const k of kr.filter((r) => r.captured_at === c)) console.log(' ', c.slice(11, 16), k.venue_id, k.extra.pair, 'px', Math.round(k.price), 'vs median', Math.round((k.price / med - 1) * 1e4), 'bps', 'excl', JSON.stringify(k.extra.exclusions), 'outlier', k.extra.outlier);
 }
 
-const last = caps.at(-1), rows = await get(`observations?select=*&captured_at=eq.${encodeURIComponent(last)}`);
+const last = caps.at(-1), rows = await get(`observations?select=*&layer=eq.forward&captured_at=eq.${encodeURIComponent(last)}`);
 const by = Object.groupBy(rows, (r) => r.symbol);
 console.log('\nlatest capture', last);
 console.table(Object.entries(by).map(([s, rs]) => {

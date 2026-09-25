@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { toVenues, score } from '../lib/consensus.ts';
+import { toVenues, score, onchain } from '../lib/consensus.ts';
 
 const mk = (over = {}) => ({ id: 1, name: 'A', price: 100, volume: 10, oi: 5, basis: 0, funding: 0, excluded: false, priceExcluded: false, updated: 0, ...over });
 const finite = (r) => Object.values(r).flat().every((x) => typeof x !== 'number' || Number.isFinite(x));
@@ -55,4 +55,22 @@ test('one stale venue among many does not zero freshness', () => {
 test('a dominant venue off-consensus lowers agreement', () => {
   const r = score([mk({ volume: 1000, price: 100.9 }), mk({ id: 2 }), mk({ id: 3 }), mk({ id: 4 })]);
   assert.ok(r.agreeingShare < 0.1);
+});
+
+const pool = (over = {}) => ({ name: 'P', price: 100, liquidity: 1000, volume: 1, updated: 0, ...over });
+test('onchain: gap vs CEX reference in bps', () => {
+  assert.ok(Math.abs(onchain([pool({ price: 101 })], 100).gapBps - 100) < 1e-6);
+});
+test('onchain: deep pool outweighs shallow outlier', () => {
+  const r = onchain([pool({ liquidity: 1_000_000 }), pool({ price: 150, liquidity: 10 })], 100);
+  assert.ok(Math.abs(r.gapBps) < 5);
+});
+test('onchain: empty / zero-liquidity / zero ref -> null, never NaN', () => {
+  assert.equal(onchain([], 100), null);
+  assert.equal(onchain([pool({ liquidity: 0 })], 100), null);
+  assert.equal(onchain([pool()], 0), null);
+});
+test('onchain: stale liquidity share', () => {
+  const r = onchain([pool({ updated: 1 }), pool({ updated: 9_000_000 })], 100, 10_000_000);
+  assert.equal(r.staleShare, 0.5);
 });

@@ -85,5 +85,18 @@ export function score(venues: Venue[], now = Date.now()) {
   };
   const confidence = Math.round(100 * (0.4 * parts.spread + 0.3 * parts.agreement + 0.15 * parts.freshness + 0.15 * parts.cleanliness));
 
-  return { venues: venues.length, vwap, hhi, effectiveVenues: 1 / hhi, top, dispersionBps, funding, basis, excludedShare, agreeingShare, staleShare, stalestMs: stalest, parts, confidence };
+  return { venues: venues.length, vwap, ref, hhi, effectiveVenues: 1 / hhi, top, dispersionBps, funding, basis, excludedShare, agreeingShare, staleShare, stalestMs: stalest, parts, confidence };
+}
+
+export type Pool = { name: string; price: number; liquidity: number; volume: number; updated: number };
+
+// DEX pools vs the CEX reference price. Liquidity-weighted so shallow pools cannot set the price.
+export function onchain(pools: Pool[], ref: number, now = Date.now()) {
+  const live = pools.filter((p) => p.price > 0 && p.liquidity > 0);
+  if (live.length === 0 || !(ref > 0)) return null;
+  const liq = sum(live.map((p) => p.liquidity));
+  const price = sum(live.map((p) => p.price * p.liquidity)) / liq;
+  const spreadBps = (Math.sqrt(sum(live.map((p) => (p.liquidity / liq) * (p.price - price) ** 2))) / price) * 1e4;
+  const staleShare = sum(live.map((p) => (p.updated && now - p.updated > 1_800_000 ? p.liquidity / liq : 0)));
+  return { pools: live.length, liquidity: liq, price, gapBps: (price / ref - 1) * 1e4, spreadBps, staleShare };
 }

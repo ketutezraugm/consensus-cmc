@@ -4,6 +4,10 @@ import { WATCHLIST } from '@/lib/assets';
 
 export const maxDuration = 60;
 
+// Token ucid on-chain -> CMC asset id. WBTC/WETH are wrapped, so a gap can be wrapper risk as well as price.
+const ONCHAIN: Record<string, number> = { '3717': 1, '2396': 1027, '1975': 1975 };
+const STABLE = new Set(['USDT', 'USDC', 'DAI']);
+
 const authorized = (req: Request) => {
   const want = Buffer.from(`Bearer ${process.env.INGEST_SECRET ?? ''}`);
   const got = Buffer.from(req.headers.get('authorization') ?? '');
@@ -73,6 +77,20 @@ export async function POST(req: Request) {
     liq.push(row(0, 'TOTAL', total.data.quotes[0]));
     for (const c of byCoin.data.cryptocurrencies ?? []) if (c.quotes?.[0]) liq.push(row(c.crypto_id, c.symbol, c.quotes[0]));
   } catch (e: any) { warnings.push(`liquidations: ${e.message}`); }
+
+  try {
+    const r = await cmc('/v4/dex/spot-pairs/latest', { dex_slug: 'uniswap-v3', network_slug: 'ethereum', limit: 100 });
+    credits += r.credits;
+    for (const p of r.data ?? []) {
+      const id = ONCHAIN[p.base_asset_ucid], q = p.quote?.[0];
+      if (!id || !STABLE.has(p.quote_asset_symbol) || !q?.price) continue;
+      obs.push({
+        captured_at: at, crypto_id: id, symbol: WATCHLIST[id], layer: 'onchain',
+        venue_id: p.contract_address, venue_name: `Uniswap v3 ${p.name}`, price: q.price, volume_24h: q.volume_24h,
+        extra: { pair: p.name, token: p.base_asset_symbol, liquidity: q.liquidity, updated: q.last_updated },
+      });
+    }
+  } catch (e: any) { warnings.push(`onchain: ${e.message}`); }
 
   if (!dry) {
     try { await insert('observations', obs); await insert('liquidations', liq); }

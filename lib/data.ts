@@ -18,6 +18,7 @@ export type Obs = {
   captured_at: string; crypto_id: number; symbol: string; venue_id: string; venue_name: string; price: string; volume_24h: string;
   extra: { pair: string; oi: number | null; index_price: number | null; basis: number | null; funding: number | null; outlier: boolean; exclusions: string[]; updated?: string; dup?: boolean };
 };
+export type PoolObs = Obs & { extra: { pair: string; liquidity: number; updated?: string; token: string } };
 export type Liq = { symbol: string; long_1h: number; short_1h: number; long_4h: number; short_4h: number; long_24h: number; short_24h: number };
 
 export const toVenue = (o: Obs): Venue & { pair: string; dup: boolean; exclusions: string[]; index: number | null } => ({
@@ -32,6 +33,6 @@ export async function captures(): Promise<string[]> {
   const rows = await rest<{ captured_at: string }>('liquidations?select=captured_at&crypto_id=eq.0&order=captured_at.desc');
   return rows.map((r) => r.captured_at);
 }
-export const observations = (at: string, symbol?: string) =>
-  rest<Obs>(`observations?select=*&captured_at=eq.${encodeURIComponent(at)}${symbol ? `&symbol=eq.${symbol}` : ''}`);
+export const observations = (at: string, symbol?: string, layer = 'forward') =>
+  rest<Obs>(`observations?select=*&layer=eq.${layer}&captured_at=eq.${encodeURIComponent(at)}${symbol ? `&symbol=eq.${symbol}` : ''}`);
 export const liquidations = (at: string) => rest<Liq>(`liquidations?select=*&captured_at=eq.${encodeURIComponent(at)}`);
