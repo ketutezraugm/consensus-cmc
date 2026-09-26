@@ -22,6 +22,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               Consensus<span className="ml-2 text-xs font-normal text-muted">CoinMarketCap API</span>
             </Link>
             <Link href="/" className="ml-2 text-muted transition-colors hover:text-fg">Assets</Link>
+            <Link href="/alerts" className="text-muted transition-colors hover:text-fg">Alerts</Link>
             <Link href="/rwa" className="text-muted transition-colors hover:text-fg">Tokenised assets</Link>
             <Link href="/anomalies" className="text-muted transition-colors hover:text-fg">Off-market venues</Link>
             <a href="https://github.com/ketutezraugm/consensus-cmc" className="ml-auto text-muted transition-colors hover:text-fg">Source</a>
