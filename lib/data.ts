@@ -38,3 +38,13 @@ export const scoreHistory = (symbol?: string) =>
   rest<Score>(`asset_scores?select=*${symbol ? `&symbol=eq.${symbol}` : ''}&order=captured_at`);
 export const anomalyRows = (symbol?: string) =>
   rest<Anom>(`anomalies?select=captured_at,symbol,venue_name,pair,bps,volume_24h,dup${symbol ? `&symbol=eq.${symbol}` : ''}&order=captured_at`);
+
+import type { RwaObs } from './obs.ts';
+export type { RwaObs } from './obs.ts';
+export const rwaObservations = (at: string, symbol?: string) =>
+  rest<RwaObs>(`observations?select=*&layer=eq.rwa&captured_at=eq.${encodeURIComponent(at)}${symbol ? `&symbol=eq.${symbol}` : ''}`);
+
+export type RwaScoreRow = { captured_at: string; symbol: string; tokens: number; liquid: number; ref_price: number; spread_bps: number; dispersion_bps: number };
+// History table is created by migration 0003; before it exists this returns [] instead of breaking the page.
+export const rwaScoreHistory = (symbol?: string) =>
+  rest<RwaScoreRow>(`rwa_scores?select=captured_at,symbol,tokens,liquid,ref_price,spread_bps,dispersion_bps${symbol ? `&symbol=eq.${symbol}` : ''}&order=captured_at`).catch(() => [] as RwaScoreRow[]);

@@ -43,3 +43,17 @@ Written from real calls (probe output in `scripts/out/`, run 2026-09-25 on the f
     for AMMs that only update on trades, but nothing in the response tells a consumer whether a quote is stale or just quiet.
 17. **DEX pairs carry `base_asset_ucid` for the wrapped token** (WBTC 3717, WETH 2396), not the underlying (BTC 1, ETH 1027). Joining
     on-chain data to exchange data needs a hand-maintained mapping table.
+
+## Added after building the tokenised-asset layer
+18. **`/v5/real-world-assets/assets/list` returns entries with `rwa_id: null`** (e.g. GOOG). Building an id list from the response and
+    passing it to `quotes/latest` yields `Invalid parameter` until nulls are filtered out.
+19. **No unit field on tokens.** Gold tokens are priced per troy ounce (PAXG $4,278) or per gram (CGO $136, VNXAU $138) in the same list, with
+    nothing to say which. Comparing raw prices gives a false 97% "disagreement". A `price_unit` or `units_per_token` field would fix this.
+20. **Tokens with `price: null` are still returned** (24 of 225), including a whole issuer (Dinari) for most stocks. Fine, but a
+    `price_status` field would tell a consumer whether the token is untraded, untracked or delisted.
+21. **`market-pairs/list` for RWA returns 403 on Basic**, so per-venue prices of a tokenised asset are not available on the free tier.
+22. **SpaceX (SPCX): two tokens priced about 3.8x the other nine** ($562 and $571 against ~$148). The ratio is not a clean split factor, and
+    nothing in the response explains it (share class, unadjusted split, pre-IPO valuation?).
+23. **Hyperliquid tokenised stocks sit near a flat ~$300** for several unrelated stocks with near-zero volume, while the real prices differ.
+    They look like placeholder or stale marks, yet they are returned alongside liquid tokens with no staleness marker.
+24. **`market_cap` is null for some tokens that trade millions a day** (Robinhood), so liquidity cannot be judged from market cap alone.

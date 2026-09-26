@@ -125,10 +125,10 @@ export function Trend({ points, fmt, domain, label, color = 'var(--color-accent)
   );
 }
 
-export function Legend() {
+export function Legend({ grey = 'CMC excludes it' }: { grey?: string }) {
   return (
     <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted">
-      {[['var(--color-good)', 'within 0.5%'], ['var(--color-warn)', '0.5–2%'], ['var(--color-bad)', 'over 2%'], ['var(--color-muted)', 'CMC excludes it']].map(([c, l]) => (
+      {[['var(--color-good)', 'within 0.5%'], ['var(--color-warn)', '0.5–2%'], ['var(--color-bad)', 'over 2%'], ['var(--color-muted)', grey]].map(([c, l]) => (
         <span key={l} className="flex items-center gap-1.5">
           <span className="inline-block h-3 w-[3px] rounded-sm" style={{ background: c }} />{l}
         </span>

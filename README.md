@@ -16,6 +16,9 @@ Recorded 2026-09-25 to 2026-09-26. Reproduce every number below with `node --no-
 | **The API returns some markets twice with conflicting prices.** Kraken's BTC perp (`market_id` 47233) appears as $84,012 and $66,959 in the same response; neither row is flagged. Same for Kraken ETH/XRP/LTC and DigiFinex ETH. | Every capture since duplicates were kept |
 | **SunX quotes 2-24% below the median on 8+ assets and is never flagged.** | All captures. Its volume is small ($0.3M-$5M), so it barely moves an aggregate |
 | **CMC excludes a median 46% of perp volume** from its own aggregation (3%-63% by asset). | Every capture |
+| **Tokenised assets mostly agree, with one large exception.** Median weighted disagreement between issuers of the same asset is single-digit bps across 38 assets. SpaceX (SPCX) is the exception: two pre-IPO wrappers (Tessera, PreStocks) price it about 3.8x the eight others at ~$148. The API does not say why. | Latest capture; history accumulating |
+| **Some tokens have no price, others are stale.** 24 listed tokens return a null price; 16 low-volume tokens quote >1% off the market, 5 of them Hyperliquid's. | Latest capture |
+| **Gold tokens priced per gram look like a 97% disagreement** unless units are handled. Consensus detects and excludes them. | Latest capture |
 | **DEX and exchange prices agree.** Liquidity-weighted Uniswap v3 prices are within 0-5 bps of the exchange reference for BTC, ETH, LINK. | A consistency result, not an anomaly |
 
 What these do **not** show: whether CMC's headline price actually uses the flagged rows, or whether Deepcoin's volume is real. They are observations about what the API returns.
@@ -41,10 +44,12 @@ Supabase pg_cron ──POST──> /api/ingest ──> CMC API ──> Supabase 
 | `GET /v5/derivatives/liquidations/cryptocurrency/list/latest` | Long/short liquidations, 1h/4h/24h, per asset | 1 |
 | `GET /v5/derivatives/liquidations/quotes/latest` | Market-wide liquidations | 1 |
 | `GET /v4/dex/spot-pairs/latest` (`dex_slug=uniswap-v3`, `network_slug=ethereum`) | Pool price, liquidity, volume for WBTC/WETH/LINK vs stablecoins | 1 |
+| `GET /v5/real-world-assets/assets/list` (`limit=40`) | The 40 highest-ranked tokenised assets | 1 |
+| `GET /v5/real-world-assets/quotes/latest` (`rwa_id=` 38 ids in one call) | Every issuer's token for each asset: price, market cap, 24h volume | 1 |
 
-About 18 credits per capture, roughly 900 a day. Everything ran on the free Basic tier.
+About 20 credits per capture, roughly 1,000 a day. Everything ran on the free Basic tier.
 
-Also probed during development, not used by the product: `/v1/cryptocurrency/quotes/latest`, `/v5/exchange/derivatives/list`, `/v5/real-world-assets/{map,assets/list,issuers/list}` (all 200 on Basic), and `/v2/cryptocurrency/market-pairs/latest` and `/v1/exchange/listings/latest` (403 on Basic). Raw responses are in [`scripts/out/`](scripts/out).
+Also probed during development, not used by the product: `/v1/cryptocurrency/quotes/latest`, `/v5/exchange/derivatives/list`, `/v5/real-world-assets/{map,issuers/list}` (200 on Basic), `/v5/real-world-assets/market-pairs/list` (403 on Basic), and `/v2/cryptocurrency/market-pairs/latest` and `/v1/exchange/listings/latest` (403 on Basic). Raw responses are in [`scripts/out/`](scripts/out).
 
 ## Evidence of real API calls
 

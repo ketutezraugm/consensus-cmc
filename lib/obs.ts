@@ -13,3 +13,9 @@ export const toVenue = (o: Obs): Venue & { pair: string; dup: boolean; exclusion
   priceExcluded: o.extra.outlier || o.extra.exclusions.includes('price'),
   pair: o.extra.pair, dup: !!o.extra.dup, exclusions: o.extra.exclusions, index: o.extra.index_price,
 });
+
+export type RwaObs = {
+  captured_at: string; crypto_id: number; symbol: string; venue_id: string; venue_name: string;
+  price: string | number | null; volume_24h: string | number | null;
+  extra: { token: string; name: string; mcap: number | null; asset_type: string; avg_price: number | null };
+};
