@@ -80,3 +80,9 @@ export function alerts(scores: Score[], anoms: Anom[]): Alert[] {
 
   return out.sort((a, b) => (a.severity === b.severity ? a.since.localeCompare(b.since) : a.severity === 'high' ? -1 : 1));
 }
+
+// Alerts present now that were not present before: what is worth pushing to a person.
+export const newAlerts = (before: Alert[], now: Alert[]) => {
+  const had = new Set(before.map((a) => a.id));
+  return now.filter((a) => !had.has(a.id));
+};

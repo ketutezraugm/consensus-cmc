@@ -2,6 +2,9 @@ import { timingSafeEqual } from 'node:crypto';
 import { cmc } from '@/lib/cmc';
 import { WATCHLIST } from '@/lib/assets';
 import { summarize, summarizeRwa } from '@/lib/summary';
+import { scoreHistory, anomalyRows } from '@/lib/data';
+import { alerts, newAlerts } from '@/lib/alerts';
+import { pushAlerts } from '@/lib/telegram';
 
 export const maxDuration = 60;
 
@@ -121,5 +124,16 @@ export async function POST(req: Request) {
     try { await insert('asset_scores', scores); await insert('anomalies', anomalies); await insert('rwa_scores', summarizeRwa(rwa, at)); }
     catch (e: any) { warnings.push(`summaries: ${e.message}`); }
   }
-  return Response.json({ ok: true, dry, at, credits, observations: obs.length, liquidations: liq.length, scores: scores.length, anomalies: anomalies.length, rwa: rwa.length, warnings });
+  // Tell a person about alerts that just appeared. Compares alerts computed without and with this capture, so no state is stored.
+  let pushed = 0;
+  if (!dry && process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_CHAT_ID) {
+    try {
+      const [sc, an] = await Promise.all([scoreHistory(), anomalyRows()]);
+      const cut = Date.parse(at);
+      pushed = await pushAlerts(newAlerts(
+        alerts(sc.filter((x) => Date.parse(x.captured_at) < cut), an.filter((x) => Date.parse(x.captured_at) < cut)), alerts(sc, an),
+      ));
+    } catch (e: any) { warnings.push(`telegram: ${e.message}`); }
+  }
+  return Response.json({ ok: true, dry, at, credits, pushed, observations: obs.length, liquidations: liq.length, scores: scores.length, anomalies: anomalies.length, rwa: rwa.length, warnings });
 }

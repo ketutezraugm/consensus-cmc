@@ -6,6 +6,16 @@ Live: https://consensus-cmc.vercel.app · Track: **Data and Visualisation** · B
 
 Every 30 minutes a recorder captures per-venue price, volume, open interest, funding and basis for 15 assets (about 2,000 venue rows per capture), plus liquidations and Uniswap v3 pools. The site scores each asset and shows *who sets the price*.
 
+## One repository, three entries
+
+The same recorder and analysis engine power three differently-scoped submissions, disclosed here on purpose:
+
+| Entry | Track | What it is | Doc |
+|---|---|---|---|
+| **Consensus** | Data and Visualisation | The web app: per-venue price dispersion, history, tokenised assets | this README |
+| **Consensus Alerts** | Markets and Trading Tools | Pre-trade venue-risk bot (Telegram) and `/api/alerts` | [docs/submission-trading-alerts.md](docs/submission-trading-alerts.md) |
+| **Consensus MCP** | AI Agents and Automation | Remote MCP server, five tools: `claude mcp add --transport http consensus https://consensus-cmc.vercel.app/api/mcp` | [docs/submission-mcp.md](docs/submission-mcp.md) |
+
 ## What it found
 
 Recorded 2026-09-25 to 2026-09-26. Reproduce every number below with `node --no-warnings --env-file=.env.local scripts/findings.mjs`.
