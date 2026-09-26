@@ -1,6 +1,7 @@
 import { timingSafeEqual } from 'node:crypto';
 import { cmc } from '@/lib/cmc';
 import { WATCHLIST } from '@/lib/assets';
+import { summarize } from '@/lib/summary';
 
 export const maxDuration = 60;
 
@@ -32,7 +33,7 @@ export async function POST(req: Request) {
   const at = new Date(Math.floor(Date.now() / 60000) * 60000).toISOString();
   const warnings: string[] = [];
   let credits = 0;
-  const obs: object[] = [];
+  const obs: any[] = [];
   const liq: object[] = [];
 
   // Sequential on purpose: the free tier allows 50 req/min and a capture is ~17 calls.
@@ -96,5 +97,12 @@ export async function POST(req: Request) {
     try { await insert('observations', obs); await insert('liquidations', liq); }
     catch (e: any) { return Response.json({ ok: false, at, credits, error: e.message, warnings }, { status: 500 }); }
   }
-  return Response.json({ ok: true, dry, at, credits, observations: obs.length, liquidations: liq.length, warnings });
+
+  // History summaries are derived data: a failure here must never lose the raw capture above.
+  const { scores, anomalies } = summarize(obs.filter((o) => o.layer === 'forward'), obs.filter((o) => o.layer === 'onchain'), at);
+  if (!dry) {
+    try { await insert('asset_scores', scores); await insert('anomalies', anomalies); }
+    catch (e: any) { warnings.push(`summaries: ${e.message}`); }
+  }
+  return Response.json({ ok: true, dry, at, credits, observations: obs.length, liquidations: liq.length, scores: scores.length, anomalies: anomalies.length, warnings });
 }

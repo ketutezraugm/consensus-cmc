@@ -74,3 +74,22 @@ test('onchain: stale liquidity share', () => {
   const r = onchain([pool({ updated: 1 }), pool({ updated: 9_000_000 })], 100, 10_000_000);
   assert.equal(r.staleShare, 0.5);
 });
+
+import { offConsensus } from '../lib/consensus.ts';
+import { summarize } from '../lib/summary.ts';
+test('offConsensus: flags trusted venues >1% off, ignores price-excluded and empty', () => {
+  const r = offConsensus([mk(), mk({ id: 2 }), mk({ id: 3, price: 90 }), mk({ id: 4, price: 500, priceExcluded: true })]);
+  assert.equal(r.length, 1); assert.equal(Math.round(r[0].bps), -1000);
+  assert.deepEqual(offConsensus([]), []);
+});
+test('summarize: one row per asset, anomalies derived, no NaN', () => {
+  const j = JSON.parse(readFileSync(new URL('../scripts/out/deriv-pairs.json', import.meta.url)));
+  const obs = toVenues(j.data.market_pairs, j.data.crypto_id).map((v, i) => ({
+    captured_at: 'x', crypto_id: 1, symbol: 'BTC', venue_id: `v${i}`, venue_name: v.name, price: v.price, volume_24h: v.volume,
+    extra: { pair: 'BTC/USD', oi: v.oi, index_price: null, basis: v.basis, funding: v.funding, outlier: false, exclusions: v.priceExcluded ? ['price'] : [], updated: undefined },
+  }));
+  const { scores, anomalies } = summarize(obs, [], new Date().toISOString());
+  assert.equal(scores.length, 1);
+  assert.ok(Number.isFinite(scores[0].confidence) && scores[0].venues > 10);
+  assert.ok(anomalies.every((a) => a.symbol === 'BTC' && Number.isFinite(a.bps)));
+});

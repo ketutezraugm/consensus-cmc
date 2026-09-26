@@ -1,4 +1,3 @@
-import type { Venue } from './consensus';
 
 const H = () => ({ apikey: process.env.SUPABASE_SERVICE_KEY!, Authorization: `Bearer ${process.env.SUPABASE_SERVICE_KEY}` });
 
@@ -14,20 +13,10 @@ async function rest<T>(q: string): Promise<T[]> {
   }
 }
 
-export type Obs = {
-  captured_at: string; crypto_id: number; symbol: string; venue_id: string; venue_name: string; price: string; volume_24h: string;
-  extra: { pair: string; oi: number | null; index_price: number | null; basis: number | null; funding: number | null; outlier: boolean; exclusions: string[]; updated?: string; dup?: boolean };
-};
-export type PoolObs = Obs & { extra: { pair: string; liquidity: number; updated?: string; token: string } };
+export type { Obs, PoolObs } from './obs.ts';
+export { toVenue } from './obs.ts';
+import type { Obs, PoolObs } from './obs.ts';
 export type Liq = { symbol: string; long_1h: number; short_1h: number; long_4h: number; short_4h: number; long_24h: number; short_24h: number };
-
-export const toVenue = (o: Obs): Venue & { pair: string; dup: boolean; exclusions: string[]; index: number | null } => ({
-  id: o.venue_id as unknown as number, name: o.venue_name, price: +o.price, volume: +o.volume_24h, oi: o.extra.oi ?? 0,
-  basis: o.extra.basis, funding: o.extra.funding, updated: o.extra.updated ? Date.parse(o.extra.updated) : 0,
-  excluded: o.extra.outlier || o.extra.exclusions.length > 0,
-  priceExcluded: o.extra.outlier || o.extra.exclusions.includes('price'),
-  pair: o.extra.pair, dup: !!o.extra.dup, exclusions: o.extra.exclusions, index: o.extra.index_price,
-});
 
 export async function captures(): Promise<string[]> {
   const rows = await rest<{ captured_at: string }>('liquidations?select=captured_at&crypto_id=eq.0&order=captured_at.desc');
@@ -36,3 +25,5 @@ export async function captures(): Promise<string[]> {
 export const observations = (at: string, symbol?: string, layer = 'forward') =>
   rest<Obs>(`observations?select=*&layer=eq.${layer}&captured_at=eq.${encodeURIComponent(at)}${symbol ? `&symbol=eq.${symbol}` : ''}`);
 export const liquidations = (at: string) => rest<Liq>(`liquidations?select=*&captured_at=eq.${encodeURIComponent(at)}`);
+export const poolObservations = (at: string, symbol?: string) =>
+  rest<PoolObs>(`observations?select=*&layer=eq.onchain&captured_at=eq.${encodeURIComponent(at)}${symbol ? `&symbol=eq.${symbol}` : ''}`);

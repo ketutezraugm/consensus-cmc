@@ -17,6 +17,7 @@ export type Venue = {
   basis: number | null; funding: number | null; updated: number;
   excluded: boolean;      // CMC dropped it from price or volume aggregation
   priceExcluded: boolean; // CMC does not trust its price
+  pair?: string; dup?: boolean;
 };
 
 const num = (x: unknown) => (typeof x === 'number' && Number.isFinite(x) ? x : 0);
@@ -99,4 +100,14 @@ export function onchain(pools: Pool[], ref: number, now = Date.now()) {
   const spreadBps = (Math.sqrt(sum(live.map((p) => (p.liquidity / liq) * (p.price - price) ** 2))) / price) * 1e4;
   const staleShare = sum(live.map((p) => (p.updated && now - p.updated > 1_800_000 ? p.liquidity / liq : 0)));
   return { pools: live.length, liquidity: liq, price, gapBps: (price / ref - 1) * 1e4, spreadBps, staleShare };
+}
+
+// Venues CMC trusts for price that quote more than `threshold` away from the trusted median.
+export function offConsensus(venues: Venue[], threshold = 0.01) {
+  const t = venues.filter((v) => !v.priceExcluded);
+  if (t.length === 0) return [];
+  const ref = t.map((v) => v.price).sort((a, b) => a - b)[t.length >> 1];
+  return t
+    .filter((v) => Math.abs(v.price / ref - 1) > threshold)
+    .map((v) => ({ id: String(v.id), name: v.name, pair: v.pair ?? '', dup: !!v.dup, volume: v.volume, bps: (v.price / ref - 1) * 1e4 }));
 }

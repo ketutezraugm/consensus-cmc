@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { captures, observations, liquidations, toVenue, type PoolObs } from '@/lib/data';
+import { captures, observations, poolObservations, liquidations, toVenue } from '@/lib/data';
 import { score, onchain } from '@/lib/consensus';
 import { usd, pct, bps, ago } from '@/lib/fmt';
 
@@ -14,7 +14,7 @@ export default async function Asset({ params }: { params: Promise<{ symbol: stri
   const caps = await captures();
   if (!caps.length) notFound();
   const at = caps[0];
-  const [obs, liq, poolObs] = await Promise.all([observations(at, symbol), liquidations(at), observations(at, symbol, 'onchain')]);
+  const [obs, liq, poolObs] = await Promise.all([observations(at, symbol), liquidations(at), poolObservations(at, symbol)]);
   if (!obs.length) notFound();
 
   const venues = obs.map(toVenue);
@@ -25,9 +25,9 @@ export default async function Asset({ params }: { params: Promise<{ symbol: stri
   const top = [...venues].sort((a, b) => b.volume - a.volume).slice(0, 12);
   const off = venues.filter((v) => !v.priceExcluded && Math.abs(v.price / ref - 1) > 0.01).sort((a, b) => b.volume - a.volume);
   const l = liq.find((x) => x.symbol === symbol);
-  const pools = (poolObs as PoolObs[]).map((o) => ({ name: o.venue_name, price: +o.price, liquidity: o.extra.liquidity, volume: +o.volume_24h, updated: o.extra.updated ? Date.parse(o.extra.updated) : 0 }));
+  const pools = poolObs.map((o) => ({ name: o.venue_name, price: +o.price, liquidity: o.extra.liquidity, volume: +o.volume_24h, updated: o.extra.updated ? Date.parse(o.extra.updated) : 0 }));
   const dex = onchain(pools, r.ref, Date.parse(at));
-  const token = (poolObs[0] as PoolObs | undefined)?.extra.token;
+  const token = poolObs[0]?.extra.token;
   const dupBadge = <span className="ml-1 rounded bg-red-500/15 px-1 text-xs text-red-500">dup</span>;
 
   return (
