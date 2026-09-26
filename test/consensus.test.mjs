@@ -93,3 +93,38 @@ test('summarize: one row per asset, anomalies derived, no NaN', () => {
   assert.ok(Number.isFinite(scores[0].confidence) && scores[0].venues > 10);
   assert.ok(anomalies.every((a) => a.symbol === 'BTC' && Number.isFinite(a.bps)));
 });
+
+import { rwaScore, unitFactor } from '../lib/consensus.ts';
+const rwaFixture = JSON.parse(readFileSync(new URL('../scripts/out/rwa-quotes40.json', import.meta.url))).data.rwa_assets;
+const toToks = (a) => a.tokens.map((t) => ({ id: t.crypto_id, symbol: t.symbol, issuer: t.issuer_name, price: t.price ?? null, mcap: t.market_cap ?? 0, volume: t.volume_24h ?? 0 }));
+
+test('unitFactor: per-gram gold and powers of ten are units, real gaps are not', () => {
+  assert.ok(unitFactor(136.031 / 4278.056) > 30);          // per gram
+  assert.equal(unitFactor(0.1), 10);
+  assert.equal(unitFactor(100.5), 1 / 100);
+  assert.equal(unitFactor(1.02), null); assert.equal(unitFactor(0.81), null); assert.equal(unitFactor(0), null);
+});
+test('rwa GOLD: per-gram tokens are flagged as units, not disagreement', () => {
+  const r = rwaScore(toToks(rwaFixture.find((a) => a.symbol === 'GOLD')));
+  assert.equal(r.unitMismatch, 2);
+  assert.ok(r.spreadBps < 30, `liquid spread should be tiny, got ${r.spreadBps}`);
+  assert.ok(Math.abs(r.ref - 4278) < 10);
+});
+test('rwa TSLA: dead Hyperliquid token is thin, Dinari is untracked, big wrappers agree', () => {
+  const r = rwaScore(toToks(rwaFixture.find((a) => a.symbol === 'TSLA')));
+  assert.ok(r.thinOff >= 1); assert.ok(r.untracked >= 1); assert.ok(r.spreadBps < 40);
+  assert.ok(r.rows.some((x) => x.issuer.startsWith('Hyperliquid') && x.kind === 'thin' && x.bps < -1000));
+});
+test('rwa: every fixture asset scores without NaN, empty and all-untracked return null', () => {
+  for (const a of rwaFixture) { const r = rwaScore(toToks(a)); if (r) assert.ok([r.ref, r.spreadBps, r.dispersionBps, r.topShare].every(Number.isFinite), a.symbol); }
+  assert.equal(rwaScore([]), null);
+  assert.equal(rwaScore([{ id: 1, symbol: 'X', issuer: 'I', price: null, mcap: 0, volume: 0 }]), null);
+});
+
+import { summarizeRwa } from '../lib/summary.ts';
+test('summarizeRwa: one row per scoreable asset, fixture-wide, finite numbers', () => {
+  const rows = summarizeRwa(rwaFixture, '2026-09-26T00:00:00Z');
+  assert.ok(rows.length >= 30);
+  assert.ok(rows.every((r) => Number.isFinite(r.spread_bps) && Number.isFinite(r.ref_price) && r.symbol));
+  assert.ok(rows.find((r) => r.symbol === 'SPCX').spread_bps > 10000);
+});

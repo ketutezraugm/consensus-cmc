@@ -24,3 +24,25 @@ export function summarize(fwd: Obs[], pools: PoolObs[], at: string) {
   }
   return { scores, anomalies };
 }
+
+// ---- Real-world assets ----
+import { rwaScore, type Tok } from './consensus.ts';
+
+export type RwaAsset = { rwa_id: number; symbol: string; asset_type: string; tokens?: { crypto_id: number; symbol: string; issuer_name: string; price?: number | null; market_cap?: number | null; volume_24h?: number | null }[] };
+
+export const toToks = (a: RwaAsset): Tok[] =>
+  (a.tokens ?? []).map((t) => ({ id: t.crypto_id, symbol: t.symbol, issuer: t.issuer_name, price: t.price ?? null, mcap: t.market_cap ?? 0, volume: t.volume_24h ?? 0 }));
+
+export function summarizeRwa(assets: RwaAsset[], at: string) {
+  const rows: object[] = [];
+  for (const a of assets) {
+    const r = rwaScore(toToks(a));
+    if (!r) continue;
+    rows.push({
+      captured_at: at, rwa_id: a.rwa_id, symbol: a.symbol, asset_type: a.asset_type, tokens: r.tokens, liquid: r.liquid, issuers: r.issuers,
+      ref_price: r.ref, spread_bps: r.spreadBps, dispersion_bps: r.dispersionBps, untracked: r.untracked, thin_off: r.thinOff,
+      unit_mismatch: r.unitMismatch, top_issuer: r.topIssuer, top_share: r.topShare, mcap: r.mcap,
+    });
+  }
+  return rows;
+}

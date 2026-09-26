@@ -1,7 +1,7 @@
 import { timingSafeEqual } from 'node:crypto';
 import { cmc } from '@/lib/cmc';
 import { WATCHLIST } from '@/lib/assets';
-import { summarize } from '@/lib/summary';
+import { summarize, summarizeRwa } from '@/lib/summary';
 
 export const maxDuration = 60;
 
@@ -35,6 +35,7 @@ export async function POST(req: Request) {
   let credits = 0;
   const obs: any[] = [];
   const liq: object[] = [];
+  let rwa: any[] = [];
 
   // Sequential on purpose: the free tier allows 50 req/min and a capture is ~17 calls.
   for (const [id, sym] of Object.entries(WATCHLIST)) {
@@ -93,6 +94,22 @@ export async function POST(req: Request) {
     }
   } catch (e: any) { warnings.push(`onchain: ${e.message}`); }
 
+  // Tokenised assets: every issuer's token for the top-ranked underlyings, in two calls.
+  try {
+    const list = await cmc('/v5/real-world-assets/assets/list', { limit: 40 });
+    const ids = (list.data.rwa_assets ?? []).map((a: any) => a.rwa_id).filter(Boolean);
+    const q = await cmc('/v5/real-world-assets/quotes/latest', { rwa_id: ids.join(',') });
+    credits += list.credits + q.credits;
+    rwa = q.data.rwa_assets ?? [];
+    for (const a of rwa) for (const t of a.tokens ?? []) {
+      obs.push({
+        captured_at: at, crypto_id: a.rwa_id, symbol: a.symbol, layer: 'rwa', venue_id: String(t.crypto_id), venue_name: t.issuer_name,
+        price: t.price ?? null, volume_24h: t.volume_24h ?? null,
+        extra: { token: t.symbol, name: t.name, mcap: t.market_cap ?? null, asset_type: a.asset_type, avg_price: a.average_tokenized_price ?? null },
+      });
+    }
+  } catch (e: any) { warnings.push(`rwa: ${e.message}`); }
+
   if (!dry) {
     try { await insert('observations', obs); await insert('liquidations', liq); }
     catch (e: any) { return Response.json({ ok: false, at, credits, error: e.message, warnings }, { status: 500 }); }
@@ -101,8 +118,8 @@ export async function POST(req: Request) {
   // History summaries are derived data: a failure here must never lose the raw capture above.
   const { scores, anomalies } = summarize(obs.filter((o) => o.layer === 'forward'), obs.filter((o) => o.layer === 'onchain'), at);
   if (!dry) {
-    try { await insert('asset_scores', scores); await insert('anomalies', anomalies); }
+    try { await insert('asset_scores', scores); await insert('anomalies', anomalies); await insert('rwa_scores', summarizeRwa(rwa, at)); }
     catch (e: any) { warnings.push(`summaries: ${e.message}`); }
   }
-  return Response.json({ ok: true, dry, at, credits, observations: obs.length, liquidations: liq.length, scores: scores.length, anomalies: anomalies.length, warnings });
+  return Response.json({ ok: true, dry, at, credits, observations: obs.length, liquidations: liq.length, scores: scores.length, anomalies: anomalies.length, rwa: rwa.length, warnings });
 }

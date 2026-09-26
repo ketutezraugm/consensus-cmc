@@ -111,3 +111,71 @@ export function offConsensus(venues: Venue[], threshold = 0.01) {
     .filter((v) => Math.abs(v.price / ref - 1) > threshold)
     .map((v) => ({ id: String(v.id), name: v.name, pair: v.pair ?? '', dup: !!v.dup, volume: v.volume, bps: (v.price / ref - 1) * 1e4 }));
 }
+
+// ---- Real-world assets: several issuers' tokens for one underlying ----
+
+export type Tok = { id: number; symbol: string; issuer: string; price: number | null; mcap: number; volume: number };
+export type TokKind = 'liquid' | 'thin' | 'derivative' | 'unit' | 'untracked';
+
+// Some tokens are priced per gram (gold) or per fraction of a share. Comparing them raw would publish a
+// unit difference as a "97% disagreement". Returns the divisor when price/ref is ~ 1/d or d, else null.
+const UNITS = [31.1034768, 1000, 100, 10]; // grams per troy ounce, then powers of ten
+export function unitFactor(ratio: number): number | null {
+  if (!(ratio > 0)) return null;
+  for (const d of UNITS) {
+    if (Math.abs(ratio * d - 1) < 0.03) return d;       // priced per 1/d of the reference unit
+    if (Math.abs(ratio / d - 1) < 0.03) return 1 / d;   // priced per d units
+  }
+  return null;
+}
+
+function wmedian(vals: number[], w: number[]) {
+  const pairs = vals.map((v, i) => [v, w[i] > 0 ? w[i] : 0] as const).sort((a, b) => a[0] - b[0]);
+  const tot = sum(pairs.map((p) => p[1]));
+  if (tot <= 0) return pairs[pairs.length >> 1][0];
+  let acc = 0;
+  for (const [v, x] of pairs) { acc += x; if (acc >= tot / 2) return v; }
+  return pairs.at(-1)![0];
+}
+
+const MIN_VOL = 10_000; // a token trading under $10k/day is not evidence of where the asset prices
+const weight = (t: Tok) => (t.mcap > 0 ? t.mcap : t.volume); // ponytail: mixes units when mcap is missing; fine for a median/stdev weight
+
+export function rwaScore(toks: Tok[]) {
+  const priced = toks.filter((t) => t.price !== null && t.price > 0);
+  const isDeriv = (t: Tok) => /derivative/i.test(t.issuer);
+  const liquidish = priced.filter((t) => !isDeriv(t) && t.volume >= MIN_VOL);
+  const base = liquidish.length ? liquidish : priced.filter((t) => !isDeriv(t));
+  if (base.length === 0) return null;
+  const ref = wmedian(base.map((t) => t.price!), base.map(weight));
+
+  const rows = toks.map((t) => {
+    const price = t.price !== null && t.price > 0 ? t.price : null;
+    const ratio = price ? price / ref : 0;
+    const unit = price ? unitFactor(ratio) : null;
+    const kind: TokKind = price === null ? 'untracked' : unit ? 'unit' : isDeriv(t) ? 'derivative'
+      : t.volume >= MIN_VOL ? 'liquid' : 'thin';
+    return { ...t, price, kind, bps: price && !unit ? (price / ref - 1) * 1e4 : null };
+  });
+
+  const liq = rows.filter((r) => r.kind === 'liquid');
+  const lp = liq.map((r) => r.price!);
+  const lw = liq.map(weight);
+  const lmc = sum(lw);
+  const wmean = lmc > 0 ? sum(liq.map((r) => r.price! * weight(r))) / lmc : ref;
+  const spreadBps = liq.length > 1 ? ((Math.max(...lp) - Math.min(...lp)) / ref) * 1e4 : 0;
+  const dispersionBps = liq.length > 1 && lmc > 0 ? (Math.sqrt(sum(liq.map((r) => (weight(r) / lmc) * (r.price! - wmean) ** 2))) / ref) * 1e4 : 0;
+
+  const byIssuer = new Map<string, number>();
+  for (const t of toks) byIssuer.set(t.issuer, (byIssuer.get(t.issuer) ?? 0) + t.mcap);
+  const totalMcap = sum([...byIssuer.values()]);
+  const top = [...byIssuer].sort((a, b) => b[1] - a[1])[0];
+
+  return {
+    ref, rows, tokens: toks.length, liquid: liq.length, issuers: byIssuer.size, spreadBps, dispersionBps,
+    untracked: rows.filter((r) => r.kind === 'untracked').length,
+    unitMismatch: rows.filter((r) => r.kind === 'unit').length,
+    thinOff: rows.filter((r) => r.kind === 'thin' && r.bps !== null && Math.abs(r.bps) > 100).length,
+    topIssuer: top?.[0] ?? '', topShare: totalMcap > 0 ? top[1] / totalMcap : 0, mcap: totalMcap,
+  };
+}
