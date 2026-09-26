@@ -23,7 +23,7 @@ What these do **not** show: whether CMC's headline price actually uses the flagg
 ## How it works
 
 ```
-GitHub Actions / Supabase pg_cron ──POST──> /api/ingest ──> CMC API ──> Supabase (observations, liquidations)
+Supabase pg_cron ──POST──> /api/ingest ──> CMC API ──> Supabase (observations, liquidations)
                                                                               │
                                    browser <── Next.js server components <────┘  scoring in lib/consensus.ts
 ```
@@ -82,4 +82,4 @@ node --env-file=.env.local scripts/probe.mjs   # call every endpoint family once
 curl -X POST -H "Authorization: Bearer $INGEST_SECRET" localhost:3000/api/ingest   # one capture (?dry=1 to skip the write)
 ```
 
-Scheduling: `.github/workflows/ingest.yml` calls the endpoint every 30 minutes, but GitHub throttles cron on low-activity repos (we observed 3-5 hour gaps), so [`supabase/cron.example.sql`](supabase/cron.example.sql) schedules the same call from inside Supabase with `pg_cron` as a more reliable alternative. Keys live only in environment variables and are never committed.
+Scheduling: captures run every 30 minutes from Supabase `pg_cron` calling the ingest endpoint ([`supabase/cron.example.sql`](supabase/cron.example.sql)). `.github/workflows/ingest.yml` is a manual trigger only: GitHub throttled its cron to one run every 3-5 hours, too coarse for the history. Keys live only in environment variables and are never committed.

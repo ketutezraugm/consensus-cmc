@@ -1,6 +1,7 @@
 name: ingest
+# Manual trigger only. Scheduled captures run from Supabase pg_cron (see supabase/cron.example.sql):
+# GitHub throttled this workflow's cron to one run every 3-5 hours, far too coarse for the history.
 on:
-  schedule: [{ cron: '*/30 * * * *' }]
   workflow_dispatch:
 jobs:
   capture:
