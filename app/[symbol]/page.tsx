@@ -1,169 +1,169 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { captures, observations, poolObservations, liquidations, scoreHistory, anomalyRows, toVenue } from '@/lib/data';
-import { venueBoard } from '@/lib/history';
-import { Trend } from '@/components/Charts';
 import { score, onchain } from '@/lib/consensus';
+import { venueBoard } from '@/lib/history';
+import { Dispersion, Concentration, Trend, Legend, severity } from '@/components/Charts';
 import { usd, pct, bps, ago, stamp } from '@/lib/fmt';
 
-
-const card = 'rounded-lg border border-zinc-200 p-4 dark:border-zinc-800';
-const hatch = 'bg-zinc-400/50 [background-image:repeating-linear-gradient(45deg,transparent,transparent_4px,rgba(0,0,0,.25)_4px,rgba(0,0,0,.25)_6px)]';
+const card = 'rounded-lg border border-line bg-panel p-4';
 
 export default async function Asset({ params }: { params: Promise<{ symbol: string }> }) {
   const symbol = (await params).symbol.toUpperCase();
   const caps = await captures();
   if (!caps.length) notFound();
   const at = caps[0];
-  const [obs, liq, poolObs, hist, anoms] = await Promise.all([observations(at, symbol), liquidations(at), poolObservations(at, symbol), scoreHistory(symbol), anomalyRows(symbol)]);
+  const [obs, liq, poolObs, hist, anoms] = await Promise.all([
+    observations(at, symbol), liquidations(at), poolObservations(at, symbol), scoreHistory(symbol), anomalyRows(symbol),
+  ]);
   if (!obs.length) notFound();
 
   const venues = obs.map(toVenue);
   const r = score(venues, Date.parse(at))!;
   const total = venues.reduce((s, v) => s + v.volume, 0);
-  const trusted = venues.filter((v) => !v.priceExcluded).map((v) => v.price).sort((a, b) => a - b);
-  const ref = trusted[trusted.length >> 1] ?? r.vwap;
-  const top = [...venues].sort((a, b) => b.volume - a.volume).slice(0, 12);
-  const off = venues.filter((v) => !v.priceExcluded && Math.abs(v.price / ref - 1) > 0.01).sort((a, b) => b.volume - a.volume);
+  const top = [...venues].sort((a, b) => b.volume - a.volume).slice(0, 10);
+  const off = venues.filter((v) => !v.priceExcluded && Math.abs(v.price / r.ref - 1) > 0.01).sort((a, b) => b.volume - a.volume);
   const l = liq.find((x) => x.symbol === symbol);
-  const pts = (f: (s: (typeof hist)[number]) => number) => hist.map((h) => ({ t: Date.parse(h.captured_at), v: f(h) }));
-  const board = venueBoard(anoms, hist.length).slice(0, 6);
   const pools = poolObs.map((o) => ({ name: o.venue_name, price: +o.price, liquidity: o.extra.liquidity, volume: +o.volume_24h, updated: o.extra.updated ? Date.parse(o.extra.updated) : 0 }));
   const dex = onchain(pools, r.ref, Date.parse(at));
   const token = poolObs[0]?.extra.token;
-  const dupBadge = <span className="ml-1 rounded bg-red-500/15 px-1 text-xs text-red-500">dup</span>;
+  const pts = (f: (s: (typeof hist)[number]) => number) => hist.map((h) => ({ t: Date.parse(h.captured_at), v: f(h) }));
+  const board = venueBoard(anoms, hist.length).slice(0, 6);
+  const dupBadge = <span className="ml-1.5 rounded bg-bad/15 px-1 text-[10px] uppercase tracking-wide text-bad">dup</span>;
+  const stat = (k: string, v: string, cls = '') => (
+    <div key={k} className={card}><div className="text-xs text-muted">{k}</div><div className={`num mt-1 text-2xl font-semibold ${cls}`}>{v}</div></div>
+  );
 
   return (
-    <main className="mx-auto max-w-5xl px-4 py-10">
-      <Link href="/" className="text-sm text-zinc-500 hover:underline">← all assets</Link>
-      <h1 className="mt-2 text-3xl font-semibold tracking-tight">{symbol} <span className="text-zinc-500">perpetuals</span></h1>
-      <p className="mt-1 text-sm text-zinc-500">
-        Capture {ago(at)} · {r.venues} venue listings · reference price ${ref.toLocaleString('en-US', { maximumFractionDigits: 4 })} (median of venues CMC trusts)
+    <main className="mx-auto w-full max-w-6xl px-5 py-10">
+      <Link href="/" className="text-sm text-muted hover:text-fg">← all assets</Link>
+      <h1 className="mt-2 text-3xl font-semibold tracking-tight">{symbol} <span className="text-muted">perpetuals</span></h1>
+      <p className="num mt-1 text-sm text-muted">
+        {ago(at)} · {r.venues} venue listings · reference ${r.ref.toLocaleString('en-US', { maximumFractionDigits: 4 })} (median of venues CMC trusts)
       </p>
 
-      <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
-        {[
-          ['Confidence', String(r.confidence)],
-          ['Effective venues', r.effectiveVenues.toFixed(1)],
-          ['Volume in agreement', pct(r.agreeingShare, 0)],
-          ['Volume CMC excludes', pct(r.excludedShare, 0)],
-        ].map(([k, v]) => (
-          <div key={k} className={card}>
-            <div className="text-xs text-zinc-500">{k}</div>
-            <div className="mt-1 text-2xl font-semibold tabular-nums">{v}</div>
-          </div>
-        ))}
+      <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+        {stat('Confidence', String(r.confidence), r.confidence >= 85 ? 'text-good' : r.confidence >= 65 ? 'text-warn' : 'text-bad')}
+        {stat('Effective venues', r.effectiveVenues.toFixed(1))}
+        {stat('Volume in agreement', pct(r.agreeingShare, 0))}
+        {stat('Volume CMC excludes', pct(r.excludedShare, 0))}
       </div>
 
-      <h2 className="mt-10 text-lg font-semibold">Over time</h2>
-      <p className="text-sm text-zinc-500">{hist.length} captures since {hist.length ? stamp(hist[0].captured_at) : 'n/a'}.</p>
-      <div className="mt-3 grid gap-6 sm:grid-cols-2">
-        <div>
-          <div className="text-sm font-medium">Confidence</div>
-          <Trend points={pts((h) => h.confidence)} domain={[0, 100]} fmt={(v) => String(Math.round(v))} label={`${symbol} confidence over time`} />
+      <section className="mt-10">
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <h2 className="text-xl font-semibold">Where each venue prices {symbol}</h2>
+          <Legend />
         </div>
-        <div>
-          <div className="text-sm font-medium">Share of volume on the biggest venue</div>
-          <Trend points={pts((h) => h.top_share)} domain={[0, 1]} fmt={(v) => pct(v, 0)} label={`${symbol} top venue share over time`} />
+        <div className="mt-3 rounded-lg border border-line bg-panel p-4">
+          <Dispersion venues={venues} refPrice={r.ref} h={150} />
         </div>
-      </div>
+      </section>
 
-      <h2 className="mt-10 text-lg font-semibold">Who sets the price</h2>
-      <p className="text-sm text-zinc-500">Largest venues by 24h volume. Hatched = CMC excludes it from its own aggregation.</p>
-      <div className="mt-3 space-y-1.5">
-        {top.map((v) => (
-          <div key={String(v.id)} className="grid grid-cols-[9rem_1fr_11rem] items-center gap-3 text-sm">
-            <div className="truncate">{v.name}{v.dup && dupBadge}</div>
-            <div className="h-4 rounded bg-zinc-100 dark:bg-zinc-900">
-              <div className={`h-4 rounded ${v.excluded ? hatch : 'bg-sky-500'}`} style={{ width: `${Math.max(1, (v.volume / total) * 100)}%` }} />
-            </div>
-            <div className="text-right tabular-nums text-zinc-500">{pct(v.volume / total)} · {bps((v.price / ref - 1) * 1e4)}</div>
-          </div>
-        ))}
-      </div>
+      <section className="mt-10">
+        <h2 className="text-xl font-semibold">Who sets the price</h2>
+        <p className="mt-1 text-sm text-muted">Share of 24h volume. Venues CMC excludes are marked.</p>
+        <div className="mt-3 overflow-hidden rounded"><Concentration venues={venues} h={14} /></div>
+        <table className="mt-4 w-full text-sm">
+          <thead className="text-left text-muted">
+            <tr className="border-b border-line"><th className="pb-2 font-normal">Venue</th><th className="pb-2 text-right font-normal">Share</th><th className="pb-2 text-right font-normal">24h volume</th><th className="pb-2 text-right font-normal">vs consensus</th></tr>
+          </thead>
+          <tbody>
+            {top.map((v) => {
+              const d = (v.price / r.ref - 1) * 1e4;
+              return (
+                <tr key={String(v.id)} className="border-b border-line/60">
+                  <td className="py-1.5">{v.name}{v.dup && dupBadge}{v.excluded && <span className="ml-1.5 text-xs text-muted">excluded</span>}</td>
+                  <td className="num py-1.5 text-right">{pct(v.volume / total)}</td>
+                  <td className="num py-1.5 text-right text-muted">{usd(v.volume)}</td>
+                  <td className="num py-1.5 text-right" style={{ color: severity(d, v.excluded) }}>{bps(d)}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </section>
 
       {off.length > 0 && (
-        <>
-          <h2 className="mt-10 text-lg font-semibold">Quoting more than 1% off, not excluded by CMC</h2>
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold">Over 1% off, and CMC does not exclude them</h2>
           <table className="mt-3 w-full text-sm">
-            <thead className="text-left text-zinc-500">
-              <tr><th className="py-1">Venue</th><th>Pair</th><th className="text-right">24h volume</th><th className="text-right">vs reference</th></tr>
+            <thead className="text-left text-muted">
+              <tr className="border-b border-line"><th className="pb-2 font-normal">Venue</th><th className="pb-2 font-normal">Pair</th><th className="pb-2 text-right font-normal">24h volume</th><th className="pb-2 text-right font-normal">vs consensus</th></tr>
             </thead>
             <tbody>
               {off.map((v) => (
-                <tr key={String(v.id)} className="border-t border-zinc-200 dark:border-zinc-800">
-                  <td className="py-1">{v.name}{v.dup && dupBadge}</td>
-                  <td>{v.pair}</td>
-                  <td className="text-right tabular-nums">{usd(v.volume)}</td>
-                  <td className="text-right tabular-nums text-red-500">{bps((v.price / ref - 1) * 1e4)}</td>
+                <tr key={String(v.id)} className="border-b border-line/60">
+                  <td className="py-1.5">{v.name}{v.dup && dupBadge}</td>
+                  <td className="num py-1.5 text-muted">{v.pair}</td>
+                  <td className="num py-1.5 text-right text-muted">{usd(v.volume)}</td>
+                  <td className="num py-1.5 text-right text-bad">{bps((v.price / r.ref - 1) * 1e4)}</td>
                 </tr>
               ))}
             </tbody>
           </table>
-        </>
+        </section>
       )}
 
-      {dex && (
-        <>
-          <h2 className="mt-10 text-lg font-semibold">On-chain vs exchanges</h2>
-          <p className="text-sm text-zinc-500">
-            Uniswap v3 pools on Ethereum, liquidity-weighted, against the exchange reference price above. The on-chain asset is {token}
-            {token !== symbol && ', a different token from the one perps track, so part of any gap can be wrapper risk'}. Pools only update when someone trades.
-          </p>
-          <div className="mt-3 grid grid-cols-2 gap-4 text-sm sm:grid-cols-4">
-            <div className={card}><div className="text-xs text-zinc-500">DEX vs exchanges</div><div className="mt-1 text-xl font-semibold tabular-nums">{bps(dex.gapBps)}</div></div>
-            <div className={card}><div className="text-xs text-zinc-500">Pools disagree by</div><div className="mt-1 text-xl font-semibold tabular-nums">{Math.round(dex.spreadBps)} bps</div></div>
-            <div className={card}><div className="text-xs text-zinc-500">Pool liquidity</div><div className="mt-1 text-xl font-semibold tabular-nums">{usd(dex.liquidity)}</div></div>
-            <div className={card}><div className="text-xs text-zinc-500">Liquidity not traded in 30 min</div><div className="mt-1 text-xl font-semibold tabular-nums">{pct(dex.staleShare, 0)}</div></div>
+      <section className="mt-12">
+        <h2 className="text-xl font-semibold">Over time</h2>
+        <p className="mt-1 text-sm text-muted">{hist.length} captures since {hist.length ? stamp(hist[0].captured_at) : 'n/a'}.</p>
+        <div className="mt-4 grid gap-5 lg:grid-cols-2">
+          <div className={card}>
+            <div className="text-sm font-medium">Confidence</div>
+            <Trend points={pts((h) => h.confidence)} domain={[0, 100]} fmt={(v) => String(Math.round(v))} label={`${symbol} confidence over time`} />
           </div>
-          <table className="mt-3 w-full text-sm">
-            <thead className="text-left text-zinc-500"><tr><th className="py-1">Pool</th><th className="text-right">Liquidity</th><th className="text-right">vs exchanges</th></tr></thead>
-            <tbody>
-              {[...pools].sort((a, b) => b.liquidity - a.liquidity).map((p, i) => (
-                <tr key={i} className="border-t border-zinc-200 dark:border-zinc-800">
-                  <td className="py-1">{p.name}</td><td className="text-right tabular-nums">{usd(p.liquidity)}</td>
-                  <td className="text-right tabular-nums">{bps((p.price / r.ref - 1) * 1e4)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </>
-      )}
+          <div className={card}>
+            <div className="text-sm font-medium">Share of volume on the biggest venue</div>
+            <Trend points={pts((h) => h.top_share)} domain={[0, 1]} fmt={(v) => pct(v, 0)} label={`${symbol} top venue share over time`} color="var(--color-warn)" />
+          </div>
+        </div>
+      </section>
 
       {board.length > 0 && (
-        <>
-          <h2 className="mt-10 text-lg font-semibold">Off-market venues over time</h2>
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold">Off-market venues, across captures</h2>
           <table className="mt-3 w-full text-sm">
-            <thead className="text-left text-zinc-500"><tr><th className="py-1">Venue</th><th className="text-right">Captures</th><th className="text-right">Typical gap</th><th className="text-right">Peak volume</th></tr></thead>
+            <thead className="text-left text-muted">
+              <tr className="border-b border-line"><th className="pb-2 font-normal">Venue</th><th className="pb-2 text-right font-normal">Seen in</th><th className="pb-2 text-right font-normal">Typical gap</th><th className="pb-2 text-right font-normal">Peak volume</th></tr>
+            </thead>
             <tbody>
               {board.map((v) => (
-                <tr key={v.key} className="border-t border-zinc-200 dark:border-zinc-800">
-                  <td className="py-1">{v.key}</td><td className="text-right tabular-nums">{v.captures} of {hist.length}</td>
-                  <td className="text-right tabular-nums text-red-500">{bps(v.medianBps)}</td><td className="text-right tabular-nums">{usd(v.maxVolume)}</td>
+                <tr key={v.key} className="border-b border-line/60">
+                  <td className="py-1.5">{v.key}</td>
+                  <td className="num py-1.5 text-right text-muted">{v.captures} of {hist.length}</td>
+                  <td className="num py-1.5 text-right text-bad">{bps(v.medianBps)}</td>
+                  <td className="num py-1.5 text-right text-muted">{usd(v.maxVolume)}</td>
                 </tr>
               ))}
             </tbody>
           </table>
-        </>
+        </section>
       )}
 
-      <h2 className="mt-10 text-lg font-semibold">Forward market</h2>
-      <div className="mt-3 grid grid-cols-2 gap-4 text-sm sm:grid-cols-3">
-        <div className={card}>
-          <div className="text-xs text-zinc-500">Funding per interval (OI-weighted)</div>
-          <div className="mt-1 text-xl font-semibold tabular-nums">{r.funding === null ? 'n/a' : bps(r.funding * 1e4)}</div>
+      <section className="mt-10">
+        <h2 className="text-xl font-semibold">Forward market</h2>
+        <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
+          {stat('Funding per interval (OI-weighted)', r.funding === null ? 'n/a' : bps(r.funding * 1e4))}
+          {stat('Basis vs index (OI-weighted)', r.basis === null ? 'n/a' : bps(r.basis * 1e4))}
+          {l ? stat('Liquidated 24h (long / short)', `${usd(l.long_24h)} / ${usd(l.short_24h)}`) : null}
         </div>
-        <div className={card}>
-          <div className="text-xs text-zinc-500">Basis vs index (OI-weighted)</div>
-          <div className="mt-1 text-xl font-semibold tabular-nums">{r.basis === null ? 'n/a' : bps(r.basis * 1e4)}</div>
-        </div>
-        {l && (
-          <div className={card}>
-            <div className="text-xs text-zinc-500">Liquidated 24h (long / short)</div>
-            <div className="mt-1 text-xl font-semibold tabular-nums">{usd(l.long_24h)} / {usd(l.short_24h)}</div>
+      </section>
+
+      {dex && (
+        <section className="mt-10">
+          <h2 className="text-xl font-semibold">On-chain vs exchanges</h2>
+          <p className="mt-1 max-w-3xl text-sm text-muted">
+            Uniswap v3 pools on Ethereum, liquidity-weighted, against the reference above. The on-chain asset is {token}
+            {token !== symbol && ', a different token from the one perps track, so part of any gap can be wrapper risk'}. Pools only update when someone trades.
+          </p>
+          <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
+            {stat('DEX vs exchanges', bps(dex.gapBps))}
+            {stat('Pools disagree by', `${Math.round(dex.spreadBps)} bps`)}
+            {stat('Pool liquidity', usd(dex.liquidity))}
+            {stat('Not traded in 30 min', pct(dex.staleShare, 0))}
           </div>
-        )}
-      </div>
+        </section>
+      )}
     </main>
   );
 }
