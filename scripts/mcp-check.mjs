@@ -18,8 +18,7 @@ const call = async (name, args = {}) => {
 const a = await call('get_alerts'); console.log(' alerts:', a.length, '|', a[0]?.title);
 const l = await call('list_assets'); console.log(' assets:', l.length, '| lowest:', l[0].symbol, l[0].confidence);
 const c = await call('check_asset', { symbol: 'bch' }); console.log(' bch:', JSON.stringify({ conf: c.confidence, top: c.top_venue, share: c.top_share_pct, offMarket: c.off_market_venues.length, alerts: c.active_alerts.length }));
-const miss = await client.callTool({ name: 'check_asset', arguments: { symbol: 'ZZZ' } }); console.log('
-unknown symbol -> isError', miss.isError, '|', miss.content[0].text);
+const miss = await client.callTool({ name: 'check_asset', arguments: { symbol: 'ZZZ' } }); console.log('unknown symbol -> isError', miss.isError, '|', miss.content[0].text);
 const r = await call('list_tokenised_assets'); console.log(' rwa assets:', r.length, '| widest:', r[0].symbol, r[0].weighted_disagreement_bps, 'bps');
 const s = await call('check_tokenised_asset', { symbol: 'GOLD' }); console.log(' gold:', s.tokens, 'tokens, ref', s.reference_price_usd, '| kinds:', [...new Set(s.tokens_detail.map((t) => t.kind))].join(','));
 const bad = await client.callTool({ name: 'check_asset', arguments: {} }); console.log('\nmissing arg -> isError', bad.isError, '|', bad.content[0].text);
