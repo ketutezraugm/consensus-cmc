@@ -1,11 +1,11 @@
 
 const H = () => ({ apikey: process.env.SUPABASE_SERVICE_KEY!, Authorization: `Bearer ${process.env.SUPABASE_SERVICE_KEY}` });
 
-// Paginated read (PostgREST caps a response at 1000 rows). Cached 60s: captures land every 30 min.
+// Paginated read (PostgREST caps a response at 1000 rows). Never cached: a stale first load would show old data on a freshness product.
 async function rest<T>(q: string): Promise<T[]> {
   const out: T[] = [];
   for (let from = 0; ; from += 1000) {
-    const r = await fetch(`${process.env.SUPABASE_URL}/rest/v1/${q}`, { headers: { ...H(), Range: `${from}-${from + 999}` }, next: { revalidate: 60 } });
+    const r = await fetch(`${process.env.SUPABASE_URL}/rest/v1/${q}`, { headers: { ...H(), Range: `${from}-${from + 999}` }, cache: 'no-store' });
     if (!r.ok) throw new Error(`supabase ${r.status}: ${await r.text()}`);
     const rows = (await r.json()) as T[];
     out.push(...rows);
@@ -27,3 +27,9 @@ export const observations = (at: string, symbol?: string, layer = 'forward') =>
 export const liquidations = (at: string) => rest<Liq>(`liquidations?select=*&captured_at=eq.${encodeURIComponent(at)}`);
 export const poolObservations = (at: string, symbol?: string) =>
   rest<PoolObs>(`observations?select=*&layer=eq.onchain&captured_at=eq.${encodeURIComponent(at)}${symbol ? `&symbol=eq.${symbol}` : ''}`);
+
+import type { Score, Anom } from './history.ts';
+export const scoreHistory = (symbol?: string) =>
+  rest<Score>(`asset_scores?select=*${symbol ? `&symbol=eq.${symbol}` : ''}&order=captured_at`);
+export const anomalyRows = (symbol?: string) =>
+  rest<Anom>(`anomalies?select=captured_at,symbol,venue_name,pair,bps,volume_24h,dup${symbol ? `&symbol=eq.${symbol}` : ''}&order=captured_at`);
