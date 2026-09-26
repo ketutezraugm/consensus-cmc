@@ -2,15 +2,20 @@
 const H = () => ({ apikey: process.env.SUPABASE_SERVICE_KEY!, Authorization: `Bearer ${process.env.SUPABASE_SERVICE_KEY}` });
 
 // Paginated read (PostgREST caps a response at 1000 rows). Never cached: a stale first load would show old data on a freshness product.
-async function rest<T>(q: string): Promise<T[]> {
-  const out: T[] = [];
-  for (let from = 0; ; from += 1000) {
-    const r = await fetch(`${process.env.SUPABASE_URL}/rest/v1/${q}`, { headers: { ...H(), Range: `${from}-${from + 999}` }, cache: 'no-store' });
+export async function rest<T>(q: string): Promise<T[]> {
+  const page = (from: number, count = false) =>
+    fetch(`${process.env.SUPABASE_URL}/rest/v1/${q}`, { headers: { ...H(), Range: `${from}-${from + 999}`, ...(count ? { Prefer: 'count=exact' } : {}) }, cache: 'no-store' });
+  const read = async (r: Response) => {
     if (!r.ok) throw new Error(`supabase ${r.status}: ${await r.text()}`);
-    const rows = (await r.json()) as T[];
-    out.push(...rows);
-    if (rows.length < 1000) return out;
-  }
+    return (await r.json()) as T[];
+  };
+  // First page reports the total; the remaining pages are fetched in parallel, so latency does not grow with history.
+  const first = await page(0, true);
+  const total = Number(first.headers.get('content-range')?.split('/')[1] ?? 0);
+  const rows = await read(first);
+  if (rows.length < 1000 || !total) return rows;
+  const rest = await Promise.all(Array.from({ length: Math.ceil(total / 1000) - 1 }, (_, i) => page((i + 1) * 1000).then(read)));
+  return rows.concat(...rest);
 }
 
 export type { Obs, PoolObs } from './obs.ts';
