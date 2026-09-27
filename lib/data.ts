@@ -48,3 +48,12 @@ export type RwaScoreRow = { captured_at: string; symbol: string; tokens: number;
 // History table is created by migration 0003; before it exists this returns [] instead of breaking the page.
 export const rwaScoreHistory = (symbol?: string) =>
   rest<RwaScoreRow>(`rwa_scores?select=captured_at,symbol,tokens,liquid,ref_price,spread_bps,dispersion_bps${symbol ? `&symbol=eq.${symbol}` : ''}&order=captured_at`).catch(() => [] as RwaScoreRow[]);
+
+// Build-time list for generateStaticParams. Never fails the build: an empty result just means every
+// /rwa/[symbol] page renders on first request instead of being prebuilt.
+export const rwaSymbols = async () => {
+  try {
+    const rows = await rest<{ symbol: string }>('rwa_scores?select=symbol&order=symbol');
+    return [...new Set(rows.map((r) => r.symbol))];
+  } catch { return [] as string[]; }
+};

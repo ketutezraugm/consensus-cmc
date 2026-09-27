@@ -6,9 +6,14 @@ import { venueBoard } from '@/lib/history';
 import { Dispersion, Concentration, Trend, Legend, severity } from '@/components/Charts';
 import { usd, pct, bps, stamp } from '@/lib/fmt';
 import { Ago } from '@/components/Ago';
+import { WATCHLIST } from '@/lib/assets';
 
 // Rendered once per capture: fetches below are tagged 'data' and the recorder revalidates that tag after each capture.
 export const revalidate = 1800;
+
+// Prebuild the tracked symbols so they serve from the CDN edge like the listing pages, instead of
+// re-executing on every request. A symbol not in the watchlist still renders on demand (dynamicParams).
+export const generateStaticParams = async () => Object.values(WATCHLIST).map((symbol) => ({ symbol }));
 
 const card = 'rounded-lg border border-line bg-panel p-4';
 

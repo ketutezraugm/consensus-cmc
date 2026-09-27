@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { captures, rwaObservations, rwaScoreHistory } from '@/lib/data';
+import { captures, rwaObservations, rwaScoreHistory, rwaSymbols } from '@/lib/data';
 import { scoreAssets } from '@/lib/rwa';
 import { Dispersion, Trend, Legend, severity, type V } from '@/components/Charts';
 import { usd, pct, bps, stamp } from '@/lib/fmt';
@@ -8,6 +8,10 @@ import { Ago } from '@/components/Ago';
 
 // Rendered once per capture: fetches below are tagged 'data' and the recorder revalidates that tag after each capture.
 export const revalidate = 1800;
+
+// Prebuild the recorded tokenised assets for CDN-edge serving. dynamicParams (default true) still
+// renders anything new on demand, so a symbol that appears after this build is never a dead link.
+export const generateStaticParams = async () => (await rwaSymbols()).map((symbol) => ({ symbol }));
 
 const card = 'rounded-lg border border-line bg-panel p-4';
 const KIND: Record<string, string> = {
