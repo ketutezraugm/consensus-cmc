@@ -72,7 +72,8 @@ export default async function Asset({ params }: { params: Promise<{ symbol: stri
         <h2 className="text-xl font-semibold">Who sets the price</h2>
         <p className="mt-1 text-sm text-muted">Share of 24h volume. Venues CMC excludes are marked.</p>
         <div className="mt-3 overflow-hidden rounded"><Concentration venues={venues} h={14} /></div>
-        <table className="mt-4 w-full text-sm">
+        <div className="mt-4 overflow-x-auto">
+        <table className="w-full text-sm">
           <thead className="text-left text-muted">
             <tr className="border-b border-line"><th className="pb-2 font-normal">Venue</th><th className="pb-2 text-right font-normal">Share</th><th className="pb-2 text-right font-normal">24h volume</th><th className="pb-2 text-right font-normal">vs consensus</th></tr>
           </thead>
@@ -90,12 +91,14 @@ export default async function Asset({ params }: { params: Promise<{ symbol: stri
             })}
           </tbody>
         </table>
+        </div>
       </section>
 
       {off.length > 0 && (
         <section className="mt-10">
           <h2 className="text-xl font-semibold">Over 1% off, and CMC does not exclude them</h2>
-          <table className="mt-3 w-full text-sm">
+          <div className="mt-3 overflow-x-auto">
+          <table className="w-full text-sm">
             <thead className="text-left text-muted">
               <tr className="border-b border-line"><th className="pb-2 font-normal">Venue</th><th className="pb-2 font-normal">Pair</th><th className="pb-2 text-right font-normal">24h volume</th><th className="pb-2 text-right font-normal">vs consensus</th></tr>
             </thead>
@@ -110,6 +113,7 @@ export default async function Asset({ params }: { params: Promise<{ symbol: stri
               ))}
             </tbody>
           </table>
+          </div>
         </section>
       )}
 
@@ -131,7 +135,8 @@ export default async function Asset({ params }: { params: Promise<{ symbol: stri
       {board.length > 0 && (
         <section className="mt-10">
           <h2 className="text-xl font-semibold">Off-market venues, across captures</h2>
-          <table className="mt-3 w-full text-sm">
+          <div className="mt-3 overflow-x-auto">
+          <table className="w-full text-sm">
             <thead className="text-left text-muted">
               <tr className="border-b border-line"><th className="pb-2 font-normal">Venue</th><th className="pb-2 text-right font-normal">Seen in</th><th className="pb-2 text-right font-normal">Typical gap</th><th className="pb-2 text-right font-normal">Peak volume</th></tr>
             </thead>
@@ -146,6 +151,7 @@ export default async function Asset({ params }: { params: Promise<{ symbol: stri
               ))}
             </tbody>
           </table>
+          </div>
         </section>
       )}
 

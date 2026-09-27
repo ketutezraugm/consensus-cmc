@@ -60,7 +60,8 @@ export default async function RwaAsset({ params }: { params: Promise<{ symbol: s
 
       <section className="mt-10">
         <h2 className="text-xl font-semibold">Every token</h2>
-        <table className="mt-3 w-full text-sm">
+        <div className="mt-3 overflow-x-auto">
+        <table className="w-full text-sm">
           <thead className="text-left text-muted">
             <tr className="border-b border-line">
               <th className="pb-2 font-normal">Issuer</th><th className="pb-2 font-normal">Token</th><th className="pb-2 font-normal">Type</th>
@@ -82,6 +83,7 @@ export default async function RwaAsset({ params }: { params: Promise<{ symbol: s
             ))}
           </tbody>
         </table>
+        </div>
         <p className="mt-3 max-w-3xl text-xs text-muted">
           The reference is the market-cap-weighted median of liquid tokens (at least $10k of 24h volume). The API does not include the underlying
           asset&apos;s own price, so this compares tokens with each other.

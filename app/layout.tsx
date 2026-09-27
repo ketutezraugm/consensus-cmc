@@ -6,10 +6,15 @@ import "./globals.css";
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
+const title = "Consensus — how CoinMarketCap's price is made";
+const description =
+  "Every perpetual-futures venue's quote, recorded every 30 minutes from the CoinMarketCap API. Who sets the price, who disagrees, and for how long.";
+
 export const metadata: Metadata = {
-  title: "Consensus — how CoinMarketCap's price is made",
-  description:
-    "Every perpetual-futures venue's quote, recorded every 30 minutes from the CoinMarketCap API. Who sets the price, who disagrees, and for how long.",
+  metadataBase: new URL('https://consensus-cmc.vercel.app'),
+  title, description,
+  openGraph: { title, description, url: '/', siteName: 'Consensus', type: 'website' },
+  twitter: { card: 'summary_large_image', title, description },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -17,15 +22,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col bg-bg text-fg">
         <header className="sticky top-0 z-10 border-b border-line bg-bg/85 backdrop-blur">
-          <nav className="mx-auto flex max-w-6xl items-center gap-6 px-5 py-3 text-sm">
+          <nav className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-5 gap-y-2 px-5 py-3 text-sm sm:gap-x-6">
             <Link href="/" className="font-semibold tracking-tight">
-              Consensus<span className="ml-2 text-xs font-normal text-muted">CoinMarketCap API</span>
+              Consensus<span className="ml-2 hidden text-xs font-normal text-muted sm:inline">CoinMarketCap API</span>
             </Link>
-            <Link href="/" className="ml-2 text-muted transition-colors hover:text-fg">Assets</Link>
+            <Link href="/" className="text-muted transition-colors hover:text-fg">Assets</Link>
             <Link href="/alerts" className="text-muted transition-colors hover:text-fg">Alerts</Link>
             <Link href="/rwa" className="text-muted transition-colors hover:text-fg">Tokenised assets</Link>
             <Link href="/anomalies" className="text-muted transition-colors hover:text-fg">Off-market venues</Link>
-            <a href="https://github.com/ketutezraugm/consensus-cmc" className="ml-auto text-muted transition-colors hover:text-fg">Source</a>
+            <a href="https://github.com/ketutezraugm/consensus-cmc" className="text-muted transition-colors hover:text-fg sm:ml-auto">Source</a>
           </nav>
         </header>
         {children}
