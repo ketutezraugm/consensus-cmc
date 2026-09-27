@@ -28,31 +28,45 @@ export function fmtAlerts(list: Alert[], limit = 8) {
   return list.length > limit ? `${shown}\n\n…and ${list.length - limit} more: ${SITE()}/alerts` : shown;
 }
 
-export function fmtAssets(rows: { symbol: string; confidence: number; top_venue: string; top_share_pct: number | null }[]) {
+export function fmtAssets(rows: AssetSummary[]) {
   const line = (r: (typeof rows)[number]) => `${r.confidence < 65 ? '🔴' : r.confidence < 85 ? '🟡' : '🟢'} <b>${esc(r.symbol)}</b> ${r.confidence}  <i>${esc(r.top_venue)} ${r.top_share_pct}%</i>`;
   return `<b>Least trustworthy first</b>\n${rows.map(line).join('\n')}\n\n${SITE()}`;
 }
 
-export function fmtAsset(r: any) {
-  const off = (r.off_market_venues ?? []).slice(0, 3).map((v: any) => `  • ${esc(v.venue)} ${sign(v.typical_gap_bps)} bps, seen in ${v.seen_in_captures} captures`).join('\n');
+// What this module needs from each report, not the producer's full shape (lib/tools.ts's real
+// return types are a superset of these and satisfy them structurally).
+export type AssetReport = {
+  symbol: string; confidence: number; top_venue: string; top_share_pct: number | null; effective_venues: number | null; venues: number;
+  volume_in_agreement_pct: number | null; volume_cmc_excludes_pct: number | null; funding_per_interval_bps: number | null; dex_gap_bps: number | null;
+  off_market_venues: { venue: string; typical_gap_bps: number | null; seen_in_captures: number }[];
+  active_alerts: { severity: 'high' | 'medium'; title: string }[]; as_of: string;
+};
+export type RwaAssetSummary = { symbol: string; weighted_disagreement_bps: number | null; liquid_tokens: number };
+export type RwaReport = {
+  symbol: string; type: string; reference_price_usd: number | null; tokens: number; issuers: number; weighted_disagreement_bps: number | null;
+  tokens_detail: { issuer: string; token: string; price_usd: number | null; vs_reference_bps: number | null; kind: string }[];
+};
+
+export function fmtAsset(r: AssetReport) {
+  const off = r.off_market_venues.slice(0, 3).map((v) => `  • ${esc(v.venue)} ${sign(v.typical_gap_bps)} bps, seen in ${v.seen_in_captures} captures`).join('\n');
   return [
     `<b>${esc(r.symbol)}</b> · confidence <b>${r.confidence}</b>/100`,
     `${esc(r.top_venue)} holds ${r.top_share_pct}% of perp volume (${r.effective_venues} effective venues of ${r.venues})`,
     `Volume in agreement: ${r.volume_in_agreement_pct}% · CMC excludes: ${r.volume_cmc_excludes_pct}%`,
     `Funding: ${r.funding_per_interval_bps === null ? 'n/a' : `${sign(r.funding_per_interval_bps)} bps/interval`} · On-chain gap: ${r.dex_gap_bps === null ? 'n/a' : `${sign(r.dex_gap_bps)} bps`}`,
     off ? `Off-market venues:\n${off}` : 'No off-market venues recorded.',
-    r.active_alerts?.length ? `Alerts:\n${r.active_alerts.map((a: any) => `  ${a.severity === 'high' ? '🔴' : '🟡'} ${esc(a.title)}`).join('\n')}` : '',
+    r.active_alerts.length ? `Alerts:\n${r.active_alerts.map((a) => `  ${a.severity === 'high' ? '🔴' : '🟡'} ${esc(a.title)}`).join('\n')}` : '',
     `Updated ${dur(r.as_of)} ago · <a href="${SITE()}/${r.symbol}">details</a>`,
   ].filter(Boolean).join('\n');
 }
 
-export function fmtRwaList(rows: { symbol: string; weighted_disagreement_bps: number | null; liquid_tokens: number }[]) {
+export function fmtRwaList(rows: RwaAssetSummary[]) {
   const top = rows.slice(0, 10).map((r) => `<b>${esc(r.symbol)}</b> ${r.weighted_disagreement_bps} bps (${r.liquid_tokens} liquid tokens)`).join('\n');
   return `<b>Issuers disagree most on</b>\n${top}\n\n${SITE()}/rwa`;
 }
 
-export function fmtRwa(r: any) {
-  const toks = (r.tokens_detail as any[]).filter((t) => t.price_usd !== null).slice(0, 6)
+export function fmtRwa(r: RwaReport) {
+  const toks = r.tokens_detail.filter((t) => t.price_usd !== null).slice(0, 6)
     .map((t) => `  • ${esc(t.issuer)} ${esc(t.token)}: $${t.price_usd} ${t.vs_reference_bps === null ? '(other unit)' : `(${sign(t.vs_reference_bps)} bps)`} <i>${t.kind}</i>`).join('\n');
   return [
     `<b>${esc(r.symbol)}</b> ${esc(r.type)}, tokenised · reference $${r.reference_price_usd}`,
@@ -67,9 +81,10 @@ export function parseCommand(text: string): { cmd: string; arg: string } | null 
   return m ? { cmd: m[1].toLowerCase(), arg: (m[2] ?? '').trim().split(/\s+/)[0]?.toUpperCase() ?? '' } : null;
 }
 
+export type AssetSummary = { symbol: string; confidence: number; top_venue: string; top_share_pct: number | null };
 export type Deps = {
-  alerts: (symbol?: string) => Promise<Alert[]>; assets: () => Promise<any[]>; asset: (s: string) => Promise<any | null>;
-  rwaAssets: () => Promise<any[]>; rwa: (s: string) => Promise<any | null>;
+  alerts: (symbol?: string) => Promise<Alert[]>; assets: () => Promise<AssetSummary[]>;
+  asset: (s: string) => Promise<AssetReport | null>; rwaAssets: () => Promise<RwaAssetSummary[]>; rwa: (s: string) => Promise<RwaReport | null>;
 };
 
 // Returns the HTML reply for one incoming message, or null when the message is not for the bot.

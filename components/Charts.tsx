@@ -66,13 +66,16 @@ export function Concentration({ venues, h = 12 }: { venues: V[]; h?: number }) {
   const total = sum(venues.map((v) => v.volume));
   if (!total) return null;
   const sorted = [...venues].sort((a, b) => b.volume - a.volume);
-  let x = 0;
+  // Prefix-sum the widths into an offset per bar; the accumulator lives inside reduce's own state,
+  // not a variable closed over by the render, so this stays pure across re-renders.
+  const bars = sorted.reduce<{ v: V; w: number; at: number }[]>((acc, v) => {
+    const w = (v.volume / total) * 100;
+    return [...acc, { v, w, at: acc.length ? acc[acc.length - 1].at + acc[acc.length - 1].w : 0 }];
+  }, []);
   return (
     <svg viewBox={`0 0 100 ${h}`} preserveAspectRatio="none" className="w-full" style={{ height: h }} role="img"
          aria-label="share of 24h volume by venue">
-      {sorted.map((v, i) => {
-        const w = (v.volume / total) * 100, at = x;
-        x += w;
+      {bars.map(({ v, w, at }, i) => {
         return (
           <rect key={i} x={at} y={0} width={Math.max(w, 0.15)} height={h}
                 fill={i === 0 ? 'var(--color-accent)' : 'var(--color-accent)'} opacity={i === 0 ? 1 : Math.max(0.16, 0.6 - i * 0.05)}>

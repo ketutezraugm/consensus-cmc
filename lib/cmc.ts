@@ -5,7 +5,9 @@ export class CmcError extends Error {
 }
 
 // Returns { data, credits }. Throws CmcError on non-2xx so callers can collect per-asset warnings.
-export async function cmc<T = any>(path: string, params: Record<string, string | number> = {}) {
+// Callers should pass an explicit <T> for the fields of `data` they read; it defaults to `unknown`
+// rather than `any` so an un-annotated call fails to compile instead of silently trusting the shape.
+export async function cmc<T = unknown>(path: string, params: Record<string, string | number> = {}) {
   const key = process.env.CMC_API_KEY;
   if (!key) throw new Error('CMC_API_KEY not set');
   const url = `${BASE}${path}?${new URLSearchParams(Object.entries(params).map(([k, v]) => [k, String(v)]))}`;

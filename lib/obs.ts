@@ -2,7 +2,7 @@ import type { Venue } from './consensus.ts';
 
 export type Obs = {
   captured_at: string; crypto_id: number; symbol: string; venue_id: string; venue_name: string; price: string | number; volume_24h: string | number;
-  extra: { pair: string; oi: number | null; index_price: number | null; basis: number | null; funding: number | null; outlier: boolean; exclusions: string[]; updated?: string; dup?: boolean };
+  extra: { pair: string; oi: number | null; index_price: number | null; basis: number | null; funding: number | null; reported_price?: number | null; outlier: boolean; exclusions: string[]; updated?: string; dup?: boolean };
 };
 export type PoolObs = Omit<Obs, 'extra'> & { extra: { pair: string; liquidity: number; updated?: string; token: string } };
 
