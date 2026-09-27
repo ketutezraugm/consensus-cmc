@@ -45,6 +45,7 @@ export function fmtAssets(rows: AssetSummary[]) {
 export type AssetReport = {
   symbol: string; confidence: number; top_venue: string; top_share_pct: number | null; effective_venues: number | null; venues: number;
   volume_in_agreement_pct: number | null; volume_cmc_excludes_pct: number | null; funding_per_interval_bps: number | null; dex_gap_bps: number | null;
+  published_gap_bps: number | null;
   off_market_venues: { venue: string; typical_gap_bps: number | null; seen_in_captures: number }[];
   active_alerts: { severity: 'high' | 'medium'; title: string }[]; as_of: string;
 };
@@ -61,6 +62,7 @@ export function fmtAsset(r: AssetReport) {
     `${esc(r.top_venue)} holds ${r.top_share_pct}% of perp volume (${r.effective_venues} effective venues of ${r.venues})`,
     `Volume in agreement: ${r.volume_in_agreement_pct}% · CMC excludes: ${r.volume_cmc_excludes_pct}%`,
     `Funding: ${r.funding_per_interval_bps === null ? 'n/a' : `${sign(r.funding_per_interval_bps)} bps/interval`} · On-chain gap: ${r.dex_gap_bps === null ? 'n/a' : `${sign(r.dex_gap_bps)} bps`}`,
+    `vs CMC published price: ${r.published_gap_bps === null ? 'n/a' : `${sign(r.published_gap_bps)} bps`}`,
     off ? `Off-market venues:\n${off}` : 'No off-market venues recorded.',
     r.active_alerts.length ? `Alerts:\n${r.active_alerts.map((a) => `  ${a.severity === 'high' ? '🔴' : '🟡'} ${esc(a.title)}`).join('\n')}` : '',
     `Updated ${dur(r.as_of)} ago · <a href="${SITE()}/${r.symbol}">details</a>`,

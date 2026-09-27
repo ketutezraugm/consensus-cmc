@@ -30,14 +30,14 @@ export const TOOLS: Tool[] = [
   {
     name: 'list_assets',
     description:
-      'Rank the tracked crypto assets (15 large caps) by a 0-100 confidence score for how trustworthy their perpetual-futures price is, lowest first. Includes the biggest venue and its share of volume, the share of volume quoting within 50 bps of the median, and the share CoinMarketCap itself excludes.',
+      'Rank the tracked crypto assets (15 large caps) by a 0-100 confidence score for how trustworthy their perpetual-futures price is, lowest first. Includes the biggest venue and its share of volume, the share of volume quoting within 50 bps of the median, the share CoinMarketCap itself excludes, and the gap between an independently reconstructed venue composite and CoinMarketCap\'s own published price for that asset.',
     inputSchema: { type: 'object', properties: {}, additionalProperties: false },
     run: () => assetsRanked(),
   },
   {
     name: 'check_asset',
     description:
-      'Pre-trade check for one crypto asset: confidence score and its recent trend, how concentrated the volume is, which venues quote off-market and for how many captures, funding, basis, on-chain gap, and any active alerts. Data is recorded every 30 minutes from the CoinMarketCap API.',
+      'Pre-trade check for one crypto asset: confidence score and its recent trend, how concentrated the volume is, which venues quote off-market and for how many captures, funding, basis, on-chain gap, CoinMarketCap\'s own published price and the gap to it from an independently reconstructed venue composite, and any active alerts. Data is recorded every 30 minutes from the CoinMarketCap API.',
     inputSchema: symbolArg('BTC, ETH, SOL, BCH'),
     run: async (a) => { const symbol = need(a); return (await assetReport(symbol)) ?? missing(`No data for ${symbol}. Use list_assets to see tracked symbols.`); },
   },

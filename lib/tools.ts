@@ -19,6 +19,7 @@ export async function assetsRanked() {
     .map((s) => ({
       symbol: s.symbol, confidence: s.confidence, venues: s.venues, top_venue: s.top_venue, top_share_pct: round(s.top_share * 100, 1),
       volume_in_agreement_pct: round(s.agreeing_share * 100, 0), volume_cmc_excludes_pct: round(s.excluded_share * 100, 0), dex_gap_bps: round(s.dex_gap_bps, 0),
+      published_gap_bps: round(s.published_gap_bps, 0),
     }));
 }
 
@@ -32,6 +33,7 @@ export async function assetReport(symbol: string) {
     venues: now.venues, effective_venues: round(now.effective_venues, 1), top_venue: now.top_venue, top_share_pct: round(now.top_share * 100, 1),
     volume_in_agreement_pct: round(now.agreeing_share * 100, 0), volume_cmc_excludes_pct: round(now.excluded_share * 100, 0),
     dex_gap_bps: round(now.dex_gap_bps, 0), funding_per_interval_bps: round(now.funding === null ? null : now.funding * 1e4, 2), basis_bps: round(now.basis === null ? null : now.basis * 1e4, 1),
+    published_price_usd: now.published_price, published_gap_bps: round(now.published_gap_bps, 0),
     captures_recorded: hist.length,
     off_market_venues: venueBoard(anoms, hist.length).slice(0, 5).map((v) => ({
       venue: v.key, seen_in_captures: v.captures, typical_gap_bps: round(v.medianBps, 0), peak_volume_usd: round(v.maxVolume, 0),

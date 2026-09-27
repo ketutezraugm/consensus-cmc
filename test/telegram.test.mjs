@@ -34,7 +34,7 @@ const deps = {
   assets: async () => [{ symbol: 'BCH', confidence: 20, top_venue: 'Deepcoin', top_share_pct: 95 }],
   asset: async (s) => (s === 'BCH' ? {
     symbol: 'BCH', confidence: 20, top_venue: 'Deepcoin', top_share_pct: 95, effective_venues: 1.1, venues: 122, volume_in_agreement_pct: 3, volume_cmc_excludes_pct: 3,
-    funding_per_interval_bps: 1, dex_gap_bps: null, off_market_venues: [{ venue: 'SunX', typical_gap_bps: -2368, seen_in_captures: 12 }],
+    funding_per_interval_bps: 1, dex_gap_bps: null, published_gap_bps: -18, off_market_venues: [{ venue: 'SunX', typical_gap_bps: -2368, seen_in_captures: 12 }],
     active_alerts: [{ severity: 'high', title: 'x' }], as_of: '2026-01-01T00:00:00Z',
   } : null),
   rwaAssets: async () => [{ symbol: 'SPCX', weighted_disagreement_bps: 1476, liquid_tokens: 9 }],
@@ -74,6 +74,7 @@ test('answer: every command produces a reply and unknown chatter produces none',
   assert.equal(await answer('/alerts BTC', 1, deps), 'Nothing unusual in the latest capture.');
   assert.match(await answer('/assets', 1, deps), /Deepcoin/);
   assert.match(await answer('/check BCH', 1, deps), /confidence <b>20<\/b>/);
+  assert.match(await answer('/check BCH', 1, deps), /vs CMC published price: -18 bps/);
   assert.match(await answer('/check ZZZ', 1, deps), /No data for ZZZ/);
   assert.match(await answer('/check', 1, deps), /Which asset/);
   assert.match(await answer('/rwa', 1, deps), /SPCX/);
@@ -86,7 +87,7 @@ test('answer: every command produces a reply and unknown chatter produces none',
 test('fmtAsset handles missing funding, gap and venues without printing null or NaN', () => {
   const t = fmtAsset({
     symbol: 'X', confidence: 90, top_venue: 'V', top_share_pct: 5, effective_venues: 30, venues: 100, volume_in_agreement_pct: 90, volume_cmc_excludes_pct: 10,
-    funding_per_interval_bps: null, dex_gap_bps: null, off_market_venues: [], active_alerts: [], as_of: '2026-01-01T00:00:00Z',
+    funding_per_interval_bps: null, dex_gap_bps: null, published_gap_bps: null, off_market_venues: [], active_alerts: [], as_of: '2026-01-01T00:00:00Z',
   });
   assert.ok(!/null|NaN|undefined/.test(t));
   assert.match(t, /No off-market venues/);
