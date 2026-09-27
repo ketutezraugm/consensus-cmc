@@ -14,7 +14,8 @@ A perpetual-futures price on CoinMarketCap is built from hundreds of venues. Oft
 | `/check BCH` | Pre-trade check: confidence, who sets the price, off-market venues, funding, on-chain gap, active alerts |
 | `/assets` | All tracked assets, least trustworthy first |
 | `/rwa [SYMBOL]` | Tokenised stocks and commodities: do the issuers agree? |
-| automatic | A push message when a *new* alert appears, and never again for one already running |
+| `/subscribe`, `/watch SYMBOL`, `/unwatch SYMBOL`, `/mywatchlist`, `/unsubscribe` | Per-chat alert filtering: watch nothing and get everything, or watch specific symbols and get only those |
+| automatic | A push message when a *new* alert appears, filtered to each subscriber's watchlist, and never again for one already running |
 
 Alerts (thresholds are judgement calls, stated on the [alerts page](https://consensus-cmc.vercel.app/alerts) and tunable in [`lib/alerts.ts`](../lib/alerts.ts)):
 1. **Concentrated:** one venue holds 50%+ of an asset's 24h perp volume.
@@ -38,8 +39,9 @@ A capture (about 20 credits) runs every 30 minutes; the free Basic tier was enou
 ## Evidence it runs
 
 - Live alerts, same data the bot serves: <https://consensus-cmc.vercel.app/alerts> and JSON at <https://consensus-cmc.vercel.app/api/alerts>.
-- Command handling is covered by [`test/telegram.test.mjs`](../test/telegram.test.mjs) (parsing, HTML escaping, every command, no `null`/`NaN` in replies, push de-duplication).
+- Command handling is covered by [`test/telegram.test.mjs`](../test/telegram.test.mjs) (parsing, HTML escaping, every command including the watchlist flow, no `null`/`NaN` in replies, push de-duplication, and per-subscriber filtering with a mocked send — one failing chat doesn't stop the rest).
 - The production command handler was run against the live database; its replies (for `/alerts`, `/check BCH`, `/rwa GOLD`, `/assets`) contain real venues, real basis-point gaps and durations, with no null or NaN values.
+- `/subscribe` → `/watch BCH` → `/mywatchlist` → `/unwatch BCH` → `/unsubscribe` was run end to end against the live bot and confirmed working.
 - Raw API responses: [`scripts/out/`](../scripts/out).
 
 ## What the API made possible, and where it got in the way

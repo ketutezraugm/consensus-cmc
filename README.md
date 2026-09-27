@@ -42,7 +42,7 @@ Supabase pg_cron ──POST──> /api/ingest ──> CMC API ──> Supabase 
 ```
 
 - `lib/consensus.ts` is pure scoring code with no I/O. `test/consensus.test.mjs` covers it, including the degenerate cases (single venue, zero volume, zero open interest, negative funding, dead pools).
-- **Confidence (0-100)** blends volume spread across venues (40%), share of volume within 50 bps of the median (30%), freshness (15%) and share of volume CMC excludes (15%). **The weights are a judgement call, not a fitted model**, and the score currently separates outliers like BCH better than it ranks healthy assets (most sit at 86-94).
+- **Confidence (0-100)** blends volume spread across venues (40%), share of volume within 50 bps of the median (30%), freshness (15%) and share of volume CMC excludes (15%). **The weights are a judgement call, not a fitted model**, and the score currently separates outliers like BCH better than it ranks healthy assets (most sit at 86-94). Full breakdown, including what's been checked against real data versus stated as a judgement call, is on [/methodology](https://consensus-cmc.vercel.app/methodology).
 - Price statistics use only venues CMC itself trusts for price (`exclusions` does not contain `price`).
 - The on-chain layer covers BTC (via WBTC), ETH (via WETH) and LINK only. Wrapped tokens are not the underlying, so part of any gap can be wrapper risk.
 
@@ -90,7 +90,7 @@ Full list with 17 items in [`docs/api-feedback.md`](docs/api-feedback.md). The s
 
 ```bash
 cp .env.example .env.local        # CMC_API_KEY, INGEST_SECRET, SUPABASE_URL, SUPABASE_SERVICE_KEY
-# run supabase/migrations/0001_observations.sql in your Supabase SQL editor
+# run every file in supabase/migrations/ (0001-0004, in order) in your Supabase SQL editor
 npm install && npm run dev
 node --no-warnings --test         # scoring tests
 node --env-file=.env.local scripts/probe.mjs   # call every endpoint family once

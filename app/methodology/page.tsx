@@ -81,7 +81,7 @@ export default function Methodology() {
             <div className="font-medium">Code-tested, not data-dependent</div>
             <p className="mt-1 text-sm text-muted">
               The unit-detection rule, the HHI/dispersion/freshness math, and the RWA scoring all run against real recorded API fixtures in
-              <code className="num mx-1">test/</code> (57 tests). These don&apos;t depend on the market being any particular way today — a zero-volume
+              <code className="num mx-1">test/</code> (61 tests). These don&apos;t depend on the market being any particular way today — a zero-volume
               venue, a single-venue asset, negative funding, a dead pool, and an RWA asset with no tracked market are all exercised directly.
             </p>
           </div>
