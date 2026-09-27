@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<script src="cc.js"></script>
+<style>body{margin:0;background:#CFCDC6;-webkit-font-smoothing:antialiased}a{color:inherit;text-decoration-color:var(--brass);text-underline-offset:3px}a:hover{color:var(--brass-ink)}</style>
+</helmet>
+<div style="display:flex;flex-direction:column;gap:20px;padding:48px;width:max-content">
+  <div style="font:500 13px/1.4 'IBM Plex Sans',sans-serif;color:#2a2d31">Consensus · How this works (was Methodology). Diagrams first, every admission kept.</div>
+  <div style="display:grid;grid-template-columns:1280px 390px;gap:48px;align-items:start;width:max-content">
+    <sc-for list="{{ frames }}" as="f" hint-placeholder-count="2">
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="font:500 12px 'IBM Plex Mono',monospace;color:#2a2d31">{{ f.label }}</div>
+        <div style="{{ f.style }}">
+          <nav style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:18px clamp(20px,4cqw,48px);border-bottom:1px solid var(--rule)">
+            <div style="display:flex;align-items:center;gap:10px">{{ f.mark }}<span style="font:400 27px/1 'Instrument Serif',serif;letter-spacing:-0.01em">Consensus</span></div>
+            <div style="{{ f.navDesk }}"><span style="padding:6px 0">Assets</span><span style="padding:6px 0">Watchlist <span style="font:500 11px 'IBM Plex Mono',monospace;color:var(--verm)">11</span></span><span style="padding:6px 0">Tokenised stocks</span><span style="color:var(--ink);box-shadow:inset 0 -1.5px 0 var(--brass);padding:6px 0">How this works</span><span style="width:30px;height:30px;border:1px solid var(--rule-strong);border-radius:50%;display:grid;place-items:center"><span style="width:12px;height:12px;border-radius:50%;border:1.5px solid var(--ink);background:linear-gradient(90deg,var(--ink) 50%,transparent 50%)"></span></span></div>
+            <div style="{{ f.navMob }}"><span style="padding:10px 12px;border:1px solid var(--rule-strong);border-radius:3px">Menu</span></div>
+          </nav>
+          <div style="max-width:880px;margin:0 auto;padding:0 clamp(20px,4cqw,48px);display:flex;flex-direction:column;gap:clamp(48px,6cqw,72px)">
+            <header style="padding-top:clamp(36px,5cqw,64px);display:flex;flex-direction:column;gap:14px">
+              <h1 style="margin:0;font:400 clamp(44px,5.6cqw,72px)/1 'Instrument Serif',serif;letter-spacing:-0.015em">How this works, and where it can mislead you</h1>
+              <p style="margin:0;font:400 clamp(16px,1.5cqw,19px)/1.55 'IBM Plex Sans',sans-serif;color:var(--ink-2)">What the numbers compute, what has been checked against real data, what is a judgement call, and one check that didn't hold up.</p>
+            </header>
+
+            <section style="display:flex;flex-direction:column;gap:16px">
+              <h2 style="margin:0;font:400 clamp(28px,3cqw,36px)/1.1 'Instrument Serif',serif;border-bottom:1px solid var(--ink);padding-bottom:10px">How one price is assembled</h2>
+              <div style="background:var(--card);border:1px solid var(--rule);border-radius:4px;padding:clamp(14px,2cqw,24px)">{{ f.field }}</div>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:16px 28px;font:400 14px/1.55 'IBM Plex Sans',sans-serif;color:var(--ink-2)">
+                <p style="margin:0;padding-top:10px;border-top:1px solid var(--rule-strong)"><b style="font-weight:600;color:var(--ink)">Every exchange reports.</b> Each stroke is one exchange's price for Bitcoin and how much traded there in 24 hours. We record all of them every 30 minutes.</p>
+                <p style="margin:0;padding-top:10px;border-top:1px solid var(--muted)"><b style="font-weight:600;color:var(--ink)">Some aren't counted.</b> CoinMarketCap flags some exchanges as outliers or excludes them. They're drawn grey. We follow its choice and show it.</p>
+                <p style="margin:0;padding-top:10px;border-top:2px solid var(--brass)"><b style="font-weight:600;color:var(--ink)">The middle becomes the price.</b> Among the rest, the volume-weighted median is the agreed price. Big exchanges pull harder; no single one decides unless it holds most of the volume.</p>
+              </div>
+            </section>
+
+            <section style="display:flex;flex-direction:column;gap:16px">
+              <h2 style="margin:0;font:400 clamp(28px,3cqw,36px)/1.1 'Instrument Serif',serif;border-bottom:1px solid var(--ink);padding-bottom:10px">What the trust score weighs</h2>
+              <div style="display:grid;grid-template-columns:40fr 30fr 15fr 15fr;height:40px;gap:3px">
+                <div style="background:var(--ink);display:flex;align-items:center;padding:0 10px;font:500 13px 'IBM Plex Mono',monospace;color:var(--paper)">40</div>
+                <div style="background:var(--ink-2);display:flex;align-items:center;padding:0 10px;font:500 13px 'IBM Plex Mono',monospace;color:var(--paper)">30</div>
+                <div style="background:var(--ink-3);display:flex;align-items:center;padding:0 8px;font:500 13px 'IBM Plex Mono',monospace;color:var(--paper)">15</div>
+                <div style="background:var(--rule-strong);display:flex;align-items:center;padding:0 8px;font:500 13px 'IBM Plex Mono',monospace;color:var(--ink)">15</div>
+              </div>
+              <div style="display:flex;flex-direction:column;font:400 14px/1.55 'IBM Plex Sans',sans-serif;color:var(--ink-2)">
+                <p style="margin:0;padding:10px 0;border-bottom:1px solid var(--rule)"><b style="font-weight:600;color:var(--ink)">40 · How spread across exchanges the trading is.</b> One exchange holding everything scores zero. The biggest weight, because a price one exchange can move alone is the core risk.</p>
+                <p style="margin:0;padding:10px 0;border-bottom:1px solid var(--rule)"><b style="font-weight:600;color:var(--ink)">30 · How many exchanges quote the same price.</b> The share of counted volume quoting within 0.5% of the agreed price.</p>
+                <p style="margin:0;padding:10px 0;border-bottom:1px solid var(--rule)"><b style="font-weight:600;color:var(--ink)">15 · How recently exchanges updated.</b> Quotes more than 10 minutes old count against it.</p>
+                <p style="margin:0;padding:10px 0;border-bottom:1px solid var(--rule)"><b style="font-weight:600;color:var(--ink)">15 · How much volume CoinMarketCap itself keeps.</b> Heavy exclusion lowers the score a little and is always shown next to it.</p>
+              </div>
+              <p style="margin:0;font:400 italic 22px/1.35 'Instrument Serif',serif;color:var(--ink)">The weights are a stated judgement call, not a fitted or backtested model.</p>
+              <p style="margin:0;font:400 14px/1.55 'IBM Plex Sans',sans-serif;color:var(--ink-2)">80 and above reads Reliable, 60–79 Watch, below 60 Unreliable.</p>
+            </section>
+
+            <section style="display:flex;flex-direction:column;gap:14px">
+              <h2 style="margin:0;font:400 clamp(28px,3cqw,36px)/1.1 'Instrument Serif',serif;border-bottom:1px solid var(--ink);padding-bottom:10px">What puts something on the watchlist</h2>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:16px 24px;font:400 14px/1.5 'IBM Plex Sans',sans-serif;color:var(--ink-2)">
+                <div style="display:flex;flex-direction:column;gap:4px"><span style="font:500 20px 'IBM Plex Mono',monospace;color:var(--ink)">50%+</span>of an asset's volume on one exchange</div>
+                <div style="display:flex;flex-direction:column;gap:4px"><span style="font:500 20px 'IBM Plex Mono',monospace;color:var(--ink)">1%+ off</span>for a counted exchange with at least $1M traded daily</div>
+                <div style="display:flex;flex-direction:column;gap:4px"><span style="font:500 20px 'IBM Plex Mono',monospace;color:var(--ink)">−15 pts</span>fall in trust score</div>
+                <div style="display:flex;flex-direction:column;gap:4px"><span style="font:500 20px 'IBM Plex Mono',monospace;color:var(--ink)">0.3%+</span>between decentralised exchanges and the rest</div>
+              </div>
+            </section>
+
+            <section style="display:flex;flex-direction:column;gap:14px">
+              <h2 style="margin:0;font:400 clamp(28px,3cqw,36px)/1.1 'Instrument Serif',serif;border-bottom:1px solid var(--ink);padding-bottom:10px">What we checked, and what we didn't</h2>
+              <sc-for list="{{ tiers }}" as="t" hint-placeholder-count="4">
+                <div style="display:grid;grid-template-columns:52px minmax(0,1fr);gap:16px;padding:14px 0;border-bottom:1px solid var(--rule)">
+                  <div style="display:flex;gap:3px;padding-top:5px"><span style="{{ t.a }}"></span><span style="{{ t.b }}"></span><span style="{{ t.c }}"></span></div>
+                  <div style="display:flex;flex-direction:column;gap:5px"><span style="font:600 15px 'IBM Plex Sans',sans-serif;color:var(--ink)">{{ t.title }}</span><span style="font:400 14px/1.55 'IBM Plex Sans',sans-serif;color:var(--ink-2)">{{ t.body }}</span></div>
+                </div>
+              </sc-for>
+            </section>
+
+            <section style="display:flex;flex-direction:column;gap:14px">
+              <h2 style="margin:0;font:400 clamp(28px,3cqw,36px)/1.1 'Instrument Serif',serif;border-bottom:1px solid var(--ink);padding-bottom:10px">Known limits</h2>
+              <ul style="margin:0;padding-left:18px;display:flex;flex-direction:column;gap:8px;font:400 14px/1.55 'IBM Plex Sans',sans-serif;color:var(--ink-2)">
+                <li>15 crypto assets and 38 tokenised assets, sized to the free CoinMarketCap API tier, not the whole market.</li>
+                <li>Decentralised-exchange prices cover only BTC, ETH and LINK, on Uniswap v3 on Ethereum.</li>
+                <li>A reading every 30 minutes. Nothing here is real-time.</li>
+                <li>Tokenised assets are compared issuer against issuer, not against the real stock price, which the API doesn't provide.</li>
+              </ul>
+              <p style="margin:8px 0 0;font:400 15px/1.55 'IBM Plex Sans',sans-serif">Full source, the raw API evidence behind every claim, and the 61 tests: <a href="#">github.com/ketutezraugm/consensus-cmc</a></p>
+            </section>
+          </div>
+          <footer style="margin-top:clamp(56px,7cqw,88px);padding:28px clamp(20px,4cqw,48px) 36px;border-top:1px solid var(--rule)">
+            <p style="margin:0;max-width:56ch;font:400 13px/1.55 'IBM Plex Sans',sans-serif;color:var(--ink-3)">Built on the CoinMarketCap Pro API for the Build with CMC hackathon. Shows what the API returns; it does not claim how CoinMarketCap computes its published price.</p>
+          </footer>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() { if (!window.CC) { const t = setInterval(() => { if (window.CC) { clearInterval(t); this.forceUpdate(); } }, 50); } }
+  renderVals() {
+    const CC = window.CC;
+    if (!CC) return { frames: [], tiers: [] };
+    if (this._v) return this._v;
+    const sq = (on, c) => ({ width: 12, height: 12, background: on ? c : 'transparent', border: `1px solid ${on ? c : 'var(--rule-strong)'}`, boxSizing: 'border-box' });
+    const tier = (n, c, title, body) => ({ title, body, a: sq(n >= 1, c), b: sq(n >= 2, c), c: sq(n >= 3, c) });
+    const tiers = [
+      tier(3, 'var(--sage)', 'Tested in code, independent of the market', 'Unit detection, the concentration, agreement and freshness maths, and tokenised scoring all run against recorded API responses in 61 tests: a zero-volume exchange, a single-exchange asset, negative funding, a dead pool.'),
+      tier(2, 'var(--sage)', 'Held across every reading so far', "BCH's concentration on Deepcoin, SunX quoting off-market on most assets, and the same Kraken and DigiFinex markets returned twice with conflicting prices have held in all 65 readings."),
+      tier(1, 'var(--ochre)', "Checked once, didn't hold up. Kept here on purpose", "Early on, Deepcoin's reported total derivatives volume looked smaller than its volume for one BCH market. A later re-check found the opposite. Exchange-reported volume moves too much for a one-off comparison to count as evidence, so it isn't claimed as a finding."),
+      tier(0, 'var(--ink)', 'Not checked, and out of scope', "Whether CoinMarketCap's published price actually uses the flagged rows. Whether any exchange's volume is real or wash-traded. Whether the weights hold over a longer history."),
+    ];
+    const frames = [['light', 1], ['light', 0]].map(([theme, desktop]) => ({
+      label: `${desktop ? 'Desktop · 1280' : 'Mobile · 390'} · ${theme}`,
+      style: { ...CC.THEMES[theme], width: desktop ? 1280 : 390, containerType: 'inline-size', background: 'var(--paper)', color: 'var(--ink)', outline: '1px solid rgba(0,0,0,.12)', overflow: 'hidden' },
+      navDesk: { display: desktop ? 'flex' : 'none', alignItems: 'center', gap: 28, font: "400 14px 'IBM Plex Sans',sans-serif", color: 'var(--ink-2)' },
+      navMob: { display: desktop ? 'none' : 'flex', font: "500 14px 'IBM Plex Sans',sans-serif" },
+      mark: CC.mark({ size: 26 }),
+      field: CC.field('BTC', desktop ? { w: 780, h: 240, gutter: 110 } : { w: 330, h: 200, domain: 1, gutter: 92 }),
+    }));
+    this._v = { frames, tiers };
+    return this._v;
+  }
+}
+</script>
+</body>
+</html>

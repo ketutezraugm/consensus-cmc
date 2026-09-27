@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<script src="cc.js"></script>
+<style>body{margin:0;background:#CFCDC6;-webkit-font-smoothing:antialiased}a{color:inherit;text-decoration-color:var(--brass);text-underline-offset:3px}a:hover{color:var(--brass-ink)}</style>
+</helmet>
+<div style="display:flex;flex-direction:column;gap:20px;padding:48px;width:max-content">
+  <div style="font:500 13px/1.4 'IBM Plex Sans',sans-serif;color:#2a2d31">Consensus · Home · desktop 1280 and mobile 390, light (default) and dark. Charts are generated from the data rules in cc.js.</div>
+  <div style="display:grid;grid-template-columns:1280px 390px;gap:64px 48px;align-items:start;width:max-content">
+    <sc-for list="{{ frames }}" as="f" hint-placeholder-count="4">
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="font:500 12px 'IBM Plex Mono',monospace;color:#2a2d31">{{ f.label }}</div>
+        <div style="{{ f.style }}">
+          <nav style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:18px clamp(20px,4cqw,48px);border-bottom:1px solid var(--rule)">
+            <div style="display:flex;align-items:center;gap:10px">{{ f.mark }}<span style="font:400 27px/1 'Instrument Serif',serif;letter-spacing:-0.01em;color:var(--ink)">Consensus</span></div>
+            <div style="{{ f.navDesk }}">
+                <span style="color:var(--ink);box-shadow:inset 0 -1.5px 0 var(--brass);padding:6px 0">Assets</span>
+                <span style="padding:6px 0">Watchlist <span style="font:500 11px 'IBM Plex Mono',monospace;color:var(--verm)">11</span></span>
+                <span style="padding:6px 0">Tokenised stocks</span>
+                <span style="padding:6px 0">How this works</span>
+                <span title="Switch theme" style="width:30px;height:30px;border:1px solid var(--rule-strong);border-radius:50%;display:grid;place-items:center"><span style="width:12px;height:12px;border-radius:50%;border:1.5px solid var(--ink);background:linear-gradient(90deg,var(--ink) 50%,transparent 50%)"></span></span>
+              </div>
+              <div style="{{ f.navMob }}"><span style="padding:12px 4px">Watchlist <span style="font:500 11px 'IBM Plex Mono',monospace;color:var(--verm)">11</span></span><span style="padding:10px 12px;border:1px solid var(--rule-strong);border-radius:3px">Menu</span></div>
+          </nav>
+
+          <header style="padding:clamp(36px,6cqw,72px) clamp(20px,4cqw,48px) 0;display:flex;flex-direction:column;gap:18px">
+            <div style="font:400 12px/1.4 'IBM Plex Mono',monospace;color:var(--ink-3)">Updated every 30 minutes · 65 readings since 25 Sep 2026</div>
+            <h1 style="margin:0;font:400 clamp(42px,6cqw,80px)/1.0 'Instrument Serif',serif;letter-spacing:-0.015em;color:var(--ink);max-width:880px;text-wrap:balance">One price. 172 exchanges. <em style="color:var(--ink-2)">This is how far apart they are.</em></h1>
+            <p style="margin:0;font:400 clamp(16px,1.5cqw,19px)/1.55 'IBM Plex Sans',sans-serif;color:var(--ink-2);max-width:60ch;text-wrap:pretty">CoinMarketCap publishes one price per asset. Consensus records every exchange's quote behind it, rebuilds the price independently, and shows who sets it, who disagrees, and for how long.</p>
+          </header>
+
+          <section style="padding:28px clamp(12px,4cqw,48px) 0">
+            <div style="background:var(--card);border:1px solid var(--rule);border-radius:4px;padding:clamp(16px,2.4cqw,28px);display:flex;flex-direction:column;gap:18px">
+              <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:12px 24px">
+                <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap"><span style="font:400 30px/1 'Instrument Serif',serif;color:var(--ink)">Bitcoin</span><span style="font:400 14px 'IBM Plex Mono',monospace;color:var(--ink-2)">$84,526.83 agreed price</span></div>
+                <div style="display:flex;flex-wrap:wrap;gap:6px 16px;font:400 12px 'IBM Plex Sans',sans-serif;color:var(--ink-2)">
+                  <span style="display:flex;align-items:center;gap:6px"><span style="width:2px;height:12px;background:var(--sage)"></span>within 0.5%</span>
+                  <span style="display:flex;align-items:center;gap:6px"><span style="width:2px;height:12px;background:var(--ochre)"></span>drifting</span>
+                  <span style="display:flex;align-items:center;gap:6px"><span style="width:2px;height:12px;background:var(--verm)"></span>off-market</span>
+                  <span style="display:flex;align-items:center;gap:6px"><span style="width:2px;height:12px;background:var(--muted)"></span>CoinMarketCap doesn't count</span>
+                </div>
+              </div>
+              <div style="padding:6px 0 0">{{ f.hero }}</div>
+              <p style="margin:0;padding-top:14px;border-top:1px solid var(--rule);font:400 15px/1.55 'IBM Plex Sans',sans-serif;color:var(--ink-2);max-width:78ch;text-wrap:pretty">Each stroke is one exchange; its height is its share of trading. <span style="color:var(--ink)">Kraken quotes Bitcoin 20.7% below the market on $289.2M of daily volume, and CoinMarketCap still counts it.</span></p>
+            </div>
+          </section>
+
+          <section style="padding:clamp(48px,6cqw,80px) clamp(20px,4cqw,48px) 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:28px 56px;align-items:end">
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="font:400 12px 'IBM Plex Mono',monospace;color:var(--brass-ink)">Today's finding</div>
+              <div style="display:flex;align-items:baseline;gap:14px"><span style="font:400 clamp(96px,13cqw,168px)/0.85 'Instrument Serif',serif;letter-spacing:-0.03em;color:var(--ink)">9</span><span style="font:400 clamp(32px,3.6cqw,44px)/1 'Instrument Serif',serif;color:var(--ink-2)">basis points</span></div>
+              <p style="margin:8px 0 0;font:400 17px/1.5 'IBM Plex Sans',sans-serif;color:var(--ink);max-width:46ch;text-wrap:pretty">Median gap between the price we rebuild from raw exchange data and CoinMarketCap's own published price, across 15 assets. Widest: Bitcoin Cash at 54.</p>
+              <p style="margin:0;font:400 13px/1.5 'IBM Plex Sans',sans-serif;color:var(--ink-3)">1 basis point = 0.01%. We rebuild the price without seeing CoinMarketCap's number.</p>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px">{{ f.bench }}<div style="font:400 12px 'IBM Plex Sans',sans-serif;color:var(--ink-3)">Each dot is one asset. Shaded: within 25 bp of the published price.</div></div>
+          </section>
+
+          <section style="padding:40px clamp(20px,4cqw,48px) 0">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));border-top:1px solid var(--ink)">
+              <div style="padding:18px 20px 18px 0;border-bottom:1px solid var(--rule);display:flex;flex-direction:column;gap:8px"><span style="font:500 22px 'IBM Plex Mono',monospace;color:var(--verm)">90%</span><span style="font:400 14px/1.5 'IBM Plex Sans',sans-serif;color:var(--ink-2)">of Bitcoin Cash trading is on one exchange, Deepcoin. True in 65 of 65 readings.</span></div>
+              <div style="padding:18px 20px 18px 0;border-bottom:1px solid var(--rule);display:flex;flex-direction:column;gap:8px"><span style="font:500 22px 'IBM Plex Mono',monospace;color:var(--verm)">14 assets</span><span style="font:400 14px/1.5 'IBM Plex Sans',sans-serif;color:var(--ink-2)">on which SunX quotes about 14% below the market. CoinMarketCap still counts it.</span></div>
+              <div style="padding:18px 20px 18px 0;border-bottom:1px solid var(--rule);display:flex;flex-direction:column;gap:8px"><span style="font:500 22px 'IBM Plex Mono',monospace;color:var(--ochre-ink)">6 markets</span><span style="font:400 14px/1.5 'IBM Plex Sans',sans-serif;color:var(--ink-2)">returned twice by the API with different prices in the latest reading. None flagged.</span></div>
+              <div style="padding:18px 20px 18px 0;border-bottom:1px solid var(--rule);display:flex;flex-direction:column;gap:8px"><span style="font:500 22px 'IBM Plex Mono',monospace;color:var(--ink)">49%</span><span style="font:400 14px/1.5 'IBM Plex Sans',sans-serif;color:var(--ink-2)">of futures volume is discarded by CoinMarketCap itself. Median; ranges 5% to 67%.</span></div>
+            </div>
+          </section>
+
+          <section style="padding:clamp(56px,7cqw,88px) clamp(20px,4cqw,48px) 0;display:flex;flex-direction:column;gap:18px">
+            <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px 24px">
+              <h2 style="margin:0;font:400 clamp(32px,3.6cqw,44px)/1.05 'Instrument Serif',serif;color:var(--ink)">Fifteen assets, least reliable first</h2>
+              <span style="font:400 12px 'IBM Plex Mono',monospace;color:var(--ink-3)">Trust score 0–100 · 80+ reliable · 60–79 watch · under 60 unreliable</span>
+            </div>
+            <div style="display:flex;flex-direction:column;border-top:1px solid var(--ink)">
+              <div style="{{ f.thead }}"><span>Asset</span><span>Trust</span><span>Exchanges by distance from the agreed price</span><span>Largest exchange</span><span style="text-align:right">vs published</span></div>
+              <sc-for list="{{ f.rows }}" as="r" hint-placeholder-count="15">
+                <div style="{{ r.rowStyle }}">
+                  <div style="display:flex;align-items:baseline;gap:10px;min-width:0"><span style="font:500 15px 'IBM Plex Mono',monospace;color:var(--ink)">{{ r.s }}</span><span style="font:400 13px 'IBM Plex Sans',sans-serif;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.name }}</span></div>
+                  <div style="display:flex;align-items:baseline;gap:8px"><span style="font:500 18px 'IBM Plex Mono',monospace;color:var(--ink)">{{ r.score }}</span><span style="{{ r.bandStyle }}">{{ r.band }}</span></div>
+                  <div style="{{ r.miniStyle }}">{{ r.mini }}</div>
+                  <div style="font:400 13px 'IBM Plex Sans',sans-serif;color:var(--ink-2);display:flex;gap:8px;align-items:baseline"><span>{{ r.top }}</span><span style="{{ r.shareStyle }}">{{ r.share }}</span></div>
+                  <div style="{{ r.gapStyle }}">{{ r.gap }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </section>
+
+          <footer style="margin-top:clamp(64px,8cqw,104px);padding:28px clamp(20px,4cqw,48px) 36px;border-top:1px solid var(--rule);display:flex;flex-wrap:wrap;justify-content:space-between;gap:20px 40px">
+            <div style="display:flex;gap:12px;align-items:flex-start;max-width:56ch">{{ f.markSmall }}<p style="margin:0;font:400 13px/1.55 'IBM Plex Sans',sans-serif;color:var(--ink-3)">Built on the CoinMarketCap Pro API for the Build with CMC hackathon. Shows what the API returns; it does not claim how CoinMarketCap computes its published price.</p></div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px 24px;font:400 13px 'IBM Plex Sans',sans-serif;color:var(--ink-2)"><a href="#">How this works</a><a href="#">Source on GitHub</a></div>
+          </footer>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;view&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;All four&quot;,&quot;Light only&quot;,&quot;Dark only&quot;,&quot;Mobile only&quot;],&quot;default&quot;:&quot;All four&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  componentDidMount() { if (!window.CC) { const t = setInterval(() => { if (window.CC) { clearInterval(t); this.forceUpdate(); } }, 50); } }
+  renderVals() {
+    const CC = window.CC;
+    const defs = [['light', true, 'Desktop · light · 1280'], ['light', false, 'Mobile · light · 390'], ['dark', true, 'Desktop · dark · 1280'], ['dark', false, 'Mobile · dark · 390']];
+    if (!CC) return { frames: [] };
+    if (this._frames && this._view === this.props.view) return { frames: this._frames };
+    this._view = this.props.view;
+    const view = this.props.view ?? 'All four';
+    const pick = { 'All four': [0, 1, 2, 3], 'Light only': [0, 1], 'Dark only': [2, 3], 'Mobile only': [1, 3] }[view] || [0, 1, 2, 3];
+    const frames = defs.filter((_, i) => pick.includes(i)).map(([theme, desktop, label]) => {
+      const w = desktop ? 1280 : 390;
+      const rows = CC.ASSETS.map(a => {
+        const b = CC.band(a.score), out = Math.abs(a.gap) > 25;
+        return {
+          s: a.s, name: a.name, score: a.score, band: b.word, top: a.top, share: Math.round(a.share * 100) + '%', gap: CC.bp(a.gap),
+          mini: CC.field(a.s, { compact: true, w: desktop ? 520 : 350, h: 34 }),
+          rowStyle: desktop ? { display: 'grid', gridTemplateColumns: '170px 150px minmax(0,1fr) 190px 96px', gap: 24, alignItems: 'center', padding: '12px 0', borderBottom: '1px solid var(--rule)' }
+            : { display: 'grid', gridTemplateColumns: '1fr auto', gap: '8px 12px', alignItems: 'center', padding: '14px 0', borderBottom: '1px solid var(--rule)' },
+          miniStyle: desktop ? { minWidth: 0 } : { minWidth: 0, gridColumn: '1 / -1' },
+          bandStyle: { font: "500 12px 'IBM Plex Sans',sans-serif", color: b.c },
+          shareStyle: { fontFamily: 'IBM Plex Mono', color: a.share >= .5 ? 'var(--verm)' : 'var(--ink)', fontWeight: a.share >= .5 ? 500 : 400 },
+          gapStyle: { font: "400 13px 'IBM Plex Mono',monospace", textAlign: 'right', color: out ? 'var(--verm)' : 'var(--ink-2)', ...(desktop ? {} : { gridColumn: '2', gridRow: '3' }) },
+        };
+      });
+      return {
+        label, desktop, mobile: !desktop,
+        navDesk: { display: desktop ? 'flex' : 'none', alignItems: 'center', gap: 28, font: "400 14px 'IBM Plex Sans',sans-serif", color: 'var(--ink-2)' },
+        navMob: { display: desktop ? 'none' : 'flex', alignItems: 'center', gap: 8, font: "500 14px 'IBM Plex Sans',sans-serif", color: 'var(--ink)' },
+        thead: { display: desktop ? 'grid' : 'none', gridTemplateColumns: '170px 150px minmax(0,1fr) 190px 96px', gap: 24, padding: '10px 0', borderBottom: '1px solid var(--rule)', font: "400 12px 'IBM Plex Sans',sans-serif", color: 'var(--ink-3)' },
+        style: { ...CC.THEMES[theme], width: w, containerType: 'inline-size', background: 'var(--paper)', color: 'var(--ink)', outline: '1px solid rgba(0,0,0,.12)', overflow: 'hidden' },
+        mark: CC.mark({ size: 26 }), markSmall: CC.mark({ size: 20 }),
+        hero: CC.field('BTC', desktop ? { w: 1170, h: 300 } : { w: 360, h: 240, domain: 1, gutter: 96 }),
+        bench: CC.bench(CC.ASSETS.map(a => ({ s: a.s, gap: a.gap })), { w: desktop ? 560 : 360 }),
+        rows,
+      };
+    });
+    this._frames = frames;
+    return { frames };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<script src="cc.js"></script>
+<style>body{margin:0;background:#F2F1EC;-webkit-font-smoothing:antialiased}a{color:#1B2027;text-decoration-color:#A67C3D;text-underline-offset:3px}a:hover{color:#86612A}summary{cursor:pointer}</style>
+</helmet>
+<div style="{{ light }}">
+  <div style="max-width:1200px;margin:0 auto;padding:64px 48px 96px;display:flex;flex-direction:column;gap:80px">
+    <header style="display:flex;flex-direction:column;gap:14px">
+      <div style="font:400 12px 'IBM Plex Mono',monospace;color:var(--brass-ink)">Consensus · data primitives, components, decisions</div>
+      <h1 style="margin:0;font:400 60px/1 'Instrument Serif',serif;letter-spacing:-0.015em;max-width:860px">Four primitives carry the product. Each one is drawn from the data by a stated rule.</h1>
+    </header>
+
+    <section style="display:flex;flex-direction:column;gap:20px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--ink);padding-bottom:10px"><h2 style="margin:0;font:400 36px/1 'Instrument Serif',serif">1 · Dispersion field</h2><span style="font:400 12px 'IBM Plex Mono',monospace;color:var(--ink-3)">the signature visual</span></div>
+      <div style="background:var(--card);border:1px solid var(--rule);border-radius:4px;padding:28px">{{ fieldBTC }}</div>
+      <div style="{{ darkPanel }}"><div style="font:400 12px 'IBM Plex Mono',monospace;color:var(--ink-3);margin-bottom:14px">Dark · Bitcoin Cash, one exchange holds 90%</div>{{ fieldBCH }}</div>
+      <ul style="margin:0;padding-left:18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:8px 40px;font:400 14px/1.55 'IBM Plex Sans',sans-serif;color:var(--ink-2)">
+        <li><b style="font-weight:500;color:var(--ink)">x</b> = % distance from the agreed price, linear across ±1.5% (±1% on mobile). Percent, not bp: this is the casual reader's chart.</li>
+        <li><b style="font-weight:500;color:var(--ink)">height</b> = √(volume share ÷ 25%), capped at full, floor 8%. Same scale for every asset, so BCH's Deepcoin is visibly louder than BTC's BTCC.</li>
+        <li><b style="font-weight:500;color:var(--ink)">colour</b>: sage within 0.5%, ochre 0.5–2%, vermilion beyond 2%, muted grey if CoinMarketCap discards it. Off-market strokes also get a dot cap, so colour is never the only signal.</li>
+        <li><b style="font-weight:500;color:var(--ink)">off-scale</b>: beyond the break marks the axis is log-compressed into a gutter, labelled with name and value. Outliers are shown, never clipped.</li>
+        <li>Tolerance band ±0.5% is sage at 9% opacity with dashed edges. Brass line = agreed price.</li>
+        <li>Hover/focus/tap on a stroke shows the tooltip (below). Motion: strokes rise from the baseline once on load, 600 ms, settle curve; none under prefers-reduced-motion.</li>
+      </ul>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:20px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--ink);padding-bottom:10px"><h2 style="margin:0;font:400 36px/1 'Instrument Serif',serif">2 · Trust gauge</h2><span style="font:400 12px 'IBM Plex Mono',monospace;color:var(--ink-3)">true scale, band first</span></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px">
+        <sc-for list="{{ gauges }}" as="g" hint-placeholder-count="4">
+          <div style="{{ g.panel }}">
+            <div style="display:flex;justify-content:space-between;font:500 14px 'IBM Plex Mono',monospace;color:var(--ink)"><span>{{ g.s }}</span><span style="font:400 12px 'IBM Plex Mono',monospace;color:var(--ink-3)">{{ g.note }}</span></div>
+            {{ g.svg }}
+            <div style="display:flex;align-items:baseline;justify-content:center;gap:10px;margin-top:-6px"><span style="font:400 52px/1 'Instrument Serif',serif;color:var(--ink)">{{ g.score }}</span><span style="{{ g.bandStyle }}">{{ g.band }}</span></div>
+          </div>
+        </sc-for>
+      </div>
+      <details open style="background:var(--card);border:1px solid var(--rule);border-radius:4px;padding:18px 22px">
+        <summary style="font:500 14px 'IBM Plex Sans',sans-serif;color:var(--ink)">Why Bitcoin scores 88 (progressive disclosure, closed by default on the asset page)</summary>
+        <div style="display:flex;flex-direction:column;margin-top:14px">
+          <sc-for list="{{ parts }}" as="p" hint-placeholder-count="4">
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) 160px 90px;gap:20px;align-items:center;padding:10px 0;border-top:1px solid var(--rule)">
+              <span style="font:400 14px/1.4 'IBM Plex Sans',sans-serif;color:var(--ink)">{{ p.label }}</span>
+              <span style="display:block;height:8px;background:var(--sunk);position:relative"><span style="{{ p.bar }}"></span></span>
+              <span style="font:400 13px 'IBM Plex Mono',monospace;color:var(--ink-2);text-align:right">{{ p.val }}</span>
+            </div>
+          </sc-for>
+          <p style="margin:10px 0 0;font:400 13px/1.5 'IBM Plex Sans',sans-serif;color:var(--ink-2)">CoinMarketCap discards 67% of Bitcoin's volume, the most of any asset. That single line is why Bitcoin ranks below XRP despite being less concentrated. Weights 40/30/15/15 are a stated judgement call, not a fitted model.</p>
+        </div>
+      </details>
+      <p style="margin:0;font:400 14px/1.55 'IBM Plex Sans',sans-serif;color:var(--ink-2);max-width:80ch">The semicircle always spans 0–100. 88 and 92 sit 7° apart, which is the honest distance; the band word carries the verdict. Rule: 80+ Reliable, 60–79 Watch, under 60 Unreliable. Needle ink, hub brass.</p>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:20px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--ink);padding-bottom:10px"><h2 style="margin:0;font:400 36px/1 'Instrument Serif',serif">3 · Benchmark check</h2><span style="font:400 12px 'IBM Plex Mono',monospace;color:var(--ink-3)">a vernier reading</span></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:16px">
+        <div style="background:var(--card);border:1px solid var(--rule);border-radius:4px;padding:22px 24px;display:flex;flex-direction:column;gap:12px"><div style="font:400 14px/1.5 'IBM Plex Sans',sans-serif;color:var(--ink)"><b style="font-weight:500">Bitcoin</b> · our rebuilt price lands 20 bp below the published price. <span style="color:var(--sage)">Within tolerance.</span></div>{{ benchBTC }}</div>
+        <div style="background:var(--card);border:1px solid var(--rule);border-radius:4px;padding:22px 24px;display:flex;flex-direction:column;gap:12px"><div style="font:400 14px/1.5 'IBM Plex Sans',sans-serif;color:var(--ink)"><b style="font-weight:500">Bitcoin Cash</b> · 54 bp above. <span style="color:var(--verm)">Outside tolerance.</span></div>{{ benchBCH }}</div>
+      </div>
+      <p style="margin:0;font:400 14px/1.55 'IBM Plex Sans',sans-serif;color:var(--ink-2);max-width:80ch">CoinMarketCap is the fixed ink index; our reading is the brass pointer. Scale ±60 bp, tolerance ±25 bp (proposed: 2.8× the 9 bp median). The only place in the product that uses basis points, because the gaps are smaller than 0.1%.</p>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:20px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--ink);padding-bottom:10px"><h2 style="margin:0;font:400 36px/1 'Instrument Serif',serif">4 · Concentration</h2><span style="font:400 12px 'IBM Plex Mono',monospace;color:var(--ink-3)">one cell per percent</span></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:16px">
+        <div style="background:var(--card);border:1px solid var(--rule);border-radius:4px;padding:24px;display:flex;gap:24px;align-items:center">{{ concBCH }}<div style="display:flex;flex-direction:column;gap:6px"><span style="font:400 48px/1 'Instrument Serif',serif;color:var(--verm)">90%</span><span style="font:400 14px/1.5 'IBM Plex Sans',sans-serif;color:var(--ink)">of Bitcoin Cash trading is on Deepcoin.</span><span style="font:400 13px/1.5 'IBM Plex Sans',sans-serif;color:var(--ink-2)">Equivalent to ~1.2 equally-sized exchanges, out of 121.</span></div></div>
+        <div style="background:var(--card);border:1px solid var(--rule);border-radius:4px;padding:24px;display:flex;gap:24px;align-items:center">{{ concBTC }}<div style="display:flex;flex-direction:column;gap:6px"><span style="font:400 48px/1 'Instrument Serif',serif;color:var(--ink)">11%</span><span style="font:400 14px/1.5 'IBM Plex Sans',sans-serif;color:var(--ink)">of Bitcoin trading is on BTCC, its largest exchange.</span><span style="font:400 13px/1.5 'IBM Plex Sans',sans-serif;color:var(--ink-2)">The rest is spread across 171 others.</span></div></div>
+      </div>
+      <p style="margin:0;font:400 14px/1.55 'IBM Plex Sans',sans-serif;color:var(--ink-2);max-width:80ch">A 10×10 grid of 12 px cells. Filled cells = round(largest share × 100). Fill is ink under 25%, ochre 25–49%, vermilion 50%+. The empty outlines are the rest of the market, so one voice drowning the others is read as area.</p>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:20px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--ink);padding-bottom:10px"><h2 style="margin:0;font:400 36px/1 'Instrument Serif',serif">History, sparse and honest</h2><span style="font:400 12px 'IBM Plex Mono',monospace;color:var(--ink-3)">one dot per reading</span></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:16px">
+        <div style="background:var(--card);border:1px solid var(--rule);border-radius:4px;padding:20px 24px;display:flex;flex-direction:column;gap:10px"><span style="font:500 13px 'IBM Plex Sans',sans-serif">Bitcoin · trust score, 65 readings</span>{{ histBTC }}</div>
+        <div style="background:var(--card);border:1px solid var(--rule);border-radius:4px;padding:20px 24px;display:flex;flex-direction:column;gap:10px"><span style="font:500 13px 'IBM Plex Sans',sans-serif">Bitcoin Cash · fell to 38 from around 66</span>{{ histBCH }}</div>
+      </div>
+      <p style="margin:0;font:400 14px/1.55 'IBM Plex Sans',sans-serif;color:var(--ink-2);max-width:80ch">Three days of data drawn as a line looks like a broken chart. Dots at true 0–100 scale say "we took 65 readings and they were steady", which is the finding. History sits below the evidence and never leads. Illustrative series; plot the recorded values.</p>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:28px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--ink);padding-bottom:10px"><h2 style="margin:0;font:400 36px/1 'Instrument Serif',serif">Components</h2><span style="font:400 12px 'IBM Plex Mono',monospace;color:var(--ink-3)">states included</span></div>
+
+      <div style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:24px;align-items:start">
+        <div style="font:500 14px 'IBM Plex Sans',sans-serif">Status labels</div>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <span style="display:inline-flex;align-items:center;gap:7px;padding:4px 8px;border:1px solid var(--sage);border-radius:2px;font:500 12px 'IBM Plex Sans',sans-serif;color:var(--sage)"><span style="width:7px;height:7px;border-radius:50%;background:var(--sage)"></span>Within tolerance</span>
+            <span style="display:inline-flex;align-items:center;gap:7px;padding:4px 8px;border:1px solid var(--ochre);border-radius:2px;font:500 12px 'IBM Plex Sans',sans-serif;color:var(--ochre-ink)"><span style="width:7px;height:7px;background:var(--ochre);transform:rotate(45deg)"></span>Drifting</span>
+            <span style="display:inline-flex;align-items:center;gap:7px;padding:4px 8px;border:1px solid var(--verm);border-radius:2px;font:500 12px 'IBM Plex Sans',sans-serif;color:var(--verm)"><span style="width:7px;height:7px;background:var(--verm)"></span>Off-market</span>
+            <span style="display:inline-flex;align-items:center;gap:7px;padding:4px 8px;border:1px solid var(--rule-strong);border-radius:2px;font:500 12px 'IBM Plex Sans',sans-serif;color:var(--ink-3)"><span style="width:9px;height:1.5px;background:var(--ink-3)"></span>Not counted by CoinMarketCap</span>
+            <span style="display:inline-flex;align-items:center;gap:7px;padding:4px 8px;border:1px dashed var(--verm);border-radius:2px;font:500 12px 'IBM Plex Sans',sans-serif;color:var(--verm)"><span style="display:flex;flex-direction:column;gap:2px"><span style="width:9px;height:1.5px;background:var(--verm)"></span><span style="width:9px;height:1.5px;background:var(--verm)"></span></span>Returned twice, different prices</span>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <span style="padding:4px 8px;background:var(--sunk);border-radius:2px;font:500 12px 'IBM Plex Sans',sans-serif;color:var(--ink)">Liquid</span>
+            <span style="padding:4px 8px;background:var(--sunk);border-radius:2px;font:500 12px 'IBM Plex Sans',sans-serif;color:var(--ink-2)">Thin trading</span>
+            <span style="padding:4px 8px;background:var(--sunk);border-radius:2px;font:500 12px 'IBM Plex Sans',sans-serif;color:var(--ink-2)">Derivative, not the stock</span>
+            <span style="padding:4px 8px;background:var(--sunk);border-radius:2px;font:500 12px 'IBM Plex Sans',sans-serif;color:var(--ink-2)">Priced per gram</span>
+            <span style="padding:4px 8px;background:var(--sunk);border-radius:2px;font:500 12px 'IBM Plex Sans',sans-serif;color:var(--ink-3)">No price yet</span>
+          </div>
+          <p style="margin:0;font:400 13px/1.5 'IBM Plex Sans',sans-serif;color:var(--ink-2)">Exchange statuses: outlined, each with its own glyph shape (circle, diamond, square, dash, double line). Tokenised statuses are facts about the token, not verdicts, so they're neutral fills. "Priced per gram" replaces "different unit" and names the unit.</p>
+        </div>
+
+        <div style="font:500 14px 'IBM Plex Sans',sans-serif">Buttons, links, toggle</div>
+        <div style="display:flex;flex-wrap:wrap;gap:14px;align-items:center">
+          <span style="padding:10px 16px;background:var(--ink);color:var(--paper);border-radius:2px;font:500 14px 'IBM Plex Sans',sans-serif">Open Bitcoin</span>
+          <span style="padding:10px 16px;background:var(--ink-2);color:var(--paper);border-radius:2px;font:500 14px 'IBM Plex Sans',sans-serif">Hover</span>
+          <span style="padding:9px 15px;border:1px solid var(--rule-strong);color:var(--ink);border-radius:2px;font:500 14px 'IBM Plex Sans',sans-serif">Show all 172 exchanges</span>
+          <span style="padding:9px 15px;border:1px solid var(--ink);color:var(--ink);border-radius:2px;font:500 14px 'IBM Plex Sans',sans-serif;outline:2px solid var(--brass);outline-offset:2px">Focus</span>
+          <a href="#" style="font:400 14px 'IBM Plex Sans',sans-serif">How the trust score works</a>
+          <span style="display:inline-flex;border:1px solid var(--rule-strong);border-radius:999px;padding:2px;font:500 12px 'IBM Plex Sans',sans-serif"><span style="padding:5px 12px;background:var(--ink);color:var(--paper);border-radius:999px">Paper</span><span style="padding:5px 12px;color:var(--ink-2)">Lamp</span><span style="padding:5px 12px;color:var(--ink-2)">System</span></span>
+        </div>
+
+        <div style="font:500 14px 'IBM Plex Sans',sans-serif">Tooltip</div>
+        <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start">
+          <div style="background:var(--card);border:1px solid var(--rule-strong);border-radius:4px;box-shadow:0 1px 2px rgb(27 32 39 / .08),0 8px 24px rgb(27 32 39 / .10);padding:12px 14px;display:flex;flex-direction:column;gap:6px;width:260px">
+            <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:600 14px 'IBM Plex Sans',sans-serif">Kraken</span><span style="font:500 13px 'IBM Plex Mono',monospace;color:var(--verm)">−20.7%</span></div>
+            <div style="font:400 12px/1.5 'IBM Plex Sans',sans-serif;color:var(--ink-2)">XBT/USD · $289.2M traded in 24h. Returned twice by the API with different prices. CoinMarketCap still counts it.</div>
+          </div>
+          <p style="margin:0;max-width:44ch;font:400 13px/1.5 'IBM Plex Sans',sans-serif;color:var(--ink-2)">One pattern everywhere: name, the number, one sentence of evidence. Opens on hover and keyboard focus; tap on touch; Escape closes. Strokes under 6 px apart snap to the nearest by pointer x.</p>
+        </div>
+
+        <div style="font:500 14px 'IBM Plex Sans',sans-serif">Exchange table</div>
+        <div style="display:flex;flex-direction:column;gap:10px;min-width:0">
+          <div style="overflow-x:auto;border-top:1px solid var(--ink)">
+            <div style="min-width:680px">
+              <div style="display:grid;grid-template-columns:minmax(140px,1.2fr) 110px 110px 120px minmax(170px,1.4fr);gap:16px;padding:10px 0;border-bottom:1px solid var(--rule);font:400 12px 'IBM Plex Sans',sans-serif;color:var(--ink-3)"><span>Exchange</span><span style="text-align:right">Distance</span><span style="text-align:right">Share</span><span style="text-align:right">24h traded</span><span>Status</span></div>
+              <sc-for list="{{ tableRows }}" as="t" hint-placeholder-count="4">
+                <div style="display:grid;grid-template-columns:minmax(140px,1.2fr) 110px 110px 120px minmax(170px,1.4fr);gap:16px;padding:12px 0;border-bottom:1px solid var(--rule);align-items:center">
+                  <span style="font:500 14px 'IBM Plex Sans',sans-serif">{{ t.name }}</span>
+                  <span style="{{ t.distStyle }}">{{ t.dist }}</span>
+                  <span style="font:400 13px 'IBM Plex Mono',monospace;text-align:right;color:var(--ink-2)">{{ t.share }}</span>
+                  <span style="font:400 13px 'IBM Plex Mono',monospace;text-align:right;color:var(--ink-2)">{{ t.vol }}</span>
+                  <span style="{{ t.statusStyle }}">{{ t.status }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <p style="margin:0;font:400 13px/1.5 'IBM Plex Sans',sans-serif;color:var(--ink-2)">Default: the exchanges that matter (top 5 by share plus every off-market one), then "Show all". Row hover = sunk fill. Mono only in figure columns, right-aligned, tabular. Wrapped in a horizontal scroll container at 390.</p>
+        </div>
+
+        <div style="font:500 14px 'IBM Plex Sans',sans-serif">Loading and empty</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px">
+          <div style="background:var(--card);border:1px solid var(--rule);border-radius:4px;padding:22px;display:flex;flex-direction:column;gap:14px">
+            <span style="font:400 12px 'IBM Plex Mono',monospace;color:var(--ink-3)">Taking a reading…</span>
+            <div style="position:relative;height:120px;border-bottom:1px solid var(--rule-strong)"><div style="position:absolute;left:40%;width:20%;top:0;bottom:0;background:var(--sage);opacity:.07"></div><div style="position:absolute;left:50%;top:0;bottom:0;width:1.5px;background:var(--brass);opacity:.6"></div></div>
+            <span style="font:400 13px/1.5 'IBM Plex Sans',sans-serif;color:var(--ink-2)">The field's frame (axis, band, reference) renders immediately; strokes fill in. No shimmer.</span>
+          </div>
+          <div style="background:var(--card);border:1px solid var(--rule);border-radius:4px;padding:22px;display:flex;flex-direction:column;gap:10px">
+            <span style="font:400 28px/1.1 'Instrument Serif',serif">Nothing needs attention.</span>
+            <span style="font:400 14px/1.5 'IBM Plex Sans',sans-serif;color:var(--ink-2)">In the latest reading, no exchange CoinMarketCap counts is more than 1% off the market and no asset has one exchange above 50%. The next reading is in under 30 minutes.</span>
+            <a href="#" style="font:400 14px 'IBM Plex Sans',sans-serif">What we check for</a>
+          </div>
+          <div style="background:var(--card);border:1px solid var(--rule);border-radius:4px;padding:22px;display:flex;flex-direction:column;gap:10px">
+            <span style="font:400 28px/1.1 'Instrument Serif',serif;color:var(--ink-2)">No reading for this asset yet.</span>
+            <span style="font:400 14px/1.5 'IBM Plex Sans',sans-serif;color:var(--ink-2)">It was added after the last reading. We'll have one within 30 minutes.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(440px,1fr));gap:48px">
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <h2 style="margin:0;font:400 36px/1 'Instrument Serif',serif;border-bottom:1px solid var(--ink);padding-bottom:10px">Judgement calls</h2>
+        <div style="display:flex;flex-direction:column;font:400 14px/1.55 'IBM Plex Sans',sans-serif;color:var(--ink-2)">
+          <p style="margin:0;padding:12px 0;border-bottom:1px solid var(--rule)"><b style="font-weight:600;color:var(--ink)">Percent by default, bp in one place.</b> Exchange distances are percent (−20.7%). Basis points appear only for the benchmark gap, where values are under 0.1%, explained once inline: "1 bp = 0.01%". No toggle.</p>
+          <p style="margin:0;padding:12px 0;border-bottom:1px solid var(--rule)"><b style="font-weight:600;color:var(--ink)">Band word leads, number stays.</b> "Reliable 88". The band is the honest resolution of a score that compresses to 87–92; the number is kept because it's what makes the BTC-below-XRP ranking discoverable.</p>
+          <p style="margin:0;padding:12px 0;border-bottom:1px solid var(--rule)"><b style="font-weight:600;color:var(--ink)">Light by default.</b> A measurement read on paper; also the fastest way to not look like the other fifteen entries. Dark follows the system setting and the toggle.</p>
+          <p style="margin:0;padding:12px 0;border-bottom:1px solid var(--rule)"><b style="font-weight:600;color:var(--ink)">Current state leads, history follows.</b> 65 readings are dots, not lines. The watchlist carries duration ("65 of 65 readings"), which is the useful part of history.</p>
+          <p style="margin:0;padding:12px 0;border-bottom:1px solid var(--rule)"><b style="font-weight:600;color:var(--ink)">GitHub in the footer</b> of every page and at the end of How this works, next to the list of what wasn't checked.</p>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <h2 style="margin:0;font:400 36px/1 'Instrument Serif',serif;border-bottom:1px solid var(--ink);padding-bottom:10px">Build order</h2>
+        <div style="display:flex;flex-direction:column;font:400 14px/1.55 'IBM Plex Sans',sans-serif;color:var(--ink-2)">
+          <p style="margin:0;padding:12px 0;border-bottom:1px solid var(--rule)"><b style="font-weight:600;color:var(--ink)">Day 1.</b> Tokens and fonts in globals.css; nav and footer; retire accent bars and mono prose. Rename every term (§07). This alone changes the product's face.</p>
+          <p style="margin:0;padding:12px 0;border-bottom:1px solid var(--rule)"><b style="font-weight:600;color:var(--ink)">Day 1–2.</b> Dispersion field (hero + compact), then Home. Then the gauge and benchmark vernier, then Asset detail.</p>
+          <p style="margin:0;padding:12px 0;border-bottom:1px solid var(--rule)"><b style="font-weight:600;color:var(--ink)">Day 2.</b> Watchlist item + empty state; concentration grid; exchange table.</p>
+          <p style="margin:0;padding:12px 0;border-bottom:1px solid var(--rule)"><b style="font-weight:600;color:var(--ink)">Day 3.</b> Tokenised list and detail (reuse the field with issuers); share card; How this works diagrams.</p>
+          <p style="margin:0;padding:12px 0;border-bottom:1px solid var(--rule);color:var(--ink-3)"><b style="font-weight:600;color:var(--ink-2)">Optional.</b> Load settle animation, tooltip snapping, dot-strip history, dark-mode fine tuning beyond the tokens.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() { if (!window.CC) { const t = setInterval(() => { if (window.CC) { clearInterval(t); this.forceUpdate(); } }, 50); } }
+  renderVals() {
+    const CC = window.CC;
+    if (!CC) return { gauges: [], parts: [], tableRows: [] };
+    if (this._v) return this._v;
+    const L = CC.THEMES.light, D = CC.THEMES.dark;
+    const darkPanel = { ...D, background: 'var(--paper)', color: 'var(--ink)', borderRadius: 4, padding: 28 };
+    const card = { background: 'var(--card)', border: '1px solid var(--rule)', borderRadius: 4, padding: '18px 20px', display: 'flex', flexDirection: 'column', gap: 6, color: 'var(--ink)' };
+    const gauges = [['BCH', 38, 'lowest', false], ['BTC', 88, '', false], ['SOL', 92, 'highest', false], ['BTC', 88, 'dark', true]].map(([s, score, note, dk]) => {
+      const b = CC.band(score);
+      return { s, score, note, band: b.word, svg: CC.gauge(score, { w: 240 }), bandStyle: { font: "500 14px 'IBM Plex Sans',sans-serif", color: b.c }, panel: dk ? { ...card, ...D, background: 'var(--paper)', border: 'none' } : card };
+    });
+    const parts = [['How spread across exchanges the trading is', 38.8, 40], ['How many exchanges quote the same price', 29.6, 30], ['How recently exchanges updated', 14.9, 15], ['How much volume CoinMarketCap itself keeps', 5.1, 15]].map(([label, v, max]) => ({
+      label, val: `${v} of ${max}`, bar: { position: 'absolute', left: 0, top: 0, bottom: 0, width: (v / max * 100) + '%', background: v / max < .5 ? 'var(--ochre)' : 'var(--ink-2)' },
+    }));
+    const st = (c) => ({ font: "500 12px 'IBM Plex Sans',sans-serif", color: c });
+    const dist = (c) => ({ font: "500 13px 'IBM Plex Mono',monospace", textAlign: 'right', color: c });
+    const tableRows = [
+      { name: 'BTCC', dist: '0.0%', share: '11%', vol: 'largest', status: 'Within tolerance', distStyle: dist('var(--ink)'), statusStyle: st('var(--sage)') },
+      { name: 'Kraken', dist: '−20.7%', share: '', vol: '$289.2M', status: 'Off-market · returned twice', distStyle: dist('var(--verm)'), statusStyle: st('var(--verm)') },
+      { name: 'SunX', dist: '≈ −14%', share: '', vol: '', status: 'Off-market · still counted', distStyle: dist('var(--verm)'), statusStyle: st('var(--verm)') },
+    ];
+    this._v = {
+      light: { ...L, background: 'var(--paper)', color: 'var(--ink)', fontFamily: "'IBM Plex Sans',sans-serif" }, darkPanel,
+      fieldBTC: CC.field('BTC', { w: 1100, h: 280 }), fieldBCH: CC.field('BCH', { w: 1100, h: 240 }),
+      gauges, parts, tableRows,
+      benchBTC: CC.bench({ s: 'BTC', gap: -20 }, { w: 520 }), benchBCH: CC.bench({ s: 'BCH', gap: 54 }, { w: 520 }),
+      concBCH: CC.conc(.90), concBTC: CC.conc(.11),
+      histBTC: CC.history('BTC', { w: 520 }), histBCH: CC.history('BCH', { w: 520 }),
+    };
+    return this._v;
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<script src="cc.js"></script>
+<style>body{margin:0;background:#CFCDC6;-webkit-font-smoothing:antialiased}a{color:inherit;text-decoration-color:var(--brass);text-underline-offset:3px}a:hover{color:var(--brass-ink)}</style>
+</helmet>
+<div style="display:flex;flex-direction:column;gap:20px;padding:48px;width:max-content">
+  <div style="font:500 13px/1.4 'IBM Plex Sans',sans-serif;color:#2a2d31">Consensus · Watchlist (was Alerts). 11 live items from the latest reading. Durations for "Worth a look" items and Zoomex weren't in the brief; they show the latest reading only — wire to the recorded run length.</div>
+  <div style="display:grid;grid-template-columns:1280px 390px;gap:48px;align-items:start;width:max-content">
+    <sc-for list="{{ frames }}" as="f" hint-placeholder-count="2">
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="font:500 12px 'IBM Plex Mono',monospace;color:#2a2d31">{{ f.label }}</div>
+        <div style="{{ f.style }}">
+          <nav style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:18px clamp(20px,4cqw,48px);border-bottom:1px solid var(--rule)">
+            <div style="display:flex;align-items:center;gap:10px">{{ f.mark }}<span style="font:400 27px/1 'Instrument Serif',serif;letter-spacing:-0.01em">Consensus</span></div>
+            <div style="{{ f.navDesk }}"><span style="padding:6px 0">Assets</span><span style="color:var(--ink);box-shadow:inset 0 -1.5px 0 var(--brass);padding:6px 0">Watchlist <span style="font:500 11px 'IBM Plex Mono',monospace;color:var(--verm)">11</span></span><span style="padding:6px 0">Tokenised stocks</span><span style="padding:6px 0">How this works</span><span style="width:30px;height:30px;border:1px solid var(--rule-strong);border-radius:50%;display:grid;place-items:center"><span style="width:12px;height:12px;border-radius:50%;border:1.5px solid var(--ink);background:linear-gradient(90deg,var(--ink) 50%,transparent 50%)"></span></span></div>
+            <div style="{{ f.navMob }}"><span style="padding:10px 12px;border:1px solid var(--rule-strong);border-radius:3px">Menu</span></div>
+          </nav>
+          <header style="padding:clamp(32px,5cqw,64px) clamp(20px,4cqw,48px) 0;display:flex;flex-direction:column;gap:14px;max-width:900px">
+            <div style="font:400 12px 'IBM Plex Mono',monospace;color:var(--ink-3)">Latest reading · 65 readings since 25 Sep</div>
+            <h1 style="margin:0;font:400 clamp(44px,5.6cqw,72px)/1 'Instrument Serif',serif;letter-spacing:-0.015em">What to know before you trade</h1>
+            <p style="margin:0;font:400 clamp(15px,1.4cqw,18px)/1.55 'IBM Plex Sans',sans-serif;color:var(--ink-2);max-width:62ch">Conditions in the latest reading where the price you see may be set by very little, or may not be the price you'd get. Each shows how long it has been true.</p>
+          </header>
+          <section style="padding:clamp(32px,4cqw,48px) clamp(20px,4cqw,48px) 0;display:flex;flex-direction:column;gap:40px">
+            <sc-for list="{{ f.groups }}" as="g" hint-placeholder-count="2">
+              <div style="display:flex;flex-direction:column">
+                <div style="display:flex;justify-content:space-between;align-items:baseline;padding-bottom:10px;border-bottom:1px solid var(--ink)"><span style="{{ g.titleStyle }}">{{ g.title }}</span><span style="font:400 12px 'IBM Plex Mono',monospace;color:var(--ink-3)">{{ g.count }}</span></div>
+                <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="5">
+                  <div style="{{ it.row }}">
+                    <span style="{{ it.glyph }}"></span>
+                    <div style="display:flex;flex-direction:column;gap:5px;min-width:0">
+                      <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px"><span style="font:500 13px 'IBM Plex Mono',monospace;color:var(--ink);padding:1px 6px;border:1px solid var(--rule-strong);border-radius:2px">{{ it.s }}</span><span style="font:600 clamp(15px,1.4cqw,17px)/1.35 'IBM Plex Sans',sans-serif">{{ it.what }}</span></div>
+                      <span style="font:400 13px/1.5 'IBM Plex Sans',sans-serif;color:var(--ink-2)">{{ it.ev }}</span>
+                    </div>
+                    <div style="{{ it.durBox }}">{{ it.strip }}<span style="font:400 12px 'IBM Plex Mono',monospace;color:var(--ink-3);white-space:nowrap">{{ it.dur }}</span></div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-for>
+            <p style="margin:0;font:400 13px/1.5 'IBM Plex Sans',sans-serif;color:var(--ink-3)">The ticks show each of the 65 readings; filled where the condition held. <a href="#" style="color:var(--ink-2)">What triggers an item</a> is explained in How this works.</p>
+          </section>
+          <footer style="margin-top:clamp(56px,7cqw,88px);padding:28px clamp(20px,4cqw,48px) 36px;border-top:1px solid var(--rule);display:flex;flex-wrap:wrap;justify-content:space-between;gap:20px 40px">
+            <p style="margin:0;max-width:56ch;font:400 13px/1.55 'IBM Plex Sans',sans-serif;color:var(--ink-3)">Built on the CoinMarketCap Pro API for the Build with CMC hackathon. Shows what the API returns; it does not claim how CoinMarketCap computes its published price.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:8px 24px;font:400 13px 'IBM Plex Sans',sans-serif;color:var(--ink-2)"><a href="#">How this works</a><a href="#">Source on GitHub</a></div>
+          </footer>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() { if (!window.CC) { const t = setInterval(() => { if (window.CC) { clearInterval(t); this.forceUpdate(); } }, 50); } }
+  strip(n, w) {
+    const h = window.React.createElement, els = [];
+    for (let i = 0; i < 65; i++) { const on = i >= 65 - n; els.push(h('rect', { key: i, x: i * (w / 65), y: on ? 0 : 6, width: Math.max(1, w / 65 - 1), height: on ? 14 : 2, fill: on ? 'var(--ink-2)' : 'var(--rule-strong)' })); }
+    return h('svg', { viewBox: `0 0 ${w} 14`, width: w, height: 14, style: { display: 'block', flex: 'none' }, 'aria-hidden': 'true' }, els);
+  }
+  renderVals() {
+    const CC = window.CC;
+    if (!CC) return { frames: [] };
+    if (this._f) return { frames: this._f };
+    this._f = [['light', 1], ['dark', 0]].map(([theme, desktop]) => {
+      const mk = (sev) => CC.WATCH.filter(w => w.sev === sev).map(w => ({
+        ...w, strip: this.strip(w.dur.startsWith('65') ? 65 : 1, desktop ? 130 : 110),
+        row: desktop ? { display: 'grid', gridTemplateColumns: '20px minmax(0,1fr) 230px', gap: 20, alignItems: 'start', padding: '18px 0', borderBottom: '1px solid var(--rule)' }
+          : { display: 'grid', gridTemplateColumns: '14px minmax(0,1fr)', gap: '12px 12px', alignItems: 'start', padding: '16px 0', borderBottom: '1px solid var(--rule)' },
+        glyph: sev === 'high' ? { width: 10, height: 10, marginTop: 6, background: 'var(--verm)' } : { width: 9, height: 9, marginTop: 7, marginLeft: 1, background: 'var(--ochre)', transform: 'rotate(45deg)' },
+        durBox: desktop ? { display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 6, paddingTop: 4 } : { gridColumn: '2', display: 'flex', alignItems: 'center', gap: 10 },
+      }));
+      return {
+        label: `${desktop ? 'Desktop · 1280' : 'Mobile · 390'} · ${theme}`,
+        style: { ...CC.THEMES[theme], width: desktop ? 1280 : 390, containerType: 'inline-size', background: 'var(--paper)', color: 'var(--ink)', outline: '1px solid rgba(0,0,0,.12)', overflow: 'hidden' },
+        navDesk: { display: desktop ? 'flex' : 'none', alignItems: 'center', gap: 28, font: "400 14px 'IBM Plex Sans',sans-serif", color: 'var(--ink-2)' },
+        navMob: { display: desktop ? 'none' : 'flex', font: "500 14px 'IBM Plex Sans',sans-serif" },
+        mark: CC.mark({ size: 26 }),
+        groups: [
+          { title: 'Needs attention', count: '6 items', titleStyle: { font: "600 15px 'IBM Plex Sans',sans-serif", color: 'var(--verm)' }, items: mk('high') },
+          { title: 'Worth a look', count: '5 items', titleStyle: { font: "600 15px 'IBM Plex Sans',sans-serif", color: 'var(--ochre-ink)' }, items: mk('watch') },
+        ],
+      };
+    });
+    return { frames: this._f };
+  }
+}
+</script>
+</body>
+</html>

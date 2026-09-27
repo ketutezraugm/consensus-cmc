@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<script src="cc.js"></script>
+<style>body{margin:0;background:#F2F1EC;-webkit-font-smoothing:antialiased}a{color:#1B2027;text-decoration-color:#A67C3D;text-underline-offset:3px}a:hover{color:#86612A}</style>
+</helmet>
+<div style="{{ light }}">
+  <div style="max-width:1200px;margin:0 auto;padding:64px 48px 96px;display:flex;flex-direction:column;gap:88px">
+    <header style="display:flex;flex-direction:column;gap:16px">
+      <div style="font:400 12px 'IBM Plex Mono',monospace;color:var(--brass-ink)">Consensus · identity and tokens · handoff v1</div>
+      <h1 style="margin:0;font:400 64px/1 'Instrument Serif',serif;letter-spacing:-0.015em;color:var(--ink);max-width:820px">A measurement instrument, not a trading terminal.</h1>
+      <p style="margin:0;font:400 17px/1.55 'IBM Plex Sans',sans-serif;color:var(--ink-2);max-width:64ch">The reference world is a surveyor's field notebook: ruled paper, ink annotation, one brass instrument, tolerance bands. Paper is the default face; dark mode is the same notebook under a desk lamp.</p>
+    </header>
+
+    <section style="display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--ink);padding-bottom:10px"><h2 style="margin:0;font:400 36px/1 'Instrument Serif',serif">Mark and lockups</h2><span style="font:400 12px 'IBM Plex Mono',monospace;color:var(--ink-3)">SVG, rects only</span></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule)">
+        <div style="background:var(--card);padding:48px 32px;display:flex;flex-direction:column;gap:28px;align-items:flex-start">
+          <span style="font:400 11px 'IBM Plex Mono',monospace;color:var(--ink-3)">Horizontal lockup</span>
+          <div style="display:flex;align-items:flex-end;gap:14px">{{ markL }}<span style="font:400 54px/0.8 'Instrument Serif',serif;letter-spacing:-0.012em;color:var(--ink)">Consensus</span></div>
+          <p style="margin:0;font:400 13px/1.5 'IBM Plex Sans',sans-serif;color:var(--ink-2)">Mark height = wordmark cap height × 1.35; baseline of the mark sits on the text baseline. Gap = one stroke interval (10 units).</p>
+        </div>
+        <div style="background:var(--card);padding:48px 32px;display:flex;flex-direction:column;gap:28px;align-items:flex-start">
+          <span style="font:400 11px 'IBM Plex Mono',monospace;color:var(--ink-3)">Stacked lockup</span>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:12px;align-self:center">{{ markXL }}<span style="font:400 44px/0.9 'Instrument Serif',serif;letter-spacing:-0.012em;color:var(--ink)">Consensus</span></div>
+          <p style="margin:0;font:400 13px/1.5 'IBM Plex Sans',sans-serif;color:var(--ink-2)">For square placements: app store, share card corner, social avatars with a caption.</p>
+        </div>
+        <div style="background:var(--card);padding:48px 32px;display:flex;flex-direction:column;gap:28px;align-items:flex-start">
+          <span style="font:400 11px 'IBM Plex Mono',monospace;color:var(--ink-3)">Mark alone · 64 / 32 / 20 px</span>
+          <div style="display:flex;align-items:flex-end;gap:32px">{{ mark64 }}{{ mark32 }}{{ mark20 }}</div>
+          <p style="margin:0;font:400 13px/1.5 'IBM Plex Sans',sans-serif;color:var(--ink-2)">Seven strokes, heights 30/48/66/100/70/46/28%. The slight asymmetry is deliberate: real distributions are never symmetric. Centre stroke is 1.5× wider and brass: the agreed price.</p>
+        </div>
+        <div style="background:var(--card);padding:48px 32px;display:flex;flex-direction:column;gap:28px;align-items:flex-start">
+          <span style="font:400 11px 'IBM Plex Mono',monospace;color:var(--ink-3)">Favicon 16 px · shown at 1× and 8×</span>
+          <div style="display:flex;align-items:flex-end;gap:28px">{{ fav1 }}{{ fav8 }}{{ app }}</div>
+          <p style="margin:0;font:400 13px/1.5 'IBM Plex Sans',sans-serif;color:var(--ink-2)">Reduces to five strokes on whole-ish pixels; the baseline is dropped because it muddies at 16 px. App icon (180 px) uses the same five strokes on card.</p>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px">
+        <div style="background:#F2F1EC;border:1px solid var(--rule);padding:28px;display:flex;align-items:flex-end;gap:12px">{{ monoInk }}<span style="font:400 34px/0.8 'Instrument Serif',serif;color:#1B2027">Consensus</span></div>
+        <div style="background:#1D1B18;padding:28px;display:flex;align-items:flex-end;gap:12px">{{ monoPaper }}<span style="font:400 34px/0.8 'Instrument Serif',serif;color:#EDE9E1">Consensus</span></div>
+        <div style="background:#1D1B18;padding:28px;display:flex;align-items:flex-end;gap:12px">{{ darkBrass }}<span style="font:400 34px/0.8 'Instrument Serif',serif;color:#EDE9E1">Consensus</span></div>
+      </div>
+      <ul style="margin:0;padding:0 0 0 18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:6px 40px;font:400 14px/1.55 'IBM Plex Sans',sans-serif;color:var(--ink-2)">
+        <li>Monochrome (all ink or all paper) is the default for anything under 20 px and on photos; the brass centre is for 20 px and up.</li>
+        <li>Clear space: two stroke intervals on every side. Never rotate, outline, or add a gradient.</li>
+        <li>The wordmark is always Instrument Serif Regular, never italic, never uppercase.</li>
+        <li>Never recolour side strokes by status. The mark is not a chart of any real asset.</li>
+      </ul>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--ink);padding-bottom:10px"><h2 style="margin:0;font:400 36px/1 'Instrument Serif',serif">Palette</h2><span style="font:400 12px 'IBM Plex Mono',monospace;color:var(--ink-3)">light · dark</span></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));border:1px solid var(--rule)">
+        <sc-for list="{{ swatches }}" as="c" hint-placeholder-count="10">
+          <div style="display:flex;flex-direction:column;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule)">
+            <div style="display:grid;grid-template-columns:1fr 1fr;height:88px"><div style="{{ c.l }}"></div><div style="{{ c.d }}"></div></div>
+            <div style="padding:12px 14px;display:flex;flex-direction:column;gap:4px;background:var(--card)">
+              <span style="font:500 14px 'IBM Plex Sans',sans-serif;color:var(--ink)">{{ c.name }}</span>
+              <span style="font:400 11px 'IBM Plex Mono',monospace;color:var(--ink-2)">{{ c.hex }}</span>
+              <span style="font:400 12px/1.4 'IBM Plex Sans',sans-serif;color:var(--ink-3)">{{ c.role }}</span>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <p style="margin:0;font:400 14px/1.55 'IBM Plex Sans',sans-serif;color:var(--ink-2);max-width:78ch">Semantic meaning is fixed. Sage: within tolerance. Ochre: drifting. Vermilion: off-market, disputed, excluded. Brass is the agreed reference and the brand, never a status. Ochre fails AA as text on paper, so text uses <span style="font-family:'IBM Plex Mono';color:var(--ochre-ink)">ochre-ink #8A6417</span>; the base ochre is for strokes and fills only. Same for <span style="font-family:'IBM Plex Mono';color:var(--brass-ink)">brass-ink #86612A</span>.</p>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--ink);padding-bottom:10px"><h2 style="margin:0;font:400 36px/1 'Instrument Serif',serif">Type</h2><span style="font:400 12px 'IBM Plex Mono',monospace;color:var(--ink-3)">Google Fonts · three roles</span></div>
+      <div style="display:flex;flex-direction:column">
+        <sc-for list="{{ type }}" as="t" hint-placeholder-count="9">
+          <div style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:24px;align-items:baseline;padding:16px 0;border-bottom:1px solid var(--rule)">
+            <div style="display:flex;flex-direction:column;gap:3px"><span style="font:500 13px 'IBM Plex Sans',sans-serif;color:var(--ink)">{{ t.name }}</span><span style="font:400 11px/1.4 'IBM Plex Mono',monospace;color:var(--ink-3)">{{ t.spec }}</span></div>
+            <div style="{{ t.style }}">{{ t.sample }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <p style="margin:0;font:400 14px/1.55 'IBM Plex Sans',sans-serif;color:var(--ink-2);max-width:78ch">Instrument Serif appears once or twice per screen: the title and the one number that matters. Plex Mono is for figures, tickers, timestamps and axes only, always with <span style="font-family:'IBM Plex Mono'">font-variant-numeric: tabular-nums</span>. Everything else is Plex Sans.</p>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--ink);padding-bottom:10px"><h2 style="margin:0;font:400 36px/1 'Instrument Serif',serif">Tokens</h2><span style="font:400 12px 'IBM Plex Mono',monospace;color:var(--ink-3)">paste into globals.css</span></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px 40px;font:400 14px/1.55 'IBM Plex Sans',sans-serif;color:var(--ink-2)">
+        <div><span style="color:var(--ink);font-weight:500">Spacing</span> 4-pt base: 4, 8, 12, 16, 24, 32, 48, 64, 96. Section gaps on desktop are 64–96; inside a card, 16–24.</div>
+        <div><span style="color:var(--ink);font-weight:500">Radii</span> 2 px on controls, 4 px on cards, 999 only for the theme toggle. Paper doesn't have rounded corners.</div>
+        <div><span style="color:var(--ink);font-weight:500">Borders and shadow</span> Hairlines do the work: 1 px rule between rows, 1 px ink rule above a section. One shadow, for popovers only.</div>
+      </div>
+      <pre style="margin:0;padding:24px 28px;background:var(--sunk);border:1px solid var(--rule);border-radius:4px;overflow-x:auto;font:400 12.5px/1.6 'IBM Plex Mono',monospace;color:var(--ink)">{{ tokens }}</pre>
+    </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() { if (!window.CC) { const t = setInterval(() => { if (window.CC) { clearInterval(t); this.forceUpdate(); } }, 50); } }
+  renderVals() {
+    const CC = window.CC;
+    const T = CC ? CC.THEMES : { light: {}, dark: {} };
+    const L = T.light, D = T.dark;
+    const sw = [
+      ['Paper', '--paper', 'Page ground'], ['Card', '--card', 'Raised surface'], ['Sunk', '--sunk', 'Code, wells'], ['Ink', '--ink', 'Primary text'], ['Ink 2', '--ink-2', 'Secondary text'], ['Ink 3', '--ink-3', 'Labels, axes'],
+      ['Rule', '--rule', 'Row hairlines'], ['Rule strong', '--rule-strong', 'Axes, outlines'], ['Brass', '--brass', 'Agreed reference, brand'], ['Sage', '--sage', 'Within tolerance'], ['Ochre', '--ochre', 'Drifting, worth a look'], ['Vermilion', '--verm', 'Off-market, excluded'], ['Muted', '--muted', 'CoinMarketCap discards'],
+    ].map(([name, v, role]) => ({ name, role, hex: `${L[v] || ''} · ${D[v] || ''}`, l: { background: L[v] }, d: { background: D[v] } }));
+    const ty = (name, spec, css, sample) => ({ name, spec, sample, style: { ...css, color: 'var(--ink)', minWidth: 0 } });
+    const type = [
+      ty('Display XL', 'Instrument Serif 400 · 168/0.85 · −0.03em', { font: "400 168px/0.85 'Instrument Serif',serif", letterSpacing: '-0.03em' }, '9 bp'),
+      ty('Display', 'Instrument Serif 400 · 80/1.0 · −0.015em', { font: "400 80px/1 'Instrument Serif',serif", letterSpacing: '-0.015em' }, 'One price. 172 exchanges.'),
+      ty('Title', 'Instrument Serif 400 · 44/1.05', { font: "400 44px/1.05 'Instrument Serif',serif" }, 'Fifteen assets, least reliable first'),
+      ty('Heading', 'Plex Sans 600 · 20/1.3', { font: "600 20px/1.3 'IBM Plex Sans',sans-serif" }, 'Who sets the price'),
+      ty('Lead', 'Plex Sans 400 · 19/1.55', { font: "400 19px/1.55 'IBM Plex Sans',sans-serif" }, 'Kraken quotes Bitcoin 20.7% below the market.'),
+      ty('Body', 'Plex Sans 400 · 15/1.55', { font: "400 15px/1.55 'IBM Plex Sans',sans-serif" }, 'CoinMarketCap still counts this exchange.'),
+      ty('Label', 'Plex Sans 500 · 12/1.3', { font: "500 12px/1.3 'IBM Plex Sans',sans-serif" }, 'Largest exchange'),
+      ty('Figure', 'Plex Mono 500 · 18/1.2 · tabular', { font: "500 18px/1.2 'IBM Plex Mono',monospace" }, '$84,526.83   −20.7%   +54 bp'),
+      ty('Axis', 'Plex Mono 400 · 11/1.2', { font: "400 11px/1.2 'IBM Plex Mono',monospace", color: 'var(--ink-3)' }, '−1.5%  −1.0%  −0.5%  0  +0.5%'),
+    ];
+    const tv = (o) => Object.entries(o).map(([k, v]) => `  ${k}: ${v};`).join('\n');
+    const tokens = `@import "tailwindcss";\n\n:root {\n${tv(L)}\n  color-scheme: light;\n}\n@media (prefers-color-scheme: dark) {\n  :root:not([data-theme="light"]) {\n${tv(D).replace(/^/gm, '  ')}\n    color-scheme: dark;\n  }\n}\n[data-theme="dark"] {\n${tv(D)}\n  color-scheme: dark;\n}\n\n@theme inline {\n  --color-paper: var(--paper);  --color-card: var(--card);  --color-sunk: var(--sunk);\n  --color-ink: var(--ink);  --color-ink-2: var(--ink-2);  --color-ink-3: var(--ink-3);\n  --color-rule: var(--rule);  --color-rule-strong: var(--rule-strong);\n  --color-brass: var(--brass);  --color-brass-ink: var(--brass-ink);\n  --color-sage: var(--sage);  --color-ochre: var(--ochre);  --color-ochre-ink: var(--ochre-ink);\n  --color-verm: var(--verm);  --color-muted: var(--muted);\n\n  --font-display: "Instrument Serif", Georgia, serif;\n  --font-sans: "IBM Plex Sans", system-ui, sans-serif;\n  --font-mono: "IBM Plex Mono", ui-monospace, monospace;\n\n  --text-display-xl: 168px;  --text-display-xl--line-height: 0.85;  --text-display-xl--letter-spacing: -0.03em;\n  --text-display: 80px;      --text-display--line-height: 1;       --text-display--letter-spacing: -0.015em;\n  --text-title: 44px;        --text-title--line-height: 1.05;\n  --text-heading: 20px;      --text-heading--line-height: 1.3;\n  --text-lead: 19px;         --text-lead--line-height: 1.55;\n  --text-body: 15px;         --text-body--line-height: 1.55;\n  --text-label: 12px;        --text-label--line-height: 1.3;\n  --text-axis: 11px;\n\n  --radius-control: 2px;  --radius-card: 4px;\n  --shadow-pop: 0 1px 2px rgb(27 32 39 / .08), 0 8px 24px rgb(27 32 39 / .10);\n  --ease-settle: cubic-bezier(.2, .7, .1, 1);  /* 600ms, once, on load */\n}\n\n/* Display sizes scale down on mobile: clamp(44px, 6cqw, 80px) and clamp(96px, 13cqw, 168px). */`;
+    const m = (o) => CC ? CC.mark(o) : null;
+    return {
+      light: { ...L, background: 'var(--paper)', color: 'var(--ink)', minHeight: '100vh' },
+      markL: m({ size: 52 }), markXL: m({ size: 64 }), mark64: m({ size: 64 }), mark32: m({ size: 32 }), mark20: m({ size: 20, color: 'var(--ink)', centre: 'var(--ink)' }),
+      fav1: CC ? CC.favicon({ px: 16 }) : null, fav8: CC ? CC.favicon({ px: 128 }) : null,
+      app: CC ? window.React.createElement('div', { style: { width: 90, height: 90, borderRadius: 20, background: 'var(--card)', border: '1px solid var(--rule)', display: 'grid', placeItems: 'center' } }, CC.mark({ small: true, size: 52 })) : null,
+      monoInk: m({ size: 36, color: '#1B2027', centre: '#1B2027' }), monoPaper: m({ size: 36, color: '#EDE9E1', centre: '#EDE9E1' }), darkBrass: m({ size: 36, color: '#EDE9E1', centre: '#C9A064' }),
+      swatches: sw, type, tokens,
+    };
+  }
+}
+</script>
+</body>
+</html>

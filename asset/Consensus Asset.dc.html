@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<script src="cc.js"></script>
+<style>body{margin:0;background:#CFCDC6;-webkit-font-smoothing:antialiased}a{color:inherit;text-decoration-color:var(--brass);text-underline-offset:3px}a:hover{color:var(--brass-ink)}summary{cursor:pointer}</style>
+</helmet>
+<div style="display:flex;flex-direction:column;gap:20px;padding:48px;width:max-content">
+  <div style="font:500 13px/1.4 'IBM Plex Sans',sans-serif;color:#2a2d31">Consensus · Asset detail · Bitcoin. Answer, then evidence, then history; depth collapsed.</div>
+  <div style="display:grid;grid-template-columns:1280px 390px;gap:64px 48px;align-items:start;width:max-content">
+    <sc-for list="{{ frames }}" as="f" hint-placeholder-count="2">
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="font:500 12px 'IBM Plex Mono',monospace;color:#2a2d31">{{ f.label }}</div>
+        <div style="{{ f.style }}">
+          <nav style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:18px clamp(20px,4cqw,48px);border-bottom:1px solid var(--rule)">
+            <div style="display:flex;align-items:center;gap:10px">{{ f.mark }}<span style="font:400 27px/1 'Instrument Serif',serif;letter-spacing:-0.01em">Consensus</span></div>
+            <div style="{{ f.navDesk }}"><span style="color:var(--ink);box-shadow:inset 0 -1.5px 0 var(--brass);padding:6px 0">Assets</span><span style="padding:6px 0">Watchlist <span style="font:500 11px 'IBM Plex Mono',monospace;color:var(--verm)">11</span></span><span style="padding:6px 0">Tokenised stocks</span><span style="padding:6px 0">How this works</span><span style="width:30px;height:30px;border:1px solid var(--rule-strong);border-radius:50%;display:grid;place-items:center"><span style="width:12px;height:12px;border-radius:50%;border:1.5px solid var(--ink);background:linear-gradient(90deg,var(--ink) 50%,transparent 50%)"></span></span></div>
+            <div style="{{ f.navMob }}"><span style="padding:10px 12px;border:1px solid var(--rule-strong);border-radius:3px">Menu</span></div>
+          </nav>
+
+          <section style="padding:clamp(28px,4cqw,48px) clamp(20px,4cqw,48px) 0;display:flex;flex-direction:column;gap:22px">
+            <div style="font:400 13px 'IBM Plex Sans',sans-serif;color:var(--ink-3)"><a href="#" style="color:var(--ink-2)">Assets</a> / Bitcoin</div>
+            <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 20px">
+              <h1 style="margin:0;font:400 clamp(52px,6cqw,76px)/0.95 'Instrument Serif',serif;letter-spacing:-0.015em">Bitcoin</h1>
+              <span style="font:500 clamp(18px,1.8cqw,22px) 'IBM Plex Mono',monospace">$84,526.83</span>
+              <span style="font:400 13px 'IBM Plex Sans',sans-serif;color:var(--ink-3)">agreed price from 172 exchanges · latest reading</span>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:4px;overflow:hidden">
+              <div style="background:var(--card);padding:22px 24px;display:flex;flex-direction:column;gap:4px;align-items:center">
+                <span style="align-self:flex-start;font:500 12px 'IBM Plex Sans',sans-serif;color:var(--ink-3)">How reliable is this price</span>
+                <div style="width:100%;max-width:260px">{{ f.gauge }}</div>
+                <div style="display:flex;align-items:baseline;gap:10px;margin-top:-4px"><span style="font:400 56px/1 'Instrument Serif',serif">88</span><span style="font:500 15px 'IBM Plex Sans',sans-serif;color:var(--sage)">Reliable</span></div>
+              </div>
+              <div style="background:var(--card);padding:22px 24px;display:flex;flex-direction:column;gap:12px;justify-content:center">
+                <span style="font:500 12px 'IBM Plex Sans',sans-serif;color:var(--ink-3)">Verdict</span>
+                <p style="margin:0;font:400 clamp(24px,2.3cqw,30px)/1.2 'Instrument Serif',serif;text-wrap:pretty">Well supported. Trading is spread widely and almost every exchange quotes the same price.</p>
+                <p style="margin:0;font:400 14px/1.5 'IBM Plex Sans',sans-serif;color:var(--ink-2)">It isn't higher because CoinMarketCap discards 67% of Bitcoin's volume, the most of any asset we track.</p>
+              </div>
+              <div style="background:var(--card);padding:22px 24px;display:flex;flex-direction:column;gap:10px">
+                <span style="font:500 12px 'IBM Plex Sans',sans-serif;color:var(--ink-3)">Checked against CoinMarketCap</span>
+                <p style="margin:0;font:400 14px/1.5 'IBM Plex Sans',sans-serif;color:var(--ink)">We rebuilt the price from raw exchange data without seeing CoinMarketCap's number. It lands <b style="font-weight:600">20 bp</b> (0.20%) below theirs. <span style="color:var(--sage)">Within tolerance.</span></p>
+                {{ f.bench }}
+              </div>
+            </div>
+          </section>
+
+          <section style="padding:clamp(48px,6cqw,72px) clamp(12px,4cqw,48px) 0;display:flex;flex-direction:column;gap:16px">
+            <div style="padding:0 clamp(8px,0cqw,0px);display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px 24px">
+              <h2 style="margin:0;font:400 clamp(30px,3.4cqw,40px)/1.05 'Instrument Serif',serif">Where every exchange sits</h2>
+              <span style="font:400 12px 'IBM Plex Sans',sans-serif;color:var(--ink-3)">Height = share of trading · shaded = within 0.5% · grey = CoinMarketCap doesn't count it</span>
+            </div>
+            <div style="background:var(--card);border:1px solid var(--rule);border-radius:4px;padding:clamp(14px,2.2cqw,28px)">{{ f.field }}</div>
+          </section>
+
+          <section style="padding:clamp(40px,5cqw,64px) clamp(20px,4cqw,48px) 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:32px 48px;align-items:start">
+            <div style="display:flex;flex-direction:column;gap:16px">
+              <h2 style="margin:0;font:400 clamp(30px,3.4cqw,40px)/1.05 'Instrument Serif',serif">Who sets the price</h2>
+              <div style="display:flex;gap:22px;align-items:center">{{ f.conc }}<div style="display:flex;flex-direction:column;gap:6px"><span style="font:400 44px/1 'Instrument Serif',serif">11%</span><span style="font:400 14px/1.5 'IBM Plex Sans',sans-serif">of trading is on BTCC, the largest exchange.</span><span style="font:400 13px/1.5 'IBM Plex Sans',sans-serif;color:var(--ink-2)">No single exchange can move this price alone.</span></div></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <h2 style="margin:0;font:400 clamp(30px,3.4cqw,40px)/1.05 'Instrument Serif',serif">Off the market, still counted</h2>
+              <div style="border-top:1px solid var(--ink);display:flex;flex-direction:column">
+                <div style="padding:14px 0;border-bottom:1px solid var(--rule);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 16px">
+                  <span style="font:600 15px 'IBM Plex Sans',sans-serif">Kraken</span><span style="font:500 15px 'IBM Plex Mono',monospace;color:var(--verm);text-align:right">−20.7%</span>
+                  <span style="font:400 13px/1.5 'IBM Plex Sans',sans-serif;color:var(--ink-2)">XBT/USD · $289.2M traded in 24h. Returned twice by the API with different prices.</span><span style="font:400 12px 'IBM Plex Mono',monospace;color:var(--ink-3);text-align:right">65 of 65 readings</span>
+                </div>
+                <div style="padding:14px 0;border-bottom:1px solid var(--rule);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 16px">
+                  <span style="font:600 15px 'IBM Plex Sans',sans-serif">SunX</span><span style="font:500 15px 'IBM Plex Mono',monospace;color:var(--verm);text-align:right">≈ −14%</span>
+                  <span style="font:400 13px/1.5 'IBM Plex Sans',sans-serif;color:var(--ink-2)">Off-market on 14 of the 15 assets we track.</span><span style="font:400 12px 'IBM Plex Mono',monospace;color:var(--ink-3);text-align:right">65 of 65 readings</span>
+                </div>
+              </div>
+              <a href="#" style="font:400 14px 'IBM Plex Sans',sans-serif;color:var(--ink)">Show all 172 exchanges</a>
+            </div>
+          </section>
+
+          <section style="padding:clamp(48px,6cqw,72px) clamp(20px,4cqw,48px) 0;display:flex;flex-direction:column;gap:14px">
+            <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px 24px">
+              <h2 style="margin:0;font:400 clamp(30px,3.4cqw,40px)/1.05 'Instrument Serif',serif">Since we started recording</h2>
+              <span style="font:400 12px 'IBM Plex Mono',monospace;color:var(--ink-3)">trust score · one dot per 30-minute reading</span>
+            </div>
+            <div style="background:var(--card);border:1px solid var(--rule);border-radius:4px;padding:18px 22px">{{ f.hist }}</div>
+            <p style="margin:0;font:400 14px/1.5 'IBM Plex Sans',sans-serif;color:var(--ink-2)">Steady between 87 and 89 across all 65 readings. BTCC has stayed the largest exchange throughout.</p>
+          </section>
+
+          <section style="padding:clamp(40px,5cqw,56px) clamp(20px,4cqw,48px) 0;display:flex;flex-direction:column;border-bottom:1px solid var(--rule)">
+            <details style="border-top:1px solid var(--ink);padding:16px 0"><summary style="font:500 15px 'IBM Plex Sans',sans-serif">What goes into the score</summary>
+              <div style="display:flex;flex-direction:column;margin-top:12px;font:400 14px/1.4 'IBM Plex Sans',sans-serif">
+                <div style="display:flex;justify-content:space-between;gap:16px;padding:9px 0;border-top:1px solid var(--rule)"><span>How spread across exchanges the trading is</span><span style="font-family:'IBM Plex Mono';color:var(--ink-2);white-space:nowrap">38.8 of 40</span></div>
+                <div style="display:flex;justify-content:space-between;gap:16px;padding:9px 0;border-top:1px solid var(--rule)"><span>How many exchanges quote the same price</span><span style="font-family:'IBM Plex Mono';color:var(--ink-2);white-space:nowrap">29.6 of 30</span></div>
+                <div style="display:flex;justify-content:space-between;gap:16px;padding:9px 0;border-top:1px solid var(--rule)"><span>How recently exchanges updated</span><span style="font-family:'IBM Plex Mono';color:var(--ink-2);white-space:nowrap">14.9 of 15</span></div>
+                <div style="display:flex;justify-content:space-between;gap:16px;padding:9px 0;border-top:1px solid var(--rule)"><span>How much volume CoinMarketCap keeps</span><span style="font-family:'IBM Plex Mono';color:var(--ochre-ink);white-space:nowrap">5.1 of 15</span></div>
+              </div>
+            </details>
+            <details style="border-top:1px solid var(--rule);padding:16px 0"><summary style="font:500 15px 'IBM Plex Sans',sans-serif">Where Bitcoin actually trades: futures funding and basis</summary></details>
+            <details style="border-top:1px solid var(--rule);padding:16px 0"><summary style="font:500 15px 'IBM Plex Sans',sans-serif">Price on decentralised exchanges</summary></details>
+          </section>
+
+          <footer style="margin-top:clamp(56px,7cqw,88px);padding:28px clamp(20px,4cqw,48px) 36px;border-top:1px solid var(--rule);display:flex;flex-wrap:wrap;justify-content:space-between;gap:20px 40px">
+            <p style="margin:0;max-width:56ch;font:400 13px/1.55 'IBM Plex Sans',sans-serif;color:var(--ink-3)">Built on the CoinMarketCap Pro API for the Build with CMC hackathon. Shows what the API returns; it does not claim how CoinMarketCap computes its published price.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:8px 24px;font:400 13px 'IBM Plex Sans',sans-serif;color:var(--ink-2)"><a href="#">How this works</a><a href="#">Source on GitHub</a></div>
+          </footer>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;view&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Desktop light, mobile dark&quot;,&quot;Light only&quot;,&quot;Dark only&quot;],&quot;default&quot;:&quot;Desktop light, mobile dark&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  componentDidMount() { if (!window.CC) { const t = setInterval(() => { if (window.CC) { clearInterval(t); this.forceUpdate(); } }, 50); } }
+  renderVals() {
+    const CC = window.CC;
+    if (!CC) return { frames: [] };
+    const view = this.props.view ?? 'Desktop light, mobile dark';
+    if (this._f && this._view === view) return { frames: this._f };
+    this._view = view;
+    const all = { 'Desktop light, mobile dark': [['light', 1], ['dark', 0]], 'Light only': [['light', 1], ['light', 0]], 'Dark only': [['dark', 1], ['dark', 0]] }[view] || [['light', 1], ['dark', 0]];
+    this._f = all.map(([theme, desktop]) => ({
+      label: `${desktop ? 'Desktop · 1280' : 'Mobile · 390'} · ${theme}`,
+      style: { ...CC.THEMES[theme], width: desktop ? 1280 : 390, containerType: 'inline-size', background: 'var(--paper)', color: 'var(--ink)', outline: '1px solid rgba(0,0,0,.12)', overflow: 'hidden' },
+      navDesk: { display: desktop ? 'flex' : 'none', alignItems: 'center', gap: 28, font: "400 14px 'IBM Plex Sans',sans-serif", color: 'var(--ink-2)' },
+      navMob: { display: desktop ? 'none' : 'flex', font: "500 14px 'IBM Plex Sans',sans-serif" },
+      mark: CC.mark({ size: 26 }),
+      gauge: CC.gauge(88, { w: 260 }),
+      bench: CC.bench({ s: 'BTC', gap: -20 }, { w: desktop ? 380 : 340, h: 100 }),
+      field: CC.field('BTC', desktop ? { w: 1170, h: 340 } : { w: 360, h: 240, domain: 1, gutter: 96 }),
+      conc: CC.conc(.11, { cell: desktop ? 12 : 10 }),
+      hist: CC.history('BTC', { w: desktop ? 1130 : 330, h: desktop ? 110 : 120 }),
+    }));
+    return { frames: this._f };
+  }
+}
+</script>
+</body>
+</html>

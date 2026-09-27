@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<script src="cc.js"></script>
+<style>body{margin:0;background:#CFCDC6;-webkit-font-smoothing:antialiased}a{color:#1B2027}</style>
+</helmet>
+<div style="display:flex;flex-direction:column;gap:14px;padding:48px;width:max-content">
+  <div style="font:500 13px/1.4 'IBM Plex Sans',sans-serif;color:#2a2d31">Share card · 1200×630 · generated per page. Home uses the top finding; asset pages use their own. Built with next/og from the same SVG rules.</div>
+  <div style="{{ cardA }}">
+    <div style="display:flex;justify-content:space-between;align-items:center"><div style="display:flex;align-items:flex-end;gap:12px">{{ mark }}<span style="font:400 38px/0.8 'Instrument Serif',serif;color:var(--ink)">Consensus</span></div><span style="font:400 18px 'IBM Plex Mono',monospace;color:var(--ink-3)">65 readings since 25 Sep</span></div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="font:400 64px/1.02 'Instrument Serif',serif;letter-spacing:-0.015em;color:var(--ink);max-width:1000px">Kraken quotes Bitcoin 20.7% below the market. CoinMarketCap still counts it.</div>
+    </div>
+    <div>{{ field }}</div>
+    <div style="display:flex;justify-content:space-between;font:400 18px 'IBM Plex Sans',sans-serif;color:var(--ink-2)"><span>172 exchanges, each placed by its distance from the agreed price</span><span style="font-family:'IBM Plex Mono'">consensus-cmc.vercel.app</span></div>
+  </div>
+  <div style="{{ cardB }}">
+    <div style="display:flex;justify-content:space-between;align-items:center"><div style="display:flex;align-items:flex-end;gap:12px">{{ mark }}<span style="font:400 38px/0.8 'Instrument Serif',serif;color:var(--ink)">Consensus</span></div><span style="font:400 18px 'IBM Plex Mono',monospace;color:var(--ink-3)">consensus-cmc.vercel.app</span></div>
+    <div style="display:grid;grid-template-columns:440px 1fr;gap:48px;align-items:end">
+      <div style="display:flex;align-items:baseline;gap:16px"><span style="font:400 260px/0.8 'Instrument Serif',serif;letter-spacing:-0.04em;color:var(--ink)">9</span><span style="font:400 52px/1 'Instrument Serif',serif;color:var(--ink-2)">bp</span></div>
+      <div style="display:flex;flex-direction:column;gap:18px;padding-bottom:10px"><div style="font:400 34px/1.2 'Instrument Serif',serif;color:var(--ink)">Median gap between a price rebuilt from raw exchange data and CoinMarketCap's own, across 15 assets.</div><div style="font:400 20px/1.4 'IBM Plex Sans',sans-serif;color:var(--ink-2)">Widest: Bitcoin Cash at 54 bp, where 90% of trading sits on one exchange.</div></div>
+    </div>
+    <div>{{ bench }}</div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() { if (!window.CC) { const t = setInterval(() => { if (window.CC) { clearInterval(t); this.forceUpdate(); } }, 50); } }
+  renderVals() {
+    const CC = window.CC;
+    if (!CC) return {};
+    if (this._v) return this._v;
+    const card = { ...CC.THEMES.light, width: 1200, height: 630, boxSizing: 'border-box', padding: '48px 56px', background: 'var(--paper)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', overflow: 'hidden', outline: '1px solid rgba(0,0,0,.12)' };
+    this._v = {
+      cardA: card, cardB: card, mark: CC.mark({ size: 40 }),
+      field: CC.field('BTC', { w: 1088, h: 200, gutter: 150 }),
+      bench: CC.bench(CC.ASSETS.map(a => ({ s: a.s, gap: a.gap })), { w: 1088, h: 110 }),
+    };
+    return this._v;
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<script src="cc.js"></script>
+<style>body{margin:0;background:#CFCDC6;-webkit-font-smoothing:antialiased}a{color:inherit;text-decoration-color:var(--brass);text-underline-offset:3px}a:hover{color:var(--brass-ink)}</style>
+</helmet>
+<div style="display:flex;flex-direction:column;gap:20px;padding:48px;width:max-content">
+  <div style="font:500 13px/1.4 'IBM Plex Sans',sans-serif;color:#2a2d31">Consensus · Tokenised stocks (was RWA) and Tokenised asset detail (Gold). Same dispersion language, issuers instead of exchanges.</div>
+  <div style="display:grid;grid-template-columns:1280px 390px;gap:64px 48px;align-items:start;width:max-content">
+    <sc-for list="{{ frames }}" as="f" hint-placeholder-count="4">
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="font:500 12px 'IBM Plex Mono',monospace;color:#2a2d31">{{ f.label }}</div>
+        <div style="{{ f.style }}">
+          <nav style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:18px clamp(20px,4cqw,48px);border-bottom:1px solid var(--rule)">
+            <div style="display:flex;align-items:center;gap:10px">{{ f.mark }}<span style="font:400 27px/1 'Instrument Serif',serif;letter-spacing:-0.01em">Consensus</span></div>
+            <div style="{{ f.navDesk }}"><span style="padding:6px 0">Assets</span><span style="padding:6px 0">Watchlist <span style="font:500 11px 'IBM Plex Mono',monospace;color:var(--verm)">11</span></span><span style="color:var(--ink);box-shadow:inset 0 -1.5px 0 var(--brass);padding:6px 0">Tokenised stocks</span><span style="padding:6px 0">How this works</span><span style="width:30px;height:30px;border:1px solid var(--rule-strong);border-radius:50%;display:grid;place-items:center"><span style="width:12px;height:12px;border-radius:50%;border:1.5px solid var(--ink);background:linear-gradient(90deg,var(--ink) 50%,transparent 50%)"></span></span></div>
+            <div style="{{ f.navMob }}"><span style="padding:10px 12px;border:1px solid var(--rule-strong);border-radius:3px">Menu</span></div>
+          </nav>
+
+          <div style="{{ f.listPage }}">
+            <header style="padding:clamp(32px,5cqw,64px) clamp(20px,4cqw,48px) 0;display:flex;flex-direction:column;gap:14px">
+              <div style="font:400 12px 'IBM Plex Mono',monospace;color:var(--ink-3)">38 tokenised assets · latest reading</div>
+              <h1 style="margin:0;font:400 clamp(44px,5.6cqw,72px)/1 'Instrument Serif',serif;letter-spacing:-0.015em;max-width:900px">Tokenised stocks and commodities</h1>
+              <p style="margin:0;font:400 clamp(15px,1.4cqw,18px)/1.55 'IBM Plex Sans',sans-serif;color:var(--ink-2);max-width:64ch">A tokenised stock is a crypto token meant to track a real share or commodity, like Apple or gold. Several issuers make tokens for the same asset. We compare their prices with each other.</p>
+            </header>
+            <section style="padding:clamp(32px,4cqw,48px) clamp(20px,4cqw,48px) 0">
+              <div style="background:var(--card);border:1px solid var(--rule);border-radius:4px;padding:clamp(18px,2.6cqw,32px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:20px 48px;align-items:center">
+                <div style="display:flex;flex-direction:column;gap:8px">
+                  <span style="font:400 12px 'IBM Plex Mono',monospace;color:var(--brass-ink)">Widest disagreement</span>
+                  <span style="font:400 clamp(80px,10cqw,128px)/0.85 'Instrument Serif',serif;letter-spacing:-0.03em;color:var(--verm)">47.1%</span>
+                  <p style="margin:6px 0 0;font:400 16px/1.5 'IBM Plex Sans',sans-serif">Between the 11 SpaceX tokens, 10 of them liquid. Every other asset's issuers agree within 0.60%.</p>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:8px">{{ f.spread }}<span style="font:400 12px 'IBM Plex Sans',sans-serif;color:var(--ink-3)">Issuer disagreement per asset. Axis 0–1%, SpaceX off-scale.</span></div>
+              </div>
+            </section>
+            <section style="padding:clamp(40px,5cqw,64px) clamp(20px,4cqw,48px) 0;display:flex;flex-direction:column">
+              <div style="display:flex;justify-content:space-between;align-items:baseline;padding-bottom:10px;border-bottom:1px solid var(--ink);gap:12px"><h2 style="margin:0;font:400 clamp(28px,3.2cqw,38px)/1.05 'Instrument Serif',serif">Most disagreement first</h2><span style="font:400 12px 'IBM Plex Mono',monospace;color:var(--ink-3)">7 of 38</span></div>
+              <sc-for list="{{ f.rows }}" as="r" hint-placeholder-count="7">
+                <div style="{{ f.rowStyle }}">
+                  <div style="display:flex;align-items:baseline;gap:10px;min-width:0"><span style="font:500 15px 'IBM Plex Mono',monospace">{{ r.s }}</span><span style="font:400 13px 'IBM Plex Sans',sans-serif;color:var(--ink-3)">{{ r.name }}</span></div>
+                  <span style="{{ r.pctStyle }}">{{ r.pct }}</span>
+                  <span style="font:400 13px/1.4 'IBM Plex Sans',sans-serif;color:var(--ink-2)">{{ r.tokens }}</span>
+                </div>
+              </sc-for>
+              <div style="padding:14px 0;font:400 13px 'IBM Plex Sans',sans-serif;color:var(--ink-2)"><a href="#">31 more assets</a>, each with issuers within 0.30% of each other.</div>
+            </section>
+          </div>
+
+          <div style="{{ f.goldPage }}">
+            <header style="padding:clamp(28px,4cqw,48px) clamp(20px,4cqw,48px) 0;display:flex;flex-direction:column;gap:14px">
+              <div style="font:400 13px 'IBM Plex Sans',sans-serif;color:var(--ink-3)"><a href="#" style="color:var(--ink-2)">Tokenised stocks</a> / Gold</div>
+              <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 20px"><h1 style="margin:0;font:400 clamp(52px,6cqw,76px)/0.95 'Instrument Serif',serif;letter-spacing:-0.015em">Gold</h1><span style="font:500 20px 'IBM Plex Mono',monospace">~$4,278</span><span style="font:400 13px 'IBM Plex Sans',sans-serif;color:var(--ink-3)">per troy ounce · 7 tokens from different issuers</span></div>
+            </header>
+            <section style="padding:clamp(28px,4cqw,40px) clamp(20px,4cqw,48px) 0">
+              <div style="background:var(--card);border:1px solid var(--rule);border-radius:4px;padding:clamp(18px,2.6cqw,32px);display:flex;flex-direction:column;gap:18px">
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px 40px">
+                  <div style="display:flex;flex-direction:column;gap:6px"><span style="font:500 12px 'IBM Plex Sans',sans-serif;color:var(--ink-3)">Read naively</span><span style="font:400 clamp(30px,3.4cqw,40px)/1.1 'Instrument Serif',serif;color:var(--ink-2);text-decoration:line-through;text-decoration-color:var(--verm);text-decoration-thickness:2px">97% disagreement</span></div>
+                  <div style="display:flex;flex-direction:column;gap:6px"><span style="font:500 12px 'IBM Plex Sans',sans-serif;color:var(--ink-3)">What's actually happening</span><span style="font:400 clamp(30px,3.4cqw,40px)/1.1 'Instrument Serif',serif">Some tokens are priced per gram.</span></div>
+                </div>
+                {{ f.unit }}
+                <p style="margin:0;font:400 14px/1.55 'IBM Plex Sans',sans-serif;color:var(--ink-2);max-width:74ch">$4,278 ÷ 31.1 grams per troy ounce ≈ $138. A token priced at close to 1/31.1, 1/1000, 1/100 or 1/10 of the reference is treated as a different unit, labelled, and left out of the disagreement figure.</p>
+              </div>
+            </section>
+            <section style="padding:clamp(36px,4cqw,56px) clamp(20px,4cqw,48px) 0;display:flex;flex-direction:column;gap:10px">
+              <h2 style="margin:0;font:400 clamp(28px,3.2cqw,38px)/1.05 'Instrument Serif',serif">Each issuer's token</h2>
+              <div style="overflow-x:auto;border-top:1px solid var(--ink)">
+                <div style="min-width:720px">
+                  <div style="display:grid;grid-template-columns:minmax(160px,1.3fr) 110px 150px 110px minmax(150px,1fr);gap:16px;padding:10px 0;border-bottom:1px solid var(--rule);font:400 12px 'IBM Plex Sans',sans-serif;color:var(--ink-3)"><span>Token</span><span style="text-align:right">Price</span><span style="text-align:right">vs reference</span><span style="text-align:right">24h traded</span><span>Status</span></div>
+                  <div style="display:grid;grid-template-columns:minmax(160px,1.3fr) 110px 150px 110px minmax(150px,1fr);gap:16px;padding:12px 0;border-bottom:1px solid var(--rule);align-items:center"><span style="font:500 14px 'IBM Plex Sans',sans-serif">Per-ounce token</span><span style="font:400 13px 'IBM Plex Mono',monospace;text-align:right">$4,278</span><span style="font:400 13px 'IBM Plex Mono',monospace;text-align:right;color:var(--ink-2)">reference</span><span style="font:400 13px 'IBM Plex Mono',monospace;text-align:right;color:var(--ink-3)">live</span><span><span style="padding:3px 7px;background:var(--sunk);border-radius:2px;font:500 12px 'IBM Plex Sans',sans-serif">Liquid</span></span></div>
+                  <div style="display:grid;grid-template-columns:minmax(160px,1.3fr) 110px 150px 110px minmax(150px,1fr);gap:16px;padding:12px 0;border-bottom:1px solid var(--rule);align-items:center"><span style="font:500 14px 'IBM Plex Sans',sans-serif">Per-gram token</span><span style="font:400 13px 'IBM Plex Mono',monospace;text-align:right">$138</span><span style="font:400 13px 'IBM Plex Mono',monospace;text-align:right;color:var(--ink-2)">× 31.1 = $4,278</span><span style="font:400 13px 'IBM Plex Mono',monospace;text-align:right;color:var(--ink-3)">live</span><span><span style="padding:3px 7px;background:var(--sunk);border-radius:2px;font:500 12px 'IBM Plex Sans',sans-serif;color:var(--ink-2)">Priced per gram</span></span></div>
+                </div>
+              </div>
+              <p style="margin:0;font:400 13px/1.5 'IBM Plex Sans',sans-serif;color:var(--ink-3)">Row pattern shown for the two unit cases; the seven issuer rows come from live data. Status set: Liquid · Thin trading · Derivative, not the asset · Priced per gram · No price yet.</p>
+            </section>
+          </div>
+
+          <footer style="margin-top:clamp(56px,7cqw,88px);padding:28px clamp(20px,4cqw,48px) 36px;border-top:1px solid var(--rule);display:flex;flex-wrap:wrap;justify-content:space-between;gap:20px 40px">
+            <p style="margin:0;max-width:56ch;font:400 13px/1.55 'IBM Plex Sans',sans-serif;color:var(--ink-3)">Tokenised quotes carry no underlying market price from the API, so issuers are compared with each other, not with the real stock or commodity.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:8px 24px;font:400 13px 'IBM Plex Sans',sans-serif;color:var(--ink-2)"><a href="#">How this works</a><a href="#">Source on GitHub</a></div>
+          </footer>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() { if (!window.CC) { const t = setInterval(() => { if (window.CC) { clearInterval(t); this.forceUpdate(); } }, 50); } }
+  spread(W) {
+    const h = window.React.createElement, CC = window.CC, rows = CC.RWA, rh = 22, H = rows.length * rh + 28, lx = 58, gx = W - 70, x = (p) => lx + p / 1 * (gx - 12 - lx), els = [];
+    els.push(h('line', { key: 'ax', x1: lx, x2: gx - 6, y1: H - 22, y2: H - 22, stroke: 'var(--rule-strong)' }));
+    [0, .25, .5, .75, 1].forEach(p => els.push(h('text', { key: 't' + p, x: x(p), y: H - 6, textAnchor: 'middle', fontSize: 11, fontFamily: 'IBM Plex Mono', fill: 'var(--ink-3)' }, p === 0 ? '0' : p.toFixed(2) + '%')));
+    els.push(h('path', { key: 'br', d: `M${gx - 10} ${H - 17} L${gx - 6} ${H - 27} M${gx - 4} ${H - 17} L${gx} ${H - 27}`, stroke: 'var(--ink-3)', fill: 'none' }));
+    rows.forEach((r, i) => {
+      const y = 8 + i * rh, p = r.bp / 100, off = p > 1, X = off ? W - 8 : x(p), c = off ? 'var(--verm)' : 'var(--ink-2)';
+      els.push(h('text', { key: 'l' + i, x: 0, y: y + 9, fontSize: 11, fontFamily: 'IBM Plex Mono', fill: 'var(--ink)' }, r.s));
+      els.push(h('line', { key: 'b' + i, x1: lx, x2: X, y1: y + 5, y2: y + 5, stroke: c, strokeWidth: off ? 2 : 1.5, strokeDasharray: off ? '0' : '0' }));
+      els.push(h('rect', { key: 'e' + i, x: X - 1.5, y: y, width: 3, height: 10, fill: c }));
+    });
+    return h('svg', { viewBox: `0 0 ${W} ${H}`, width: '100%', style: { display: 'block' }, role: 'img', 'aria-label': 'Issuer disagreement by asset' }, els);
+  }
+  unit(W) {
+    const h = window.React.createElement, H = 120, l = 16, r = W - 16, lg = (v) => Math.log10(v), x = (v) => l + (lg(v) - lg(100)) / (lg(6000) - lg(100)) * (r - l), y0 = 78, els = [];
+    els.push(h('line', { key: 'ax', x1: l, x2: r, y1: y0, y2: y0, stroke: 'var(--rule-strong)' }));
+    [100, 200, 500, 1000, 2000, 5000].forEach(v => { els.push(h('line', { key: 'k' + v, x1: x(v), x2: x(v), y1: y0, y2: y0 + 5, stroke: 'var(--rule-strong)' })); els.push(h('text', { key: 'kt' + v, x: x(v), y: y0 + 20, textAnchor: 'middle', fontSize: 11, fontFamily: 'IBM Plex Mono', fill: 'var(--ink-3)' }, '$' + v.toLocaleString())); });
+    [[138, 'per gram', 'var(--muted)'], [4278, 'per troy ounce', 'var(--brass)']].forEach(([v, t, c], i) => {
+      els.push(h('line', { key: 's' + i, x1: x(v), x2: x(v), y1: 24, y2: y0, stroke: c, strokeWidth: 3 }));
+      els.push(h('text', { key: 'st' + i, x: x(v), y: 14, textAnchor: i ? 'end' : 'start', fontSize: 12, fontFamily: 'IBM Plex Mono', fill: 'var(--ink)' }, `~$${v.toLocaleString()} ${t}`));
+    });
+    els.push(h('path', { key: 'arc', d: `M${x(138) + 8} 50 C ${x(600)} 30, ${x(1800)} 30, ${x(4278) - 10} 50`, stroke: 'var(--ink-2)', fill: 'none', strokeDasharray: '3 3' }));
+    els.push(h('path', { key: 'ah', d: `M${x(4278) - 10} 50 l-7 -2 l3 6 z`, fill: 'var(--ink-2)' }));
+    els.push(h('text', { key: 'at', x: x(770), y: 30, textAnchor: 'middle', fontSize: 12, fontFamily: 'IBM Plex Mono', fill: 'var(--ink-2)' }, '× 31.1'));
+    els.push(h('text', { key: 'al', x: r, y: H - 2, textAnchor: 'end', fontSize: 10, fontFamily: 'IBM Plex Mono', fill: 'var(--ink-3)' }, 'log scale'));
+    return h('svg', { viewBox: `0 0 ${W} ${H}`, width: '100%', style: { display: 'block' }, role: 'img', 'aria-label': 'Gold tokens priced per gram and per ounce' }, els);
+  }
+  renderVals() {
+    const CC = window.CC;
+    if (!CC) return { frames: [] };
+    if (this._f) return { frames: this._f };
+    this._f = [['light', 1, 'list'], ['dark', 0, 'list'], ['light', 1, 'gold'], ['light', 0, 'gold']].map(([theme, desktop, page]) => ({
+      label: `${page === 'list' ? 'Tokenised stocks' : 'Gold detail'} · ${desktop ? 'desktop 1280' : 'mobile 390'} · ${theme}`,
+      style: { ...CC.THEMES[theme], width: desktop ? 1280 : 390, containerType: 'inline-size', background: 'var(--paper)', color: 'var(--ink)', outline: '1px solid rgba(0,0,0,.12)', overflow: 'hidden' },
+      navDesk: { display: desktop ? 'flex' : 'none', alignItems: 'center', gap: 28, font: "400 14px 'IBM Plex Sans',sans-serif", color: 'var(--ink-2)' },
+      navMob: { display: desktop ? 'none' : 'flex', font: "500 14px 'IBM Plex Sans',sans-serif" },
+      listPage: { display: page === 'list' ? 'block' : 'none' }, goldPage: { display: page === 'gold' ? 'block' : 'none' },
+      mark: CC.mark({ size: 26 }),
+      spread: page === 'list' ? this.spread(desktop ? 560 : 340) : null,
+      unit: page === 'gold' ? this.unit(desktop ? 1100 : 330) : null,
+      rowStyle: desktop ? { display: 'grid', gridTemplateColumns: '280px 140px minmax(0,1fr)', gap: 24, alignItems: 'baseline', padding: '14px 0', borderBottom: '1px solid var(--rule)' } : { display: 'grid', gridTemplateColumns: 'minmax(0,1fr) auto', gap: '4px 12px', alignItems: 'baseline', padding: '14px 0', borderBottom: '1px solid var(--rule)' },
+      rows: CC.RWA.map(r => ({ s: r.s, name: r.name, pct: (r.bp / 100).toFixed(2) + '%', tokens: `${r.tokens} tokens · ${r.liquid} liquid${r.unpriced ? ` · ${r.unpriced} with no price yet` : ''}`, pctStyle: { font: "500 15px 'IBM Plex Mono',monospace", color: r.bp > 100 ? 'var(--verm)' : 'var(--ink)', textAlign: desktop ? 'left' : 'right' } })),
+    }));
+    return { frames: this._f };
+  }
+}
+</script>
+</body>
+</html>
