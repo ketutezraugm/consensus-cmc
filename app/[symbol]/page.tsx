@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import { captures, observations, poolObservations, liquidations, scoreHistory, anomalyRows, toVenue } from '@/lib/data';
 import { score, onchain } from '@/lib/consensus';
 import { venueBoard } from '@/lib/history';
-import { Dispersion, Concentration, Trend, Legend, severity } from '@/components/Charts';
+import { Dispersion, Concentration, Trend, Legend, severity, ScoreBreakdown } from '@/components/Charts';
 import { usd, pct, bps, stamp } from '@/lib/fmt';
 import { Ago } from '@/components/Ago';
 import { WATCHLIST } from '@/lib/assets';
@@ -57,6 +57,14 @@ export default async function Asset({ params }: { params: Promise<{ symbol: stri
         {stat('Effective venues', r.effectiveVenues.toFixed(1))}
         {stat('Volume in agreement', pct(r.agreeingShare, 0))}
         {stat('Volume CMC excludes', pct(r.excludedShare, 0))}
+      </div>
+
+      <div className={`mt-3 ${card}`}>
+        <div className="text-xs text-muted">
+          How the {r.confidence} was built — a two-asset ranking can favour one with lighter concentration risk (spread) but heavier junk-venue
+          exclusion (cleanliness), or vice versa. See <Link className="underline underline-offset-2" href="/methodology">methodology</Link>.
+        </div>
+        <div className="mt-3"><ScoreBreakdown parts={r.parts} /></div>
       </div>
 
       {latestHist?.published_gap_bps !== null && latestHist?.published_gap_bps !== undefined && (

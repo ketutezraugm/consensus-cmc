@@ -128,6 +128,34 @@ export function Trend({ points, fmt, domain, label, color = 'var(--color-accent)
   );
 }
 
+// Breaks the single confidence number into its four weighted components, so two similar-looking
+// scores (or a surprising ranking, e.g. one asset outscoring a less-concentrated one) are legible
+// rather than opaque: each row shows the raw 0-1 value and how many of the possible points it contributed.
+export function ScoreBreakdown({ parts }: { parts: { spread: number; agreement: number; freshness: number; cleanliness: number } }) {
+  const rows: { label: string; weight: number; value: number }[] = [
+    { label: 'Spread', weight: 0.4, value: parts.spread },
+    { label: 'Agreement', weight: 0.3, value: parts.agreement },
+    { label: 'Freshness', weight: 0.15, value: parts.freshness },
+    { label: 'Cleanliness', weight: 0.15, value: parts.cleanliness },
+  ];
+  return (
+    <div className="space-y-2.5">
+      {rows.map((r) => {
+        const pts = r.weight * r.value * 100, max = r.weight * 100;
+        return (
+          <div key={r.label} className="grid grid-cols-[7rem_1fr_6.5rem] items-center gap-3 text-sm">
+            <div>{r.label} <span className="text-xs text-muted">{Math.round(r.weight * 100)}%</span></div>
+            <div className="h-2.5 rounded-full bg-raised">
+              <div className="h-2.5 rounded-full bg-accent" style={{ width: `${Math.max(2, r.value * 100)}%` }} />
+            </div>
+            <div className="num text-right text-xs text-muted">{pts.toFixed(1)} / {max.toFixed(0)} pts</div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 export function Legend({ grey = 'CMC excludes it' }: { grey?: string }) {
   return (
     <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted">
