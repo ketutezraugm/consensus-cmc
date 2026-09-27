@@ -4,7 +4,7 @@ const H = () => ({ apikey: process.env.SUPABASE_SERVICE_KEY!, Authorization: `Be
 // Paginated read (PostgREST caps a response at 1000 rows). Never cached: a stale first load would show old data on a freshness product.
 export async function rest<T>(q: string): Promise<T[]> {
   const page = (from: number, count = false) =>
-    fetch(`${process.env.SUPABASE_URL}/rest/v1/${q}`, { headers: { ...H(), Range: `${from}-${from + 999}`, ...(count ? { Prefer: 'count=exact' } : {}) }, cache: 'no-store' });
+    fetch(`${process.env.SUPABASE_URL}/rest/v1/${q}`, { headers: { ...H(), Range: `${from}-${from + 999}`, ...(count ? { Prefer: 'count=exact' } : {}) }, next: { revalidate: 1800, tags: ['data'] } });
   const read = async (r: Response) => {
     if (!r.ok) throw new Error(`supabase ${r.status}: ${await r.text()}`);
     return (await r.json()) as T[];

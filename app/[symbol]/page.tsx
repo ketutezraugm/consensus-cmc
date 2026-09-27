@@ -4,7 +4,11 @@ import { captures, observations, poolObservations, liquidations, scoreHistory, a
 import { score, onchain } from '@/lib/consensus';
 import { venueBoard } from '@/lib/history';
 import { Dispersion, Concentration, Trend, Legend, severity } from '@/components/Charts';
-import { usd, pct, bps, ago, stamp } from '@/lib/fmt';
+import { usd, pct, bps, stamp } from '@/lib/fmt';
+import { Ago } from '@/components/Ago';
+
+// Rendered once per capture: fetches below are tagged 'data' and the recorder revalidates that tag after each capture.
+export const revalidate = 1800;
 
 const card = 'rounded-lg border border-line bg-panel p-4';
 
@@ -39,7 +43,7 @@ export default async function Asset({ params }: { params: Promise<{ symbol: stri
       <Link href="/" className="text-sm text-muted hover:text-fg">← all assets</Link>
       <h1 className="mt-2 text-3xl font-semibold tracking-tight">{symbol} <span className="text-muted">perpetuals</span></h1>
       <p className="num mt-1 text-sm text-muted">
-        {ago(at)} · {r.venues} venue listings · reference ${r.ref.toLocaleString('en-US', { maximumFractionDigits: 4 })} (median of venues CMC trusts)
+        <Ago iso={at} /> · {r.venues} venue listings · reference ${r.ref.toLocaleString('en-US', { maximumFractionDigits: 4 })} (median of venues CMC trusts)
       </p>
 
       <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">

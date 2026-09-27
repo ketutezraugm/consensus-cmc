@@ -3,7 +3,11 @@ import { notFound } from 'next/navigation';
 import { captures, rwaObservations, rwaScoreHistory } from '@/lib/data';
 import { scoreAssets } from '@/lib/rwa';
 import { Dispersion, Trend, Legend, severity, type V } from '@/components/Charts';
-import { usd, pct, bps, ago, stamp } from '@/lib/fmt';
+import { usd, pct, bps, stamp } from '@/lib/fmt';
+import { Ago } from '@/components/Ago';
+
+// Rendered once per capture: fetches below are tagged 'data' and the recorder revalidates that tag after each capture.
+export const revalidate = 1800;
 
 const card = 'rounded-lg border border-line bg-panel p-4';
 const KIND: Record<string, string> = {
@@ -33,7 +37,7 @@ export default async function RwaAsset({ params }: { params: Promise<{ symbol: s
     <main className="mx-auto w-full max-w-6xl px-5 py-10">
       <Link href="/rwa" className="text-sm text-muted hover:text-fg">← tokenised assets</Link>
       <h1 className="mt-2 text-3xl font-semibold tracking-tight">{symbol} <span className="text-muted">{type}, tokenised</span></h1>
-      <p className="num mt-1 text-sm text-muted">{ago(at)} · {r.tokens} tokens from {r.issuers} issuers · reference ${r.ref.toLocaleString('en-US', { maximumFractionDigits: 4 })}</p>
+      <p className="num mt-1 text-sm text-muted"><Ago iso={at} /> · {r.tokens} tokens from {r.issuers} issuers · reference ${r.ref.toLocaleString('en-US', { maximumFractionDigits: 4 })}</p>
 
       <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
         {stat('Weighted disagreement', `${Math.round(r.dispersionBps)} bps`)}

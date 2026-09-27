@@ -3,7 +3,11 @@ import { scoreHistory, anomalyRows, liquidations, observations, captures, toVenu
 import { findings, latestPerSymbol } from '@/lib/history';
 import { score } from '@/lib/consensus';
 import { Dispersion, Concentration, Legend } from '@/components/Charts';
-import { pct, ago, stamp, usd } from '@/lib/fmt';
+import { pct, stamp, usd } from '@/lib/fmt';
+import { Ago } from '@/components/Ago';
+
+// Rendered once per capture: fetches below are tagged 'data' and the recorder revalidates that tag after each capture.
+export const revalidate = 1800;
 
 const tone = (c: number) => (c >= 85 ? 'text-good' : c >= 65 ? 'text-warn' : 'text-bad');
 
@@ -32,7 +36,7 @@ export default async function Home() {
         30 minutes and shows who sets the price, who disagrees, and for how long.
       </p>
       <p className="num mt-3 text-sm text-muted">
-        {total} captures since {stamp(all[0].captured_at)} · latest {ago(at)}
+        {total} captures since {stamp(all[0].captured_at)} · latest <Ago iso={at} />
         {totalLiq ? ` · ${usd(totalLiq.long_24h + totalLiq.short_24h)} liquidated market-wide in 24h` : ''}
       </p>
 

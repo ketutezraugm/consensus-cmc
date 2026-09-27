@@ -2,7 +2,11 @@ import Link from 'next/link';
 import { captures, rwaObservations } from '@/lib/data';
 import { scoreAssets } from '@/lib/rwa';
 import { Dispersion, Legend, type V } from '@/components/Charts';
-import { ago, pct, usd } from '@/lib/fmt';
+import { pct, usd } from '@/lib/fmt';
+import { Ago } from '@/components/Ago';
+
+// Rendered once per capture: fetches below are tagged 'data' and the recorder revalidates that tag after each capture.
+export const revalidate = 1800;
 
 export const metadata = { title: 'Tokenised assets | Consensus' };
 
@@ -36,7 +40,7 @@ export default async function Rwa() {
         One stock or commodity, tokenised by several issuers on several chains. CoinMarketCap publishes one average price for each. This shows every
         issuer&apos;s token against the price the liquid ones agree on.
       </p>
-      <p className="num mt-3 text-sm text-muted">{assets.length} assets · {obs.length} tokens · latest {ago(at)}</p>
+      <p className="num mt-3 text-sm text-muted">{assets.length} assets · {obs.length} tokens · latest <Ago iso={at} /></p>
 
       <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {cards.map((c) => (

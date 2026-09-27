@@ -1,10 +1,12 @@
 import { timingSafeEqual } from 'node:crypto';
+import { revalidateTag } from 'next/cache';
 import { cmc } from '@/lib/cmc';
 import { WATCHLIST } from '@/lib/assets';
 import { summarize, summarizeRwa } from '@/lib/summary';
-import { scoreHistory, anomalyRows } from '@/lib/data';
+import { scoreHistory, anomalyRows, captures } from '@/lib/data';
 import { alerts, newAlerts } from '@/lib/alerts';
 import { pushAlerts } from '@/lib/telegram';
+import { requiredIntervalMin, captureDue } from '@/lib/budget';
 
 export const maxDuration = 60;
 
@@ -30,9 +32,33 @@ async function insert(table: string, rows: object[]) {
   }
 }
 
+// Measured cost of one full capture (15 assets + liquidations + DEX + RWA). Pad slightly so the
+// budget stays conservative rather than running dry a day before the monthly reset.
+const COST_PER_CAPTURE = 22;
+
 export async function POST(req: Request) {
   if (!authorized(req)) return new Response('unauthorized', { status: 401 });
-  const dry = new URL(req.url).searchParams.has('dry');
+  const params = new URL(req.url).searchParams;
+  const dry = params.has('dry');
+  const force = params.has('force');
+
+  // Stretch the capture interval so the key's monthly credits last until the reset, instead of
+  // exhausting a fresh-tier budget mid-month (or mid-judging-window) and going dark. Skips cost nothing.
+  if (!dry && !force) {
+    try {
+      const [info, existing] = await Promise.all([cmc('/v1/key/info'), captures()]);
+      const plan = info.data.plan, usage = info.data.usage;
+      const interval = requiredIntervalMin({
+        limit: plan.credit_limit_monthly, used: usage.current_month.credits_used,
+        resetAt: plan.credit_limit_monthly_reset_timestamp, now: Date.now(), costPerCapture: COST_PER_CAPTURE,
+      });
+      const lastAt = existing[0] ? Date.parse(existing[0]) : null;
+      if (!captureDue(lastAt, Date.now(), interval)) {
+        return Response.json({ ok: true, skipped: true, reason: 'under the credit budget for this interval', intervalMin: interval, creditsLeft: plan.credit_limit_monthly - usage.current_month.credits_used });
+      }
+    } catch { /* if the budget check itself fails, fall through and capture at the base cadence */ }
+  }
+
   const at = new Date(Math.floor(Date.now() / 60000) * 60000).toISOString();
   const warnings: string[] = [];
   let credits = 0;
@@ -135,5 +161,9 @@ export async function POST(req: Request) {
       ));
     } catch (e: any) { warnings.push(`telegram: ${e.message}`); }
   }
+
+  // New data is in the database; make the next page view rebuild instead of serving the pre-capture cache.
+  if (!dry) revalidateTag('data', 'max');
+
   return Response.json({ ok: true, dry, at, credits, pushed, observations: obs.length, liquidations: liq.length, scores: scores.length, anomalies: anomalies.length, rwa: rwa.length, warnings });
 }

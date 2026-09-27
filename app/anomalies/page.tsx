@@ -3,6 +3,9 @@ import { scoreHistory, anomalyRows } from '@/lib/data';
 import { venueBoard, marketBoard } from '@/lib/history';
 import { usd, pct, bps, stamp } from '@/lib/fmt';
 
+// Rendered once per capture: fetches below are tagged 'data' and the recorder revalidates that tag after each capture.
+export const revalidate = 1800;
+
 export const metadata = { title: 'Off-market venues | Consensus' };
 
 export default async function Anomalies() {

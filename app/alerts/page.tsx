@@ -1,7 +1,10 @@
 import Link from 'next/link';
 import { scoreHistory, anomalyRows } from '@/lib/data';
 import { alerts, THRESHOLDS } from '@/lib/alerts';
-import { dur } from '@/lib/fmt';
+import { Ago } from '@/components/Ago';
+
+// Rendered once per capture: fetches below are tagged 'data' and the recorder revalidates that tag after each capture.
+export const revalidate = 1800;
 
 export const metadata = { title: 'Alerts | Consensus' };
 
@@ -33,7 +36,7 @@ export default async function Alerts() {
               <span className="block font-medium">{a.title}</span>
               <span className="block text-sm text-muted">{a.detail}</span>
             </span>
-            <span className="num text-sm text-muted">for {dur(a.since)}</span>
+            <span className="num text-sm text-muted">for <Ago iso={a.since} mode="for" /></span>
           </Link>
         ))}
       </div>
