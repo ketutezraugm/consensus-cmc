@@ -26,7 +26,7 @@ Then ask things like:
 |---|---|
 | `get_alerts` (optional `symbol`) | Active conditions: concentration, off-market venues CMC still trusts, confidence drops, DEX gaps, each with how long it has lasted |
 | `list_assets` | 15 crypto assets ranked by a 0-100 confidence score, lowest first |
-| `check_asset` (`symbol`) | Confidence and trend, biggest venue and share, off-market venues, funding, basis, on-chain gap, active alerts |
+| `check_asset` (`symbol`) | Confidence and trend, biggest venue and share, off-market venues, funding, basis, on-chain gap, gap to CMC's own published price, active alerts |
 | `list_tokenised_assets` | Tokenised stocks/ETFs/commodities ranked by issuer disagreement |
 | `check_tokenised_asset` (`symbol`) | Every issuer token: price, distance from reference, volume, and whether it is liquid, thin, a derivative, a different unit, or unpriced |
 
@@ -34,7 +34,7 @@ Errors are real MCP errors (`isError: true`), not empty successes, so an agent c
 
 ## CMC endpoints used
 
-`/v5/cryptocurrency/derivatives/market-pairs/list/latest`, `/v5/derivatives/liquidations/cryptocurrency/list/latest`, `/v5/derivatives/liquidations/quotes/latest`, `/v4/dex/spot-pairs/latest`, `/v5/real-world-assets/assets/list`, `/v5/real-world-assets/quotes/latest`. About 20 credits per capture, one capture per 30 minutes, on the free Basic tier. The server itself reads recorded data, so an agent's questions cost no CMC credits and cannot exhaust the key.
+`/v5/cryptocurrency/derivatives/market-pairs/list/latest`, `/v5/derivatives/liquidations/cryptocurrency/list/latest`, `/v5/derivatives/liquidations/quotes/latest`, `/v4/dex/spot-pairs/latest`, `/v5/real-world-assets/assets/list`, `/v5/real-world-assets/quotes/latest`, `/v1/cryptocurrency/quotes/latest` (CMC's own published price, checked against the composite `check_asset` returns). About 21-23 credits per capture, one capture per 30 minutes, on the free Basic tier. The server itself reads recorded data, so an agent's questions cost no CMC credits and cannot exhaust the key.
 
 ## Evidence it runs
 
@@ -43,19 +43,21 @@ Verified with the **official MCP SDK client** against production: [`scripts/mcp-
 ```
 connected to consensus | protocol ok
 tools: get_alerts, list_assets, check_asset, list_tokenised_assets, check_tokenised_asset
-get_alerts    -> 10 alerts | BCH: 95% of perp volume is on Deepcoin
-list_assets   -> 15 assets | lowest: BCH 20
-check_asset   -> {"conf":20,"top":"Deepcoin","share":95,"offMarket":4,"alerts":2}
-list_tokenised_assets -> 38 assets | widest: SPCX 1476 bps
+get_alerts    -> 15 alerts | BCH: 90% of perp volume is on Deepcoin
+list_assets   -> 15 assets | lowest: BCH 38
+check_asset   -> {"conf":38,"top":"Deepcoin","share":90.2,"vsPublished":96,"offMarket":4,"alerts":2}
+list_tokenised_assets -> 38 assets | widest: SPCX 1485 bps
 unknown symbol -> isError true | Error: No data for ZZZ.
 ALL OK
 ```
+
+`vsPublished` is the gap in bps between our independently reconstructed venue composite and CMC's own published price for the same asset — computed with no knowledge of that published number, only checked against it afterward.
 
 Protocol logic (initialize negotiation, notifications, error codes, tool failures becoming `isError`) is unit-tested in [`test/mcp.test.mjs`](../test/mcp.test.mjs) with injected tools.
 
 ## What the API made possible, and where it got in the way
 
-**Made possible:** per-venue data plus CMC's own `outlier_detected`/`exclusions` in a single call is what lets an agent answer "who sets this price" rather than just "what is the price".
+**Made possible:** per-venue data plus CMC's own `outlier_detected`/`exclusions` in a single call is what lets an agent answer "who sets this price" rather than just "what is the price". The published-price endpoint lets it also answer "how close is that to CMC's own number" — a validation loop, not just an audit.
 
 **In the way:** no unit field on tokenised assets (gold tokens priced per gram look like a 97% disagreement), `market_id` not unique, null prices returned without a reason, no staleness marker. Full list: [`api-feedback.md`](api-feedback.md).
 

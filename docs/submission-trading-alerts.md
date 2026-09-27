@@ -11,7 +11,7 @@ A perpetual-futures price on CoinMarketCap is built from hundreds of venues. Oft
 | Command | What you get |
 |---|---|
 | `/alerts [SYMBOL]` | What to know right now, worst first, each with how long it has lasted |
-| `/check BCH` | Pre-trade check: confidence, who sets the price, off-market venues, funding, on-chain gap, active alerts |
+| `/check BCH` | Pre-trade check: confidence, who sets the price, off-market venues, funding, on-chain gap, gap vs CMC's own published price, active alerts |
 | `/assets` | All tracked assets, least trustworthy first |
 | `/rwa [SYMBOL]` | Tokenised stocks and commodities: do the issuers agree? |
 | `/subscribe`, `/watch SYMBOL`, `/unwatch SYMBOL`, `/mywatchlist`, `/unsubscribe` | Per-chat alert filtering: watch nothing and get everything, or watch specific symbols and get only those |
@@ -23,7 +23,7 @@ Alerts (thresholds are judgement calls, stated on the [alerts page](https://cons
 3. **Confidence drop:** score falls 15+ points below its recent median.
 4. **DEX gap:** liquidity-weighted Uniswap v3 pools sit 30+ bps from exchanges.
 
-Real examples from the live data: *"BCH: 95% of perp volume is on Deepcoin"*, *"SOL: Zoomex is -587 bps off the market, $283.9M volume, and CMC does not exclude it"*, *"BTC: Kraken is -2037 bps off the market"* (a duplicated market the API returns with a conflicting price).
+Real examples from the live data: *"BTC: Kraken is -2037 bps off the market"* (a duplicated market the API returns twice with a conflicting price, on a reputable venue — not flagged), *"BCH: 90%+ of perp volume is on Deepcoin"*, *"SOL: Zoomex is -587 bps off the market, $283.9M volume, and CMC does not exclude it"*. Every `/check` also shows the tracked asset's independently reconstructed composite against CMC's own published price — a median of 9 bps across 15 assets, so it isn't just an alarm system: it's checked against ground truth.
 
 ## CMC endpoints used
 
@@ -33,8 +33,9 @@ Real examples from the live data: *"BCH: 95% of perp volume is on Deepcoin"*, *"
 | `/v5/derivatives/liquidations/cryptocurrency/list/latest`, `/v5/derivatives/liquidations/quotes/latest` | Liquidations |
 | `/v4/dex/spot-pairs/latest` | On-chain pool prices for the DEX-gap alert |
 | `/v5/real-world-assets/assets/list`, `/v5/real-world-assets/quotes/latest` | Tokenised-asset issuer comparison for `/rwa` |
+| `/v1/cryptocurrency/quotes/latest` | CMC's own published price, checked against the composite in `/check` |
 
-A capture (about 20 credits) runs every 30 minutes; the free Basic tier was enough.
+A capture (about 21-23 credits) runs every 30 minutes; the free Basic tier was enough.
 
 ## Evidence it runs
 
@@ -46,7 +47,7 @@ A capture (about 20 credits) runs every 30 minutes; the free Basic tier was enou
 
 ## What the API made possible, and where it got in the way
 
-**Made possible:** `outlier_detected` and `exclusions` on each derivatives market pair are what make "CMC still trusts a venue that quotes 20% off" detectable at all.
+**Made possible:** `outlier_detected` and `exclusions` on each derivatives market pair are what make "CMC still trusts a venue that quotes 20% off" detectable at all. The single published-price endpoint, called against the same asset, closes the loop: it lets the bot say not just "here's a risk" but "here's how close our own number lands to CMC's."
 
 **In the way:** `market_id` is not unique (the same Kraken market comes back twice with prices 25% apart), the endpoint mixes base-side and quote-side pairs, and there is no field saying whether a price is stale or merely quiet. Full list: [`api-feedback.md`](api-feedback.md).
 
