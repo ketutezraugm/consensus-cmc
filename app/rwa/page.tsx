@@ -8,14 +8,14 @@ import { Ago } from '@/components/Ago';
 // Rendered once per capture: fetches below are tagged 'data' and the recorder revalidates that tag after each capture.
 export const revalidate = 1800;
 
-export const metadata = { title: 'Tokenised assets | Consensus' };
+export const metadata = { title: 'Tokenised stocks | Consensus' };
 
 const med = (a: number[]) => [...a].sort((x, y) => x - y)[a.length >> 1];
 
 export default async function Rwa() {
   const at = (await captures())[0];
   const obs = at ? await rwaObservations(at) : [];
-  if (!obs.length) return <main className="mx-auto max-w-6xl px-5 py-10 text-muted">Tokenised-asset data is being recorded; check back after the next capture.</main>;
+  if (!obs.length) return <main className="mx-auto max-w-5xl px-5 py-10 text-fg-2">Tokenised-stock data is being recorded; check back after the next reading.</main>;
 
   const assets = scoreAssets(obs).sort((a, b) => b.r.dispersionBps - a.r.dispersionBps);
   const widest = [...assets].sort((a, b) => b.r.spreadBps - a.r.spreadBps)[0];
@@ -27,67 +27,64 @@ export default async function Rwa() {
   const thinTotal = [...thinByIssuer.values()].reduce((s, x) => s + x, 0);
   const thinTop = [...thinByIssuer].sort((a, b) => b[1] - a[1])[0];
   const cards = [
-    { v: `${Math.round(med(assets.map((a) => a.r.dispersionBps)))} bps`, k: 'typical disagreement between issuers of the same asset', note: `median across ${assets.length} tokenised assets: they mostly agree`, c: 'var(--color-good)', href: '#assets' },
-    { v: `${(hi.price! / lo.price!).toFixed(1)}x`, k: `${widest.symbol}: highest and lowest liquid token differ`, note: `${hi.issuer} vs ${lo.issuer}; the API does not say why`, c: 'var(--color-bad)', href: `/rwa/${widest.symbol}` },
-    { v: String(thinTotal), k: 'low-volume tokens quoting over 1% off the market', note: thinTop ? `${thinTop[1]} of them are ${thinTop[0]}` : '', c: 'var(--color-warn)', href: '#assets' },
-    { v: String(untracked), k: 'listed tokens with no price at all', note: 'CMC lists them but returns a null price', c: 'var(--color-muted)', href: '#assets' },
+    { v: `${(med(assets.map((a) => a.r.dispersionBps)) / 100).toFixed(2)}%`, k: 'typical disagreement between issuers of the same asset', note: `median across ${assets.length} tokenised assets: they mostly agree`, href: '#assets' },
+    { v: `${(hi.price! / lo.price!).toFixed(1)}x`, k: `${widest.symbol}: highest and lowest liquid token differ`, note: `${hi.issuer} vs ${lo.issuer}; the API does not say why`, href: `/rwa/${widest.symbol}` },
+    { v: String(thinTotal), k: 'low-volume tokens quoting over 1% off the market', note: thinTop ? `${thinTop[1]} of them are ${thinTop[0]}` : '', href: '#assets' },
+    { v: String(untracked), k: 'listed tokens with no price at all', note: 'CMC lists them but returns a null price', href: '#assets' },
   ];
 
   return (
-    <main className="mx-auto w-full max-w-6xl px-5 py-10">
-      <h1 className="max-w-4xl text-3xl font-semibold tracking-tight sm:text-4xl">Tokenised assets: do the issuers agree?</h1>
-      <p className="mt-3 max-w-3xl text-base text-muted">
-        One stock or commodity, tokenised by several issuers on several chains. CoinMarketCap publishes one average price for each. This shows every
-        issuer&apos;s token against the price the liquid ones agree on.
+    <main className="mx-auto w-full max-w-5xl px-5 py-10">
+      <p className="num text-xs text-fg-2">{assets.length} tokenised stocks &middot; latest reading</p>
+      <h1 className="mt-3 max-w-3xl font-serif text-4xl tracking-tight text-fg sm:text-5xl">Tokenised stocks and commodities</h1>
+      <p className="mt-4 max-w-2xl text-lg leading-relaxed text-fg-2">
+        A tokenised stock is a crypto token meant to track a real share or commodity, like Apple or gold. Several issuers make tokens for the same
+        asset. We compare their prices with each other.
       </p>
-      <p className="num mt-3 text-sm text-muted">{assets.length} assets · {obs.length} tokens · latest <Ago iso={at} /></p>
+      <p className="num mt-3 text-sm text-fg-2">{obs.length} tokens &middot; latest <Ago iso={at} /></p>
 
-      <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-8 grid gap-px overflow-hidden border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
         {cards.map((c) => (
-          <Link key={c.k} href={c.href} className="rounded-lg border border-line bg-panel p-4 transition-colors hover:border-accent" style={{ borderLeft: `3px solid ${c.c}` }}>
-            <div className="num text-3xl font-semibold">{c.v}</div>
-            <div className="mt-1.5 text-sm leading-snug">{c.k}</div>
-            <div className="mt-1.5 text-xs text-muted">{c.note}</div>
+          <Link key={c.k} href={c.href} className="bg-panel p-5 transition-colors hover:bg-raised">
+            <div className="num text-3xl text-fg">{c.v}</div>
+            <div className="mt-1.5 text-sm leading-snug text-fg">{c.k}</div>
+            <div className="mt-1.5 text-xs text-fg-2">{c.note}</div>
           </Link>
         ))}
       </div>
 
-      <div id="assets" className="mt-12 flex flex-wrap items-end justify-between gap-3">
+      <div id="assets" className="mt-12 flex flex-wrap items-end justify-between gap-3 border-t border-fg pt-4">
         <div>
-          <h2 className="text-xl font-semibold">Every issuer&apos;s token, per asset</h2>
-          <p className="mt-1 text-sm text-muted">Widest disagreement first. Grey ticks are low-volume or derivative tokens.</p>
+          <h2 className="font-serif text-2xl">Most disagreement first</h2>
+          <p className="mt-1 text-sm text-fg-2">Widest disagreement first. Grey ticks are low-volume or derivative tokens.</p>
         </div>
         <Legend grey="low volume or derivative" />
       </div>
-      <div className="mt-5 space-y-2.5">
+      <div className="mt-4 divide-y divide-line border-y border-line">
         {assets.map(({ symbol, type, r }) => {
           const venues: V[] = r.rows
             .filter((x) => x.price && x.kind !== 'unit')
             .map((x) => ({ name: `${x.issuer} ${x.symbol}`, price: x.price!, volume: x.volume, excluded: x.kind !== 'liquid', priceExcluded: x.kind !== 'liquid' }));
           return (
-            <Link key={symbol} href={`/rwa/${symbol}`} className="block rounded-lg border border-line bg-panel p-4 transition-colors hover:border-accent">
-              <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                <span className="w-16 text-base font-semibold">{symbol}</span>
-                <span className="rounded bg-raised px-1.5 text-[11px] text-muted">{type}</span>
-                <span className="num text-sm">{Math.round(r.dispersionBps)} bps</span>
-                <span className="text-xs text-muted">weighted disagreement</span>
-                <span className="num ml-auto text-xs text-muted">
-                  {r.tokens} tokens · {r.liquid} liquid · {pct(r.topShare, 0)} {r.topIssuer} · {usd(r.mcap)} tokenised
-                </span>
+            <Link key={symbol} href={`/rwa/${symbol}`} className="grid grid-cols-1 gap-3 py-4 transition-colors hover:bg-raised sm:grid-cols-[9rem_1fr_13rem] sm:items-center sm:gap-5 sm:px-2">
+              <div>
+                <div className="text-base font-medium text-fg">{symbol} <span className="rounded-sm bg-raised px-1.5 text-[11px] text-fg-2">{type}</span></div>
+                <div className="num mt-0.5 text-xl text-fg">{(r.dispersionBps / 100).toFixed(2)}%</div>
               </div>
-              <div className="mt-2.5"><Dispersion venues={venues} refPrice={r.ref} h={64} axis={false} /></div>
-              {(r.unitMismatch > 0 || r.untracked > 0) && (
-                <div className="mt-1 text-[11px] text-muted">
-                  {r.unitMismatch > 0 && `${r.unitMismatch} token${r.unitMismatch > 1 ? 's' : ''} priced in a different unit (not shown). `}
-                  {r.untracked > 0 && `${r.untracked} with no price.`}
-                </div>
-              )}
+              <Dispersion venues={venues} refPrice={r.ref} h={56} compact />
+              <div className="num text-right text-xs text-fg-2 sm:text-left">
+                <div className="text-fg">{r.topIssuer} {pct(r.topShare, 0)}</div>
+                <div>{r.tokens} tokens &middot; {r.liquid} liquid &middot; {usd(r.mcap)}</div>
+                {(r.unitMismatch > 0 || r.untracked > 0) && (
+                  <div>{r.unitMismatch > 0 && `${r.unitMismatch} unit mismatch. `}{r.untracked > 0 && `${r.untracked} with no price.`}</div>
+                )}
+              </div>
             </Link>
           );
         })}
       </div>
 
-      <p className="mt-10 max-w-3xl text-xs leading-relaxed text-muted">
+      <p className="mt-8 max-w-3xl text-xs leading-relaxed text-fg-2">
         A token counts as liquid with at least $10k of 24h volume. The reference is the market-cap-weighted median of liquid tokens. Tokens priced at
         roughly 1/31.1 (per gram) or a power of ten of the reference are treated as unit differences, not disagreement. The API does not include the
         underlying stock&apos;s own price, so this compares tokens with each other, not with the stock.

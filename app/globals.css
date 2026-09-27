@@ -1,33 +1,72 @@
 @import "tailwindcss";
 
-@theme {
-  --color-bg: #0a0b0d;
-  --color-panel: #101317;
-  --color-raised: #161a20;
-  --color-line: #1f242c;
-  --color-fg: #e8eaed;
-  --color-muted: #7d868f;
-  --color-accent: #4da3ff;
-  --color-good: #2ecc8f;
-  --color-warn: #f0b429;
-  --color-bad: #ff5f56;
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+:root {
+  --paper: #F2F1EC;
+  --card: #FBFAF7;
+  --sunk: #E9E7E0;
+  --ink: #1B2027;
+  --ink-2: #4A515B;
+  --ink-3: #6E747C;
+  --rule: #DEDBD2;
+  --rule-strong: #BDB9AE;
+  --brass: #A67C3D;
+  --brass-ink: #86612A;
+  --sage: #4F7A62;
+  --ochre: #B8862B;
+  --ochre-ink: #8A6417;
+  --verm: #B8462F;
+  --discard: #A3A49F;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #1D1B18; --card: #25231F; --sunk: #171513; --ink: #EDE9E1; --ink-2: #BDB7AB; --ink-3: #948E83;
+    --rule: #35322C; --rule-strong: #524E45; --brass: #C9A064; --brass-ink: #D8B47C; --sage: #83B295;
+    --ochre: #D6AC58; --ochre-ink: #DDB566; --verm: #E07A62; --discard: #6A665E;
+    color-scheme: dark;
+  }
+}
+[data-theme="dark"] {
+  --paper: #1D1B18; --card: #25231F; --sunk: #171513; --ink: #EDE9E1; --ink-2: #BDB7AB; --ink-3: #948E83;
+  --rule: #35322C; --rule-strong: #524E45; --brass: #C9A064; --brass-ink: #D8B47C; --sage: #83B295;
+  --ochre: #D6AC58; --ochre-ink: #DDB566; --verm: #E07A62; --discard: #6A665E;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--paper);
+  --color-panel: var(--card);
+  --color-raised: var(--sunk);
+  --color-line: var(--rule);
+  --color-line-strong: var(--rule-strong);
+  --color-fg: var(--ink);
+  --color-fg-2: var(--ink-2);
+  --color-muted: var(--ink-2);
+  --color-label: var(--ink-3);
+  --color-accent: var(--brass);
+  --color-accent-ink: var(--brass-ink);
+  --color-good: var(--sage);
+  --color-warn: var(--ochre);
+  --color-warn-ink: var(--ochre-ink);
+  --color-bad: var(--verm);
+  --color-discard: var(--discard);
+
+  --font-sans: var(--font-plex-sans), system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+  --font-serif: var(--font-instrument-serif), Georgia, serif;
 }
 
 html {
-  color-scheme: dark;
   background: var(--color-bg);
 }
 
 body {
   background: var(--color-bg);
   color: var(--color-fg);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
 }
 
 /* Numbers are the content here: lock them to tabular mono everywhere. */
 .num {
-  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
 }

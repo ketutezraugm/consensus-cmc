@@ -1,62 +1,90 @@
-import { stamp, usd, pct } from '@/lib/fmt';
+import type { ReactNode } from 'react';
+import { usd, pct, stamp } from '@/lib/fmt';
 
 export type V = { name: string; price: number; volume: number; excluded: boolean; priceExcluded: boolean; pair?: string };
 
-const CLAMP = 500; // bps shown before a venue is pushed to the edge marker
 const sum = (a: number[]) => a.reduce((s, x) => s + x, 0);
+const fmtPct = (d: number, dp = 1) => `${d < 0 ? '−' : d > 0 ? '+' : ''}${Math.abs(d).toFixed(dp)}%`;
+
+export const band = (s: number) => (s >= 80 ? { word: 'Reliable', c: 'var(--color-good)' } : s >= 60 ? { word: 'Watch', c: 'var(--color-warn)' } : { word: 'Unreliable', c: 'var(--color-bad)' });
 
 export const severity = (bps: number, excluded: boolean) =>
-  excluded ? 'var(--color-muted)' : Math.abs(bps) <= 50 ? 'var(--color-good)' : Math.abs(bps) <= 200 ? 'var(--color-warn)' : 'var(--color-bad)';
+  excluded ? 'var(--color-discard)' : Math.abs(bps) <= 50 ? 'var(--color-good)' : Math.abs(bps) <= 200 ? 'var(--color-warn)' : 'var(--color-bad)';
+
+const scaleShare = (share: number, floor: number) => Math.min(1, Math.max(floor, Math.sqrt(share / 0.25)));
 
 /**
- * Every venue's quote as one tick, placed by its distance from the reference price.
- * Tick height scales with volume share, so a big venue off-consensus is visibly different
- * from a dust venue off-consensus. Colour is severity; grey means CMC excludes it.
+ * Every venue's quote as one stroke, placed by its % distance from the reference price. Stroke height
+ * scales with volume share (sqrt, so a big venue reads clearly bigger than a dust venue). Deviations
+ * beyond the domain don't get clipped: the axis breaks into a log-compressed gutter so outliers still
+ * show, at the edge, labelled with their real number.
  */
-export function Dispersion({ venues, refPrice, h = 92, axis = true }: { venues: V[]; refPrice: number; h?: number; axis?: boolean }) {
+export function Dispersion({ venues, refPrice, h = 150, compact = false, domain = 1.5, refLabel = 'agreed price' }: {
+  venues: V[]; refPrice: number; h?: number; compact?: boolean; domain?: number; refLabel?: string;
+}) {
   if (!venues.length || !(refPrice > 0)) return null;
-  const W = 1000, PAD = 8, inner = W - PAD * 2, mid = PAD + inner / 2;
-  const plot = h - (axis ? 20 : 4);
-  const total = sum(venues.map((v) => v.volume)) || 1;
-  const X = (b: number) => mid + (Math.max(-CLAMP, Math.min(CLAMP, b)) / CLAMP) * (inner / 2);
+  const W = 1000, D = domain;
+  const G = compact ? 14 : 128, top = compact ? 2 : 34, ph = h - top - (compact ? 4 : 44), base = top + ph;
+  const x = (d: number) => G + (d + D) / (2 * D) * (W - 2 * G);
+  const gx = (d: number) => {
+    const k = Math.min(1, Math.log(Math.abs(d) / D) / Math.log(40 / D));
+    return d < 0 ? G - 14 - (G - 28) * k : W - G + 14 + (G - 28) * k;
+  };
 
-  const ticks = venues
-    .map((v) => ({ v, bps: (v.price / refPrice - 1) * 1e4, share: v.volume / total }))
-    .sort((a, b) => a.share - b.share); // biggest drawn last, on top
-  const left = ticks.filter((t) => t.bps < -CLAMP).length;
-  const right = ticks.filter((t) => t.bps > CLAMP).length;
+  const total = sum(venues.map((v) => v.volume)) || 1;
+  let list = venues.map((v) => ({ v, dev: (v.price / refPrice - 1) * 100, share: v.volume / total }));
+  const topVenue = [...list].sort((a, b) => b.share - a.share)[0];
+  list = list.sort((a, b) => (a.v.excluded ? 0 : 1) - (b.v.excluded ? 0 : 1) || a.share - b.share);
+
+  const els: ReactNode[] = [];
+  els.push(<rect key="tb" x={x(-0.5)} y={top} width={x(0.5) - x(-0.5)} height={ph} fill="var(--color-good)" opacity={compact ? 0.12 : 0.09} />);
+  if (!compact) [-0.5, 0.5].forEach((d, i) => els.push(
+    <line key={`te${i}`} x1={x(d)} x2={x(d)} y1={top} y2={base} stroke="var(--color-good)" strokeDasharray="2 3" strokeWidth={1} opacity={0.7} />
+  ));
+  els.push(<line key="ax" x1={compact ? 0 : G - 6} x2={compact ? W : W - G + 6} y1={base + 0.5} y2={base + 0.5} stroke="var(--color-line-strong)" />);
+
+  if (!compact) {
+    for (let d = -D; d <= D + 1e-9; d += 0.5) {
+      const X = x(d);
+      els.push(<line key={`t${d}`} x1={X} x2={X} y1={base} y2={base + 5} stroke="var(--color-line-strong)" />);
+      els.push(<text key={`tl${d}`} x={X} y={base + 20} textAnchor="middle" fontSize={11} className="num" fill="var(--color-label)">{Math.abs(d) < 1e-9 ? '0' : fmtPct(d)}</text>);
+    }
+    [G - 6, W - G + 6].forEach((X, i) => els.push(
+      <path key={`br${i}`} d={`M${X - 4} ${base + 5} L${X} ${base - 5} M${X} ${base + 5} L${X + 4} ${base - 5}`} stroke="var(--color-label)" fill="none" />
+    ));
+    els.push(<text key="gl" x={4} y={base + 20} fontSize={10} className="num" fill="var(--color-label)">off-scale</text>);
+    els.push(<text key="gr" x={W - 4} y={base + 20} textAnchor="end" fontSize={10} className="num" fill="var(--color-label)">off-scale</text>);
+  }
+
+  let li = 0, ri = 0;
+  list.forEach((e, i) => {
+    const off = Math.abs(e.dev) > D;
+    if (off && compact) return;
+    const X = off ? gx(e.dev) : x(e.dev);
+    const hh = ph * scaleShare(e.share, compact ? 0.18 : 0.08);
+    const c = severity(e.dev * 100, e.v.excluded);
+    const sw = compact ? 1.5 : e.v === topVenue.v ? 3 : 2;
+    els.push(
+      <line key={`s${i}`} x1={X} x2={X} y1={base} y2={base - hh} stroke={c} strokeWidth={sw} opacity={e.v.excluded ? 0.55 : 1}>
+        <title>{`${e.v.name}${e.v.pair ? ` ${e.v.pair}` : ''} · ${fmtPct(e.dev, 2)} · ${pct(e.share)} of volume · ${usd(e.v.volume)}${e.v.excluded ? ' · CoinMarketCap doesn’t count this exchange' : ''}`}</title>
+      </line>
+    );
+    if (!e.v.excluded && Math.abs(e.dev) >= 2) els.push(<circle key={`c${i}`} cx={X} cy={base - hh - (compact ? 0 : 4)} r={compact ? 1.6 : 3} fill={c} />);
+    if (!compact && !e.v.excluded && (e.v === topVenue.v || off)) {
+      const left = e.dev < 0, k = off ? (left ? li++ : ri++) : 0;
+      const label = e.v === topVenue.v ? `${e.v.name} · ${Math.round(e.share * 100)}%` : `${e.v.name} ${fmtPct(e.dev)}`;
+      if (off) els.push(<text key={`l${i}`} x={left ? 4 : W - 4} y={base + 36 + k * 14} textAnchor={left ? 'start' : 'end'} fontSize={11} className="num" fill={c}>{label}</text>);
+      else els.push(<text key={`l${i}`} x={X + (e.dev < 0 ? -6 : 6)} y={base - hh + 4 - (e.v === topVenue.v ? 0 : 6)} textAnchor={e.dev < 0 ? 'end' : 'start'} fontSize={11} className="num" fill={e.v === topVenue.v ? 'var(--color-fg-2)' : c}>{label}</text>);
+    }
+  });
+
+  els.push(<line key="ref" x1={x(0)} x2={x(0)} y1={compact ? 0 : top - 12} y2={base} stroke="var(--color-accent)" strokeWidth={compact ? 1.25 : 1.5} />);
+  if (!compact) els.push(<text key="rl" x={x(0)} y={top - 18} textAnchor="middle" fontSize={11} className="num" fill="var(--color-accent-ink)">{refLabel}</text>);
 
   return (
-    <svg viewBox={`0 0 ${W} ${h}`} className="w-full" role="img"
-         aria-label={`${venues.length} venues by distance from the reference price`}>
-      {[-CLAMP, -250, 0, 250, CLAMP].map((b) => (
-        <line key={b} x1={X(b)} x2={X(b)} y1={2} y2={plot} stroke="var(--color-line)" strokeWidth={b === 0 ? 1.5 : 1} />
-      ))}
-      {ticks.map((t, i) => {
-        const th = plot * (0.32 + 0.68 * Math.sqrt(t.share));
-        return (
-          <rect key={i} x={X(t.bps) - 2} y={plot - th} width={4} height={th} rx={2}
-                fill={severity(t.bps, t.v.excluded)} opacity={t.v.excluded ? 0.5 : 0.95}>
-            <title>{`${t.v.name}${t.v.pair ? ` ${t.v.pair}` : ''}\n${t.bps >= 0 ? '+' : ''}${Math.round(t.bps)} bps · ${pct(t.share)} of volume · ${usd(t.v.volume)}${t.v.excluded ? '\nCMC excludes this venue' : ''}`}</title>
-          </rect>
-        );
-      })}
-      {left > 0 && (
-        <g fill="var(--color-bad)">
-          <polygon points={`${PAD},${plot / 2} ${PAD + 11},${plot / 2 - 8} ${PAD + 11},${plot / 2 + 8}`} />
-          <text x={PAD + 16} y={plot / 2 + 5} fontSize="13" className="num">{left}</text>
-        </g>
-      )}
-      {right > 0 && (
-        <g fill="var(--color-bad)">
-          <polygon points={`${W - PAD},${plot / 2} ${W - PAD - 11},${plot / 2 - 8} ${W - PAD - 11},${plot / 2 + 8}`} />
-          <text x={W - PAD - 16} y={plot / 2 + 5} fontSize="13" textAnchor="end" className="num">{right}</text>
-        </g>
-      )}
-      {axis && [[-CLAMP, '-5%'], [0, 'consensus'], [CLAMP, '+5%']].map(([b, label]) => (
-        <text key={label as string} x={X(b as number)} y={h - 4} fontSize="12" textAnchor={b === -CLAMP ? 'start' : b === CLAMP ? 'end' : 'middle'}
-              fill="var(--color-muted)" className="num">{label as string}</text>
-      ))}
+    <svg viewBox={`0 0 ${W} ${h}`} className="w-full" style={{ display: 'block' }} role="img"
+         aria-label={`${venues.length} exchanges by distance from the reference price`}>
+      {els}
     </svg>
   );
 }
@@ -66,8 +94,6 @@ export function Concentration({ venues, h = 12 }: { venues: V[]; h?: number }) {
   const total = sum(venues.map((v) => v.volume));
   if (!total) return null;
   const sorted = [...venues].sort((a, b) => b.volume - a.volume);
-  // Prefix-sum the widths into an offset per bar; the accumulator lives inside reduce's own state,
-  // not a variable closed over by the render, so this stays pure across re-renders.
   const bars = sorted.reduce<{ v: V; w: number; at: number }[]>((acc, v) => {
     const w = (v.volume / total) * 100;
     return [...acc, { v, w, at: acc.length ? acc[acc.length - 1].at + acc[acc.length - 1].w : 0 }];
@@ -75,14 +101,11 @@ export function Concentration({ venues, h = 12 }: { venues: V[]; h?: number }) {
   return (
     <svg viewBox={`0 0 100 ${h}`} preserveAspectRatio="none" className="w-full" style={{ height: h }} role="img"
          aria-label="share of 24h volume by venue">
-      {bars.map(({ v, w, at }, i) => {
-        return (
-          <rect key={i} x={at} y={0} width={Math.max(w, 0.15)} height={h}
-                fill={i === 0 ? 'var(--color-accent)' : 'var(--color-accent)'} opacity={i === 0 ? 1 : Math.max(0.16, 0.6 - i * 0.05)}>
-            <title>{`${v.name}: ${pct(v.volume / total)} of 24h volume`}</title>
-          </rect>
-        );
-      })}
+      {bars.map(({ v, w, at }, i) => (
+        <rect key={i} x={at} y={0} width={Math.max(w, 0.15)} height={h} fill="var(--color-accent)" opacity={i === 0 ? 1 : Math.max(0.16, 0.6 - i * 0.05)}>
+          <title>{`${v.name}: ${pct(v.volume / total)} of 24h volume`}</title>
+        </rect>
+      ))}
     </svg>
   );
 }
@@ -108,22 +131,91 @@ export function Trend({ points, fmt, domain, label, color = 'var(--color-accent)
       {mids.map((v) => (
         <g key={v}>
           <line x1={L} x2={W - R} y1={Y(v)} y2={Y(v)} stroke="var(--color-line)" />
-          <text x={L - 8} y={Y(v) + 4} textAnchor="end" fontSize="12" fill="var(--color-muted)" className="num">{fmt(v)}</text>
+          <text x={L - 8} y={Y(v) + 4} textAnchor="end" fontSize="12" fill="var(--color-label)" className="num">{fmt(v)}</text>
         </g>
       ))}
       {points.length > 1 && (
         <>
           <polygon points={`${X(x0)},${Y(lo)} ${line} ${X(x1)},${Y(lo)}`} fill="currentColor" opacity={0.12} />
-          <polyline points={line} fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinejoin="round" />
+          <polyline points={line} fill="none" stroke="currentColor" strokeWidth={2} strokeLinejoin="round" />
         </>
       )}
       {points.map((p) => (
-        <circle key={p.t} cx={X(p.t)} cy={Y(p.v)} r={3.5} fill="var(--color-bg)" stroke="currentColor" strokeWidth={2}>
+        <circle key={p.t} cx={X(p.t)} cy={Y(p.v)} r={3} fill="var(--color-panel)" stroke="currentColor" strokeWidth={1.75}>
           <title>{`${stamp(p.t)}: ${fmt(p.v)}`}</title>
         </circle>
       ))}
-      <text x={L} y={H - 6} fontSize="12" fill="var(--color-muted)" className="num">{stamp(x0)}</text>
-      <text x={W - R} y={H - 6} textAnchor="end" fontSize="12" fill="var(--color-muted)" className="num">{stamp(x1)}</text>
+      <text x={L} y={H - 6} fontSize="12" fill="var(--color-label)" className="num">{stamp(x0)}</text>
+      <text x={W - R} y={H - 6} textAnchor="end" fontSize="12" fill="var(--color-label)" className="num">{stamp(x1)}</text>
+    </svg>
+  );
+}
+
+/** Trust gauge: semicircle at true 0-100 scale, so 88 and 92 look close because they are. */
+export function Gauge({ score, w = 200 }: { score: number; w?: number }) {
+  const cx = w / 2, r = w * 0.42, cy = r + 10, H = cy + 22;
+  const p = (v: number, rr = r): [number, number] => { const t = Math.PI * (1 - v / 100); return [cx + rr * Math.cos(t), cy - rr * Math.sin(t)]; };
+  const arc = (a: number, b: number, rr: number) => { const [x0, y0] = p(a, rr), [x1, y1] = p(b, rr); return `M${x0} ${y0} A${rr} ${rr} 0 0 1 ${x1} ${y1}`; };
+  const bands: [number, number, string][] = [[0, 60, 'var(--color-bad)'], [60, 80, 'var(--color-warn)'], [80, 100, 'var(--color-good)']];
+  const [nx, ny] = p(score, r - 4);
+  return (
+    <svg viewBox={`0 0 ${w} ${H}`} width="100%" style={{ display: 'block', maxWidth: w }} role="img" aria-label={`Trust score ${score} of 100`}>
+      {bands.map(([a, b, c], i) => <path key={i} d={arc(a + 0.4, b - 0.4, r)} stroke={c} strokeWidth={5} fill="none" opacity={0.85} />)}
+      {Array.from({ length: 51 }, (_, i) => i * 2).map((v) => {
+        const major = v % 10 === 0;
+        const [x0, y0] = p(v, r - 8), [x1, y1] = p(v, r - (major ? 18 : 12));
+        return <line key={v} x1={x0} y1={y0} x2={x1} y2={y1} stroke={major ? 'var(--color-fg-2)' : 'var(--color-line-strong)'} strokeWidth={major ? 1.2 : 0.8} />;
+      })}
+      {[0, 60, 80, 100].map((v) => { const [x, y] = p(v, r - 30); return <text key={v} x={x} y={y + 4} textAnchor="middle" fontSize={w * 0.04} className="num" fill="var(--color-label)">{v}</text>; })}
+      <line x1={cx} y1={cy} x2={nx} y2={ny} stroke="var(--color-fg)" strokeWidth={2} strokeLinecap="round" />
+      <circle cx={cx} cy={cy} r={6} fill="var(--color-accent)" />
+      <line x1={cx - r - 4} x2={cx + r + 4} y1={cy + 0.5} y2={cy + 0.5} stroke="var(--color-line-strong)" />
+    </svg>
+  );
+}
+
+/** Benchmark vernier: CoinMarketCap's published price fixed at 0; our rebuilt price(s) marked by gap in bp. */
+export function Bench({ items, domain = 60, tolerance = 25 }: { items: { symbol: string; gapBps: number }[]; domain?: number; tolerance?: number }) {
+  const W = 640, T = tolerance, D = Math.max(domain, ...items.map((i) => Math.abs(i.gapBps)), T + 5);
+  const H = items.length > 1 ? 118 : 104, pad = 18, y0 = H - 44;
+  const x = (g: number) => pad + (g + D) / (2 * D) * (W - 2 * pad);
+  const n = items.length;
+  return (
+    <svg viewBox={`0 0 ${W} ${H}`} className="w-full" style={{ display: 'block' }} role="img" aria-label="Rebuilt price versus CoinMarketCap published price">
+      <rect x={x(-T)} y={12} width={x(T) - x(-T)} height={y0 - 12} fill="var(--color-good)" opacity={0.09} />
+      <line x1={pad} x2={W - pad} y1={y0 + 0.5} y2={y0 + 0.5} stroke="var(--color-line-strong)" />
+      {Array.from({ length: Math.floor((2 * D) / 5) + 1 }, (_, i) => -D + i * 5).map((g) => {
+        const X = x(g), maj = g % 20 === 0;
+        return (
+          <g key={g}>
+            <line x1={X} x2={X} y1={y0} y2={y0 + (maj ? 8 : 4)} stroke={maj ? 'var(--color-label)' : 'var(--color-line-strong)'} />
+            {maj && <text x={X} y={y0 + 22} textAnchor="middle" fontSize={11} className="num" fill="var(--color-label)">{g === 0 ? '0' : `${g < 0 ? '−' : '+'}${Math.abs(g)} bp`}</text>}
+          </g>
+        );
+      })}
+      {[-T, T].map((g, i) => <line key={i} x1={x(g)} x2={x(g)} y1={12} y2={y0} stroke="var(--color-good)" strokeDasharray="2 3" opacity={0.8} />)}
+      <path d={`M${x(0)} ${y0 + 1} l-6 10 h12 z`} fill="var(--color-fg)" />
+      <line x1={x(0)} x2={x(0)} y1={8} y2={y0} stroke="var(--color-fg)" strokeWidth={1} />
+      <text x={x(0)} y={H - 4} textAnchor="middle" fontSize={11} fill="var(--color-fg-2)">CoinMarketCap published</text>
+      {items.map((it, i) => {
+        const X = x(Math.max(-D, Math.min(D, it.gapBps))), Y = n > 1 ? 20 + (i % 3) * ((y0 - 34) / 2) : y0 - 26, out = Math.abs(it.gapBps) > T;
+        if (n === 1) return (
+          <g key={i}>
+            <path d={`M${X} ${y0 - 1} l-7 -12 h14 z`} fill="var(--color-accent)" />
+            <line x1={x(0)} x2={X} y1={y0 - 18} y2={y0 - 18} stroke={out ? 'var(--color-bad)' : 'var(--color-fg-2)'} strokeWidth={1} />
+            <text x={(x(0) + X) / 2} y={y0 - 24} textAnchor="middle" fontSize={12} className="num" fill={out ? 'var(--color-bad)' : 'var(--color-fg)'}>
+              {`${it.gapBps < 0 ? '−' : '+'}${Math.abs(Math.round(it.gapBps))} bp`}
+            </text>
+          </g>
+        );
+        return (
+          <g key={i}>
+            <line x1={X} x2={X} y1={Y + 4} y2={y0} stroke={out ? 'var(--color-bad)' : 'var(--color-line-strong)'} strokeWidth={1} />
+            <circle cx={X} cy={Y} r={4} fill={out ? 'var(--color-bad)' : 'var(--color-accent)'}><title>{`${it.symbol} ${it.gapBps < 0 ? '−' : '+'}${Math.abs(Math.round(it.gapBps))} bp`}</title></circle>
+            {out && <text x={X > W - 90 ? X - 8 : X + 8} textAnchor={X > W - 90 ? 'end' : 'start'} y={Y + 4} fontSize={11} className="num" fill="var(--color-bad)">{`${it.symbol} ${it.gapBps < 0 ? '−' : '+'}${Math.abs(Math.round(it.gapBps))} bp`}</text>}
+          </g>
+        );
+      })}
     </svg>
   );
 }
@@ -144,11 +236,9 @@ export function ScoreBreakdown({ parts }: { parts: { spread: number; agreement: 
         const pts = r.weight * r.value * 100, max = r.weight * 100;
         return (
           <div key={r.label} className="grid grid-cols-[7rem_1fr_6.5rem] items-center gap-3 text-sm">
-            <div>{r.label} <span className="text-xs text-muted">{Math.round(r.weight * 100)}%</span></div>
-            <div className="h-2.5 rounded-full bg-raised">
-              <div className="h-2.5 rounded-full bg-accent" style={{ width: `${Math.max(2, r.value * 100)}%` }} />
-            </div>
-            <div className="num text-right text-xs text-muted">{pts.toFixed(1)} / {max.toFixed(0)} pts</div>
+            <div>{r.label} <span className="text-xs text-fg-2">{Math.round(r.weight * 100)}%</span></div>
+            <div className="h-1.5 bg-raised"><div className="h-1.5 bg-accent" style={{ width: `${Math.max(2, r.value * 100)}%` }} /></div>
+            <div className="num text-right text-xs text-fg-2">{pts.toFixed(1)} / {max.toFixed(0)} pts</div>
           </div>
         );
       })}
@@ -156,15 +246,15 @@ export function ScoreBreakdown({ parts }: { parts: { spread: number; agreement: 
   );
 }
 
-export function Legend({ grey = 'CMC excludes it' }: { grey?: string }) {
+export function Legend({ grey = 'CMC doesn’t count' }: { grey?: string }) {
   return (
-    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted">
-      {[['var(--color-good)', 'within 0.5%'], ['var(--color-warn)', '0.5–2%'], ['var(--color-bad)', 'over 2%'], ['var(--color-muted)', grey]].map(([c, l]) => (
+    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-fg-2">
+      {[['var(--color-good)', 'within 0.5%'], ['var(--color-warn)', 'drifting'], ['var(--color-bad)', 'off-market'], ['var(--color-discard)', grey]].map(([c, l]) => (
         <span key={l} className="flex items-center gap-1.5">
-          <span className="inline-block h-3 w-[3px] rounded-sm" style={{ background: c }} />{l}
+          <span className="inline-block h-3 w-[3px]" style={{ background: c }} />{l}
         </span>
       ))}
-      <span className="text-muted/70">tick height = share of 24h volume</span>
+      <span className="text-fg-2/70">height = share of volume</span>
     </div>
   );
 }

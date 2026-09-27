@@ -6,7 +6,7 @@ export const alt = "Consensus: how CoinMarketCap's price is made";
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
-const C = { bg: '#0a0b0d', panel: '#101317', line: '#1f242c', fg: '#e8eaed', muted: '#7d868f', accent: '#4da3ff', bad: '#ff5f56', warn: '#f0b429' };
+const C = { bg: '#F2F1EC', panel: '#FBFAF7', line: '#DEDBD2', fg: '#1B2027', muted: '#4A515B', accent: '#A67C3D', bad: '#B8462F', warn: '#B8862B' };
 
 export default async function Image() {
   // Best real finding available right now: the most volume-concentrated tracked asset.
