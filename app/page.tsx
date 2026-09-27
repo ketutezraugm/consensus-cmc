@@ -85,8 +85,9 @@ export default async function Home() {
 
       <p className="mt-10 max-w-3xl text-xs leading-relaxed text-muted">
         Confidence blends how spread out volume is across venues (40%), how much volume quotes within 50 bps of the median (30%), how fresh the
-        quotes are (15%) and how much volume CMC itself excludes (15%). The weights are a judgement call, not a fitted model. The thin bar under
-        each strip is share of 24h volume by venue.
+        quotes are (15%) and how much volume CMC itself excludes (15%). The weights are a judgement call, not a fitted model — see
+        <Link href="/methodology" className="mx-1 underline underline-offset-2 hover:text-fg">methodology</Link>
+        for what&apos;s been checked against real data. The thin bar under each strip is share of 24h volume by venue.
       </p>
     </main>
   );

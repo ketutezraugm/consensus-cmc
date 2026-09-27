@@ -30,6 +30,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <Link href="/alerts" className="text-muted transition-colors hover:text-fg">Alerts</Link>
             <Link href="/rwa" className="text-muted transition-colors hover:text-fg">Tokenised assets</Link>
             <Link href="/anomalies" className="text-muted transition-colors hover:text-fg">Off-market venues</Link>
+            <Link href="/methodology" className="text-muted transition-colors hover:text-fg">Methodology</Link>
             <a href="https://github.com/ketutezraugm/consensus-cmc" className="text-muted transition-colors hover:text-fg sm:ml-auto">Source</a>
           </nav>
         </header>

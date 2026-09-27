@@ -1,0 +1,11 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch();
+const p = await (await b.newContext({ viewport: { width: 900, height: 2400 }, colorScheme: 'dark' })).newPage();
+await p.goto('http://localhost:3111/methodology', { waitUntil: 'networkidle' });
+await p.screenshot({ path: 'shots/methodology.png', fullPage: true });
+const p2 = await (await b.newContext({ viewport: { width: 390, height: 1200 }, colorScheme: 'dark' })).newPage();
+await p2.goto('http://localhost:3111/methodology', { waitUntil: 'networkidle' });
+const ov = await p2.evaluate(() => ({ sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth }));
+console.log('mobile overflow:', ov.sw > ov.cw ? `YES ${ov.sw} in ${ov.cw}` : 'no');
+await p2.screenshot({ path: 'shots/methodology-mobile.png', fullPage: true });
+await b.close();
