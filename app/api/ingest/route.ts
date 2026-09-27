@@ -32,6 +32,7 @@ type DexPair = {
   quote?: { price: number; volume_24h: number; liquidity: number; last_updated?: string }[];
 };
 type RwaAssetRow = RwaAsset & { average_tokenized_price?: number | null; tokens?: (NonNullable<RwaAsset['tokens']>[number] & { name: string })[] };
+type PublicQuote = { id: number; quote: { USD: { price: number } } };
 
 // One row per layer, matching the shared Obs/PoolObs/RwaObs types plus the `layer` discriminant the
 // DB and the rest of the app key off. summarize() below narrows back out of this union per layer.
@@ -60,9 +61,9 @@ async function insert(table: string, rows: object[]) {
   }
 }
 
-// Measured cost of one full capture (15 assets + liquidations + DEX + RWA). Pad slightly so the
-// budget stays conservative rather than running dry a day before the monthly reset.
-const COST_PER_CAPTURE = 22;
+// Measured cost of one full capture (15 assets + liquidations + DEX + RWA + published prices). Pad
+// slightly so the budget stays conservative rather than running dry a day before the monthly reset.
+const COST_PER_CAPTURE = 23;
 
 export async function POST(req: Request) {
   if (!authorized(req)) return new Response('unauthorized', { status: 401 });
@@ -151,6 +152,15 @@ export async function POST(req: Request) {
     }
   } catch (e: unknown) { warnings.push(`onchain: ${errMsg(e)}`); }
 
+  // CMC's own single published price per asset — fetched only to check our recorded composite
+  // against it, never used as an input to the composite itself.
+  const published = new Map<number, number>();
+  try {
+    const r = await cmc<Record<string, PublicQuote>>('/v1/cryptocurrency/quotes/latest', { id: Object.keys(WATCHLIST).join(',') });
+    credits += r.credits;
+    for (const q of Object.values(r.data)) if (q?.quote?.USD?.price > 0) published.set(q.id, q.quote.USD.price);
+  } catch (e: unknown) { warnings.push(`published: ${errMsg(e)}`); }
+
   // Tokenised assets: every issuer's token for the top-ranked underlyings, in two calls.
   try {
     const list = await cmc<{ rwa_assets: { rwa_id: number | null }[] }>('/v5/real-world-assets/assets/list', { limit: 40 });
@@ -173,7 +183,7 @@ export async function POST(req: Request) {
   }
 
   // History summaries are derived data: a failure here must never lose the raw capture above.
-  const { scores, anomalies } = summarize(obs.filter(isForward), obs.filter(isOnchain), at);
+  const { scores, anomalies } = summarize(obs.filter(isForward), obs.filter(isOnchain), at, published);
   if (!dry) {
     try { await insert('asset_scores', scores); await insert('anomalies', anomalies); await insert('rwa_scores', summarizeRwa(rwa, at)); }
     catch (e: unknown) { warnings.push(`summaries: ${errMsg(e)}`); }
@@ -197,5 +207,5 @@ export async function POST(req: Request) {
   // New data is in the database; make the next page view rebuild instead of serving the pre-capture cache.
   if (!dry) revalidateTag('data', 'max');
 
-  return Response.json({ ok: true, dry, at, credits, pushed, observations: obs.length, liquidations: liq.length, scores: scores.length, anomalies: anomalies.length, rwa: rwa.length, warnings });
+  return Response.json({ ok: true, dry, at, credits, pushed, observations: obs.length, liquidations: liq.length, scores: scores.length, anomalies: anomalies.length, rwa: rwa.length, published: published.size, warnings });
 }

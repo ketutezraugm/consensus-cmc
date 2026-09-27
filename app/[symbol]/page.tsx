@@ -38,6 +38,7 @@ export default async function Asset({ params }: { params: Promise<{ symbol: stri
   const token = poolObs[0]?.extra.token;
   const pts = (f: (s: (typeof hist)[number]) => number) => hist.map((h) => ({ t: Date.parse(h.captured_at), v: f(h) }));
   const board = venueBoard(anoms, hist.length).slice(0, 6);
+  const latestHist = hist.at(-1);
   const dupBadge = <span className="ml-1.5 rounded bg-bad/15 px-1 text-[10px] uppercase tracking-wide text-bad">dup</span>;
   const stat = (k: string, v: string, cls = '') => (
     <div key={k} className={card}><div className="text-xs text-muted">{k}</div><div className={`num mt-1 text-2xl font-semibold ${cls}`}>{v}</div></div>
@@ -57,6 +58,23 @@ export default async function Asset({ params }: { params: Promise<{ symbol: stri
         {stat('Volume in agreement', pct(r.agreeingShare, 0))}
         {stat('Volume CMC excludes', pct(r.excludedShare, 0))}
       </div>
+
+      {latestHist?.published_gap_bps !== null && latestHist?.published_gap_bps !== undefined && (
+        <section className="mt-8">
+          <h2 className="text-lg font-semibold">Reconstructed price vs CMC&apos;s published price</h2>
+          <p className="mt-1 max-w-3xl text-sm text-muted">
+            Our volume-weighted composite of every trusted perp venue, independently, against CMC&apos;s own single published price for {symbol}.
+            Never fed into our composite — only checked against it.
+          </p>
+          <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
+            {stat('CMC published price', `$${latestHist.published_price!.toLocaleString('en-US', { maximumFractionDigits: 4 })}`)}
+            <div className={card}>
+              <div className="text-xs text-muted">Gap</div>
+              <div className="num mt-1 text-2xl font-semibold" style={{ color: severity(latestHist.published_gap_bps, false) }}>{bps(latestHist.published_gap_bps)}</div>
+            </div>
+          </div>
+        </section>
+      )}
 
       <section className="mt-10">
         <div className="flex flex-wrap items-end justify-between gap-3">
@@ -129,6 +147,13 @@ export default async function Asset({ params }: { params: Promise<{ symbol: stri
             <div className="text-sm font-medium">Share of volume on the biggest venue</div>
             <Trend points={pts((h) => h.top_share)} domain={[0, 1]} fmt={(v) => pct(v, 0)} label={`${symbol} top venue share over time`} color="var(--color-warn)" />
           </div>
+          {hist.some((h) => h.published_gap_bps !== null) && (
+            <div className={card}>
+              <div className="text-sm font-medium">Gap to CMC&apos;s published price</div>
+              <Trend points={hist.filter((h) => h.published_gap_bps !== null).map((h) => ({ t: Date.parse(h.captured_at), v: h.published_gap_bps! }))}
+                     fmt={(v) => bps(v)} label={`${symbol} gap to published price over time`} color="var(--color-accent)" />
+            </div>
+          )}
         </div>
       </section>
 

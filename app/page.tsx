@@ -44,7 +44,7 @@ export default async function Home() {
         {findings(latest, all, anoms, total).map((f, i) => (
           <Link key={f.k} href={f.href}
                 className="rounded-lg border border-line bg-panel p-4 transition-colors hover:border-accent"
-                style={{ borderLeft: `3px solid ${['var(--color-bad)', 'var(--color-warn)', 'var(--color-accent)', 'var(--color-muted)'][i] ?? 'var(--color-line)'}` }}>
+                style={{ borderLeft: `3px solid ${['var(--color-good)', 'var(--color-bad)', 'var(--color-warn)', 'var(--color-accent)', 'var(--color-muted)'][i] ?? 'var(--color-line)'}` }}>
             <div className="num text-3xl font-semibold">{f.v}</div>
             <div className="mt-1.5 text-sm leading-snug">{f.k}</div>
             <div className="mt-1.5 text-xs text-muted">{f.note}</div>

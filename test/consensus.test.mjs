@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { toVenues, score, onchain } from '../lib/consensus.ts';
+import { toVenues, score, onchain, publishedGapBps } from '../lib/consensus.ts';
 
 const mk = (over = {}) => ({ id: 1, name: 'A', price: 100, volume: 10, oi: 5, basis: 0, funding: 0, excluded: false, priceExcluded: false, updated: 0, ...over });
 const finite = (r) => Object.values(r).flat().every((x) => typeof x !== 'number' || Number.isFinite(x));
@@ -92,6 +92,25 @@ test('summarize: one row per asset, anomalies derived, no NaN', () => {
   assert.equal(scores.length, 1);
   assert.ok(Number.isFinite(scores[0].confidence) && scores[0].venues > 10);
   assert.ok(anomalies.every((a) => a.symbol === 'BTC' && Number.isFinite(a.bps)));
+  assert.equal(scores[0].published_price, null, 'no published map passed -> null, not NaN or 0');
+  assert.equal(scores[0].published_gap_bps, null);
+
+  const [row] = summarize(obs, [], new Date().toISOString(), new Map([[1, scores[0].venues && 100000]])).scores;
+  assert.equal(row.published_price, 100000);
+  assert.ok(Number.isFinite(row.published_gap_bps));
+
+  const [unlisted] = summarize(obs, [], new Date().toISOString(), new Map([[999, 1]])).scores;
+  assert.equal(unlisted.published_price, null, 'a crypto_id absent from the map is null, not a crash');
+});
+
+test('publishedGapBps: real gap, missing/zero/negative published or composite -> null, never NaN', () => {
+  assert.ok(Math.abs(publishedGapBps(101, 100) - 100) < 1e-9);
+  assert.equal(publishedGapBps(101, null), null);
+  assert.equal(publishedGapBps(101, undefined), null);
+  assert.equal(publishedGapBps(101, 0), null);
+  assert.equal(publishedGapBps(101, -5), null);
+  assert.equal(publishedGapBps(0, 100), null);
+  assert.equal(publishedGapBps(-5, 100), null);
 });
 
 import { rwaScore, unitFactor } from '../lib/consensus.ts';

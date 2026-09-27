@@ -179,3 +179,10 @@ export function rwaScore(toks: Tok[]) {
     topIssuer: top?.[0] ?? '', topShare: totalMcap > 0 ? top[1] / totalMcap : 0, mcap: totalMcap,
   };
 }
+
+// How far our own recorded composite sits from CMC's single published price for the same asset.
+// null when either side has nothing usable, never NaN.
+export function publishedGapBps(ourComposite: number, published: number | null | undefined): number | null {
+  if (!published || !(published > 0) || !(ourComposite > 0)) return null;
+  return (ourComposite / published - 1) * 1e4;
+}
