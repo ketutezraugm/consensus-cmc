@@ -1,9 +1,34 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { parseCommand, answer, esc, fmtAlert, fmtAlerts, fmtAsset, fmtRwa } from '../lib/telegram.ts';
+import { parseCommand, answer, esc, fmtAlert, fmtAlerts, fmtAsset, fmtRwa, fmtWatchlist, relevantAlerts, pushAlerts } from '../lib/telegram.ts';
 import { newAlerts } from '../lib/alerts.ts';
 
 const al = (id, over = {}) => ({ id, kind: 'concentration', severity: 'high', symbol: 'BCH', title: `BCH <95%> & ${id}`, detail: 'd', since: '2026-01-01T00:00:00Z', href: '/BCH', ...over });
+
+// A tiny in-memory stand-in for the subscribers table, so /subscribe /watch /unwatch can be exercised
+// end to end without a network call. Keyed by chatId, mirroring lib/subscribers.ts's real semantics.
+function fakeSubscriberStore() {
+  const rows = new Map();
+  return {
+    rows,
+    subscribe: async (chatId) => { if (!rows.has(chatId)) rows.set(chatId, { chat_id: chatId, symbols: [] }); },
+    unsubscribe: async (chatId) => { rows.delete(chatId); },
+    watch: async (chatId, symbol) => {
+      const cur = rows.get(chatId) ?? { chat_id: chatId, symbols: [] };
+      if (!cur.symbols.includes(symbol)) cur.symbols = [...cur.symbols, symbol];
+      rows.set(chatId, cur);
+      return cur;
+    },
+    unwatch: async (chatId, symbol) => {
+      const cur = rows.get(chatId);
+      if (!cur) return null;
+      cur.symbols = cur.symbols.filter((s) => s !== symbol);
+      return cur;
+    },
+    myWatchlist: async (chatId) => rows.get(chatId) ?? null,
+  };
+}
+
 const deps = {
   alerts: async (s) => (s === 'BTC' ? [] : [al('a')]),
   assets: async () => [{ symbol: 'BCH', confidence: 20, top_venue: 'Deepcoin', top_share_pct: 95 }],
@@ -20,6 +45,7 @@ const deps = {
       { issuer: 'VNX', token: 'VNXAU', price_usd: 138, vs_reference_bps: null, kind: 'unit' },
     ],
   } : null),
+  ...fakeSubscriberStore(),
 };
 
 test('parseCommand: plain, with argument, with @botname, uppercase, and non-commands', () => {
@@ -78,4 +104,59 @@ test('newAlerts: only ids absent before, so a running alert never re-fires', () 
   assert.deepEqual(newAlerts([al('a')], [al('a'), al('b')]).map((x) => x.id), ['b']);
   assert.deepEqual(newAlerts([al('a')], [al('a')]), []);
   assert.equal(newAlerts([], [al('a')]).length, 1);
+});
+
+test('fmtWatchlist: not subscribed, subscribed with no filter (all), subscribed with symbols', () => {
+  assert.match(fmtWatchlist(null), /not subscribed/);
+  assert.match(fmtWatchlist({ chat_id: 1, symbols: [] }), /all tracked assets/);
+  assert.match(fmtWatchlist({ chat_id: 1, symbols: ['BCH', 'BTC'] }), /BCH, BTC/);
+});
+
+test('relevantAlerts: empty watchlist means all, non-empty filters, no match means none', () => {
+  const eth = al('e', { symbol: 'ETH' });
+  assert.deepEqual(relevantAlerts([al('a'), eth], []), [al('a'), eth]);
+  assert.deepEqual(relevantAlerts([al('a'), eth], ['BCH']), [al('a')]);
+  assert.deepEqual(relevantAlerts([al('a'), eth], ['SOL']), []);
+});
+
+test('answer: subscribe, watch, unwatch, mywatchlist and unsubscribe round-trip', async () => {
+  const chat = 501; // distinct chat id so this test cannot collide with any other test's state
+  assert.match(await answer('/mywatchlist', chat, deps), /not subscribed/);
+  assert.match(await answer('/watch', chat, deps), /Which symbol/);
+
+  assert.match(await answer('/watch bch', chat, deps), /Watching: <b>BCH<\/b>/);
+  assert.match(await answer('/watch btc', chat, deps), /Watching: <b>BCH, BTC<\/b>/);
+  assert.match(await answer('/mywatchlist', chat, deps), /BCH, BTC/);
+
+  assert.match(await answer('/unwatch', chat, deps), /Which symbol/);
+  assert.match(await answer('/unwatch bch', chat, deps), /Watching: <b>BTC<\/b>/);
+
+  assert.match(await answer('/unsubscribe', chat, deps), /Unsubscribed/);
+  assert.match(await answer('/mywatchlist', chat, deps), /not subscribed/);
+  assert.match(await answer('/unwatch btc', chat, deps), /not subscribed yet/);
+
+  assert.match(await answer('/subscribe', chat, deps), /all tracked assets/);
+});
+
+test('pushAlerts: filters per subscriber, one failing send does not stop the rest, empty match sends nothing', async (t) => {
+  const sent = [];
+  t.mock.method(globalThis, 'fetch', async (url, opts) => {
+    const body = JSON.parse(opts.body);
+    if (body.chat_id === 'broken') throw new Error('blocked by user');
+    sent.push(body.chat_id);
+    return { ok: true, json: async () => ({}) };
+  });
+  process.env.TELEGRAM_BOT_TOKEN = 'test-token';
+
+  const eth = al('e', { symbol: 'ETH' });
+  const subs = [
+    { chat_id: 'all', symbols: [] },       // gets both
+    { chat_id: 'bch-only', symbols: ['BCH'] }, // gets one
+    { chat_id: 'sol-only', symbols: ['SOL'] }, // gets none, so no send call
+    { chat_id: 'broken', symbols: [] },    // send throws; must not abort the loop
+  ];
+  const n = await pushAlerts([al('a'), eth], subs);
+  assert.deepEqual(sent.sort(), ['all', 'bch-only']);
+  assert.equal(n, 2);
+  assert.equal(await pushAlerts([], subs), 0, 'nothing new to push -> no sends at all');
 });

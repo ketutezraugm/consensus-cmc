@@ -1,11 +1,15 @@
 import { timingSafeEqual } from 'node:crypto';
 import { answer, send, type Deps } from '@/lib/telegram';
 import { currentAlerts, assetsRanked, assetReport, rwaAssets, rwaReport } from '@/lib/tools';
+import { ensureSubscribed, unsubscribe, watch, unwatch, getSubscriber } from '@/lib/subscribers';
 import { errMsg } from '@/lib/fmt';
 
 export const maxDuration = 30;
 
-const deps: Deps = { alerts: currentAlerts, assets: assetsRanked, asset: assetReport, rwaAssets, rwa: rwaReport };
+const deps: Deps = {
+  alerts: currentAlerts, assets: assetsRanked, asset: assetReport, rwaAssets, rwa: rwaReport,
+  subscribe: ensureSubscribed, unsubscribe, watch, unwatch, myWatchlist: getSubscriber,
+};
 
 type TelegramMessage = { text?: string; chat: { id: number } };
 type TelegramUpdate = { message?: TelegramMessage; channel_post?: TelegramMessage };

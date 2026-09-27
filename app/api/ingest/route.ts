@@ -7,6 +7,7 @@ import type { Obs, PoolObs, RwaObs } from '@/lib/obs';
 import { scoreHistory, anomalyRows, captures } from '@/lib/data';
 import { alerts, newAlerts } from '@/lib/alerts';
 import { pushAlerts } from '@/lib/telegram';
+import { ensureSubscribed, listSubscribers } from '@/lib/subscribers';
 import { requiredIntervalMin, captureDue } from '@/lib/budget';
 import { errMsg } from '@/lib/fmt';
 
@@ -177,15 +178,19 @@ export async function POST(req: Request) {
     try { await insert('asset_scores', scores); await insert('anomalies', anomalies); await insert('rwa_scores', summarizeRwa(rwa, at)); }
     catch (e: unknown) { warnings.push(`summaries: ${errMsg(e)}`); }
   }
-  // Tell a person about alerts that just appeared. Compares alerts computed without and with this capture, so no state is stored.
+  // Tell subscribers about alerts that just appeared, filtered to each one's watchlist. Comparing
+  // alerts computed without and with this capture means no separate "seen" state needs to be stored.
   let pushed = 0;
-  if (!dry && process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_CHAT_ID) {
+  if (!dry && process.env.TELEGRAM_BOT_TOKEN) {
     try {
-      const [sc, an] = await Promise.all([scoreHistory(), anomalyRows()]);
+      // A configured TELEGRAM_CHAT_ID is seeded as an all-symbols subscriber once; never overwrites
+      // a chat that already customised its own watchlist via /watch.
+      if (process.env.TELEGRAM_CHAT_ID) await ensureSubscribed(process.env.TELEGRAM_CHAT_ID);
+      const [sc, an, subs] = await Promise.all([scoreHistory(), anomalyRows(), listSubscribers()]);
       const cut = Date.parse(at);
       pushed = await pushAlerts(newAlerts(
         alerts(sc.filter((x) => Date.parse(x.captured_at) < cut), an.filter((x) => Date.parse(x.captured_at) < cut)), alerts(sc, an),
-      ));
+      ), subs);
     } catch (e: unknown) { warnings.push(`telegram: ${errMsg(e)}`); }
   }
 

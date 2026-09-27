@@ -1,5 +1,6 @@
 // Telegram bot: command parsing, message formatting, sending. Formatting and command handling are pure so they are testable.
 import type { Alert } from './alerts.ts';
+import type { Subscriber } from './subscribers.ts';
 import { dur } from './fmt.ts';
 
 const SITE = () => process.env.SITE_URL ?? 'https://consensus-cmc.vercel.app';
@@ -13,7 +14,13 @@ export const HELP = [
   '/check SYMBOL: pre-trade check, e.g. /check BCH',
   '/assets: all tracked assets, least trustworthy first',
   '/rwa [SYMBOL]: tokenised stocks and commodities, e.g. /rwa NVDA',
-  '/id: show this chat\'s id (used to receive automatic alerts)',
+  '',
+  '/subscribe: get pushed a message whenever a new alert appears',
+  '/watch SYMBOL: only push alerts for this symbol, e.g. /watch BCH (repeatable)',
+  '/unwatch SYMBOL: stop watching a symbol',
+  '/mywatchlist: show your subscription and watched symbols',
+  '/unsubscribe: stop all automatic pushes',
+  '/id: show this chat\'s id',
   '',
   'Data comes from the CoinMarketCap API and is recorded every 30 minutes.',
 ].join('\n');
@@ -76,6 +83,12 @@ export function fmtRwa(r: RwaReport) {
   ].join('\n');
 }
 
+export function fmtWatchlist(sub: Subscriber | null) {
+  if (!sub) return "You're not subscribed. Send /subscribe to get pushed new alerts, or /watch SYMBOL to subscribe and filter at once.";
+  const scope = sub.symbols.length ? sub.symbols.join(', ') : 'all tracked assets';
+  return `Subscribed. Watching: <b>${esc(scope)}</b>.\nUse /watch or /unwatch SYMBOL to change this, /unsubscribe to stop.`;
+}
+
 export function parseCommand(text: string): { cmd: string; arg: string } | null {
   const m = /^\/([a-z_]+)(?:@\w+)?(?:\s+(.*))?$/i.exec(text.trim());
   return m ? { cmd: m[1].toLowerCase(), arg: (m[2] ?? '').trim().split(/\s+/)[0]?.toUpperCase() ?? '' } : null;
@@ -85,6 +98,9 @@ export type AssetSummary = { symbol: string; confidence: number; top_venue: stri
 export type Deps = {
   alerts: (symbol?: string) => Promise<Alert[]>; assets: () => Promise<AssetSummary[]>;
   asset: (s: string) => Promise<AssetReport | null>; rwaAssets: () => Promise<RwaAssetSummary[]>; rwa: (s: string) => Promise<RwaReport | null>;
+  subscribe: (chatId: number | string) => Promise<void>; unsubscribe: (chatId: number | string) => Promise<void>;
+  watch: (chatId: number | string, symbol: string) => Promise<Subscriber>; unwatch: (chatId: number | string, symbol: string) => Promise<Subscriber | null>;
+  myWatchlist: (chatId: number | string) => Promise<Subscriber | null>;
 };
 
 // Returns the HTML reply for one incoming message, or null when the message is not for the bot.
@@ -106,6 +122,18 @@ export async function answer(text: string, chatId: number | string, deps: Deps):
       const r = await deps.rwa(c.arg);
       return r ? fmtRwa(r) : `No tokenised asset ${esc(c.arg)}. Try /rwa for the list.`;
     }
+    case 'subscribe': await deps.subscribe(chatId); return fmtWatchlist(await deps.myWatchlist(chatId));
+    case 'unsubscribe': await deps.unsubscribe(chatId); return "Unsubscribed. You won't get automatic pushes. Send /subscribe to start again.";
+    case 'watch': {
+      if (!c.arg) return 'Which symbol? For example: /watch BCH';
+      return fmtWatchlist(await deps.watch(chatId, c.arg));
+    }
+    case 'unwatch': {
+      if (!c.arg) return 'Which symbol? For example: /unwatch BCH';
+      const r = await deps.unwatch(chatId, c.arg);
+      return r ? fmtWatchlist(r) : "You're not subscribed yet — nothing to unwatch. Send /subscribe first.";
+    }
+    case 'mywatchlist': return fmtWatchlist(await deps.myWatchlist(chatId));
     default: return `Unknown command. ${HELP}`;
   }
 }
@@ -119,11 +147,20 @@ export async function send(text: string, chatId: number | string, token = proces
   if (!res.ok) throw new Error(`telegram ${res.status}: ${await res.text()}`);
 }
 
-// Push alerts that were not present in the previous capture to the configured chat.
-export async function pushAlerts(fresh: Alert[]) {
-  const chat = process.env.TELEGRAM_CHAT_ID;
-  if (!chat || !fresh.length) return 0;
-  const head = fresh.length === 1 ? 'New alert' : `${fresh.length} new alerts`;
-  await send(`<b>${head}</b>\n\n${fmtAlerts(fresh, 5)}`, chat);
-  return fresh.length;
+// Empty symbols means "all". Exported so the filtering rule is unit-tested without a network call.
+export const relevantAlerts = (fresh: Alert[], symbols: string[]) =>
+  symbols.length ? fresh.filter((a) => symbols.includes(a.symbol)) : fresh;
+
+// Push alerts that were not present in the previous capture, filtered per subscriber's watchlist.
+// One bad chat (blocked the bot, deleted) must not stop the rest from getting theirs.
+export async function pushAlerts(fresh: Alert[], subscribers: Subscriber[]) {
+  if (!fresh.length) return 0;
+  let sent = 0;
+  for (const sub of subscribers) {
+    const relevant = relevantAlerts(fresh, sub.symbols);
+    if (!relevant.length) continue;
+    const head = relevant.length === 1 ? 'New alert' : `${relevant.length} new alerts`;
+    try { await send(`<b>${head}</b>\n\n${fmtAlerts(relevant, 5)}`, sub.chat_id); sent++; } catch { /* keep going */ }
+  }
+  return sent;
 }
