@@ -19,6 +19,12 @@ console.log('setMyCommands:', (await api('setMyCommands', { commands: [
   { command: 'check', description: 'Pre-trade check, e.g. /check BCH' },
   { command: 'assets', description: 'Tracked assets, least trustworthy first' },
   { command: 'rwa', description: 'Tokenised stocks and commodities' },
+  { command: 'subscribe', description: 'Get pushed a message on every new alert' },
+  { command: 'watch', description: 'Only push alerts for one symbol, e.g. /watch BCH' },
+  { command: 'unwatch', description: 'Stop watching a symbol' },
+  { command: 'mywatchlist', description: 'Show your subscription and watched symbols' },
+  { command: 'unsubscribe', description: 'Stop all automatic pushes' },
   { command: 'id', description: 'Show this chat id for automatic alerts' },
+  { command: 'help', description: 'Show all commands' },
 ] })).ok);
 console.log('webhook info:', JSON.stringify((await api('getWebhookInfo')).result));
