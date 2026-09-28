@@ -73,6 +73,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
             <span className="flex items-center gap-2"><Logo size={13} /> Built on the CoinMarketCap Pro API for the Build with CMC hackathon. Shows what the API returns, not how CoinMarketCap computes its published price.</span>
             <span className="flex gap-4 whitespace-nowrap">
               <Link href="/methodology" className="underline decoration-accent underline-offset-2 hover:text-fg">How this works</Link>
+              <Link href="/judge" className="underline decoration-accent underline-offset-2 hover:text-fg">For judges</Link>
               <a href="https://github.com/ketutezraugm/consensus-cmc" className="underline decoration-accent underline-offset-2 hover:text-fg">Source on GitHub</a>
             </span>
           </div>

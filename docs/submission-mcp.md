@@ -9,6 +9,7 @@ An LLM that quotes a crypto price has no idea whether that price is set by one v
 | | |
 |---|---|
 | **Connect** | `claude mcp add --transport http consensus https://consensus-cmc.vercel.app/api/mcp` — no install, no key |
+| **For judges** | https://consensus-cmc.vercel.app/judge — the same live evidence this server exposes as tools, browsable in 90 seconds |
 | **Repo** | https://github.com/ketutezraugm/consensus-cmc (MIT) |
 | **Demo video** | _link added at submission_ |
 | **Verify it yourself** | `node --env-file=.env.local scripts/mcp-check.mjs` — the **official MCP SDK client**, not curl: connects, lists tools, calls all five against live data, checks both error paths |

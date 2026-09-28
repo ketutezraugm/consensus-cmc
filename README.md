@@ -13,6 +13,7 @@ Event API access reverts to the Basic tier when submissions close (30 Sep), befo
 | | |
 |---|---|
 | **Live** | https://consensus-cmc.vercel.app |
+| **For judges** | https://consensus-cmc.vercel.app/judge — a 90-second click path through the strongest evidence, live |
 | **Repo** | https://github.com/ketutezraugm/consensus-cmc (MIT) |
 | **Demo video** | _link added at submission_ |
 | **Verify it yourself** | `node --no-warnings --env-file=.env.local scripts/report.mjs` — reproduces every finding below from the live recorded data, no CMC credits spent |

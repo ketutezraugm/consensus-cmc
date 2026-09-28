@@ -11,6 +11,7 @@ A perpetual-futures price on CoinMarketCap is built from hundreds of venues. Oft
 | | |
 |---|---|
 | **Try it** | Telegram bot — link added at submission (`/help` for commands) |
+| **For judges** | https://consensus-cmc.vercel.app/judge — the same data the bot's replies come from, browsable in 90 seconds, no bot needed |
 | **Repo** | https://github.com/ketutezraugm/consensus-cmc (MIT) |
 | **Demo video** | _link added at submission_ |
 | **Verify it yourself** | [`https://consensus-cmc.vercel.app/api/alerts`](https://consensus-cmc.vercel.app/api/alerts) — the exact JSON the bot's `/alerts` command sends, no bot needed |
