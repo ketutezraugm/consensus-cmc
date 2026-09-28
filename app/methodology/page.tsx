@@ -11,7 +11,7 @@ export const revalidate = 1800;
 const sq = (on: boolean, c: string) => ({ width: 12, height: 12, background: on ? c : 'transparent', border: `1px solid ${on ? c : 'var(--color-line-strong)'}`, boxSizing: 'border-box' as const });
 
 const tiers = [
-  { n: 3, c: 'var(--color-good)', title: 'Tested in code, independent of the market', body: 'Unit detection, the concentration, agreement and freshness maths, and tokenised scoring all run against recorded API responses in 94 tests: a zero-volume exchange, a single-exchange asset, negative funding, a dead pool.' },
+  { n: 3, c: 'var(--color-good)', title: 'Tested in code, independent of the market', body: 'Unit detection, the concentration, agreement and freshness maths, and tokenised scoring all run against recorded API responses in 105 tests: a zero-volume exchange, a single-exchange asset, negative funding, a dead pool.' },
   { n: 2, c: 'var(--color-good)', title: 'Held across every reading so far', body: "BCH's concentration on Deepcoin, SunX quoting off-market on most assets, and the same Kraken and DigiFinex markets returned twice with conflicting prices have held in every reading since recording began." },
   { n: 1, c: 'var(--color-warn)', title: "Checked once, didn't hold up. Kept here on purpose", body: "Early on, Deepcoin's reported total derivatives volume looked smaller than its volume for one BCH market. A later re-check found the opposite. Exchange-reported volume moves too much for a one-off comparison to count as evidence, so it isn't claimed as a finding." },
   { n: 0, c: 'var(--color-fg)', title: 'Not checked, and out of scope', body: "Whether CoinMarketCap's published price actually uses the flagged rows. Whether any exchange's volume is real or wash-traded. Whether the weights hold over a longer history." },
@@ -102,7 +102,7 @@ export default async function Methodology() {
           <li>Tokenised assets are compared issuer against issuer, not against the real stock price, which the API doesn&apos;t provide.</li>
         </ul>
         <p className="mt-2 text-sm leading-relaxed text-fg">
-          Full source, the raw API evidence behind every claim, and the 94 tests:{' '}
+          Full source, the raw API evidence behind every claim, and the 105 tests:{' '}
           <a className="underline decoration-accent underline-offset-2" href="https://github.com/ketutezraugm/consensus-cmc">github.com/ketutezraugm/consensus-cmc</a>
         </p>
       </section>

@@ -2,7 +2,20 @@
 
 **Track: AI Agents and Automation** · Remote MCP server · #BuildwithCMC
 
-An LLM that quotes a crypto price has no idea whether that price is set by one venue or a hundred, or whether a venue is quoting 20% off the market. This MCP server gives an agent live, structured answers to exactly that, from CoinMarketCap API data recorded every 30 minutes.
+An LLM that quotes a crypto price has no idea whether that price is set by one venue or a hundred, or whether a venue is quoting 20% off the market. This MCP server gives an agent live, structured answers to exactly that, from CoinMarketCap API data recorded on a fixed schedule — `check_asset` and `check_tokenised_asset` include exactly when their reading was captured.
+
+## At a glance
+
+| | |
+|---|---|
+| **Connect** | `claude mcp add --transport http consensus https://consensus-cmc.vercel.app/api/mcp` — no install, no key |
+| **Repo** | https://github.com/ketutezraugm/consensus-cmc (MIT) |
+| **Demo video** | _link added at submission_ |
+| **Verify it yourself** | `node --env-file=.env.local scripts/mcp-check.mjs` — the **official MCP SDK client**, not curl: connects, lists tools, calls all five against live data, checks both error paths |
+| **Tests** | 105 total; protocol logic (initialize, notifications, error codes, `isError`) in [`test/mcp.test.mjs`](../test/mcp.test.mjs) with injected tools |
+| **Raw API evidence** | [`scripts/out/`](../scripts/out) |
+
+**The headline finding:** an agent asking `check_asset` for BCH gets more than a price — it gets `vsPublished`, the gap in basis points between an independently reconstructed venue composite and CMC's own published number for that asset, computed with no knowledge of that published number and only checked against it afterward. Across the 37 assets with a published price to check against, that reconstruction lands within a median of **19 bps**. This is the same tool an agent calling `get_alerts` or `list_assets` already used to find that Deepcoin holds 90% of BCH's volume — so the agent isn't just told a fact, it's given the receipt.
 
 ## Connect
 
@@ -34,7 +47,7 @@ Errors are real MCP errors (`isError: true`), not empty successes, so an agent c
 
 ## CMC endpoints used
 
-`/v5/cryptocurrency/derivatives/market-pairs/list/latest`, `/v5/derivatives/liquidations/cryptocurrency/list/latest`, `/v5/derivatives/liquidations/quotes/latest`, `/v4/dex/spot-pairs/latest`, `/v5/real-world-assets/assets/list`, `/v5/real-world-assets/quotes/latest`, `/v1/cryptocurrency/quotes/latest` (CMC's own published price, checked against the composite `check_asset` returns). About 21-23 credits per capture, one capture per 30 minutes, on the free Basic tier. The server itself reads recorded data, so an agent's questions cost no CMC credits and cannot exhaust the key.
+`/v5/cryptocurrency/derivatives/market-pairs/list/latest`, `/v5/derivatives/liquidations/cryptocurrency/list/latest`, `/v5/derivatives/liquidations/quotes/latest`, `/v4/dex/spot-pairs/latest`, `/v5/real-world-assets/assets/list`, `/v5/real-world-assets/quotes/latest`, `/v1/cryptocurrency/quotes/latest` (CMC's own published price, checked against the composite `check_asset` returns). About 44-46 credits per capture at the current 38 tracked assets, one capture every 30 minutes on the Startup tier (granted for the event window; reverts to the free Basic tier at submission close, which widens the cadence, not the credit cost per capture). The server itself reads recorded data, so an agent's questions cost no CMC credits and cannot exhaust the key.
 
 ## Evidence it runs
 
@@ -63,7 +76,7 @@ Protocol logic (initialize negotiation, notifications, error codes, tool failure
 
 ## Honest limits
 
-Snapshots up to 30 minutes old; 38 crypto assets and around 100 tokenised assets; reports what the API returns, not how CoinMarketCap computes its published price.
+Recorded snapshots, not live — `check_asset`/`check_tokenised_asset` state exactly how old; 38 crypto assets and around 100 tokenised assets; reports what the API returns, not how CoinMarketCap computes its published price.
 
 ## Relationship to the other entries
 

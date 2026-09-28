@@ -8,6 +8,19 @@ A recorder captures per-venue price, volume, open interest, funding and basis fo
 
 Event API access reverts to the Basic tier when submissions close (30 Sep), before judging (1-16 Oct) begins, so the live site's actual capture cadence will widen from 30 minutes to a few hours during judging — `lib/budget.ts` throttles automatically rather than exhausting the key. The home page always states the real, current cadence from recent capture gaps, not a fixed claim.
 
+## At a glance
+
+| | |
+|---|---|
+| **Live** | https://consensus-cmc.vercel.app |
+| **Repo** | https://github.com/ketutezraugm/consensus-cmc (MIT) |
+| **Demo video** | _link added at submission_ |
+| **Verify it yourself** | `node --no-warnings --env-file=.env.local scripts/report.mjs` — reproduces every finding below from the live recorded data, no CMC credits spent |
+| **Tests** | 105, `node --no-warnings --test` (~6s, offline — nothing above depends on a live key) |
+| **Raw API evidence** | [`scripts/out/`](scripts/out) — real, saved responses, not paraphrased |
+
+**The headline finding:** CoinMarketCap's own API returns Kraken's BTC perpetual market twice, under the same `market_id` (47233), with two conflicting prices in the same response — and flags neither row. Consensus catches this because it checks every market for duplicates on every capture; CMC's own `exclusions` field never does, on this or 6 other duplicated markets in the latest capture alone. And it isn't just an alarm system: built only from venue-level data, with no knowledge of CMC's own published number, it independently reconstructs that number to within a median of **19 bps** across 37 assets — checked against ground truth, not just flagged as a risk.
+
 ## One repository, three entries
 
 The same recorder and analysis engine power three differently-scoped submissions, disclosed here on purpose:

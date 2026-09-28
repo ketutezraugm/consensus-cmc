@@ -6,6 +6,19 @@
 
 A perpetual-futures price on CoinMarketCap is built from hundreds of venues. Often one venue holds most of the volume, or a venue that CoinMarketCap still trusts quotes 10-25% away from everyone else. Nothing tells a trader that. This bot does, in one line, and says how long it has been true.
 
+## At a glance
+
+| | |
+|---|---|
+| **Try it** | Telegram bot — link added at submission (`/help` for commands) |
+| **Repo** | https://github.com/ketutezraugm/consensus-cmc (MIT) |
+| **Demo video** | _link added at submission_ |
+| **Verify it yourself** | [`https://consensus-cmc.vercel.app/api/alerts`](https://consensus-cmc.vercel.app/api/alerts) — the exact JSON the bot's `/alerts` command sends, no bot needed |
+| **Tests** | 105 total; command handling in [`test/telegram.test.mjs`](../test/telegram.test.mjs) |
+| **Raw API evidence** | [`scripts/out/`](../scripts/out) |
+
+**The headline finding:** ask this bot to check BTC before you trade it, and `/check BTC` will tell you Kraken — a top-tier exchange, not a thin or exotic venue — is quoting roughly 2,000 bps off the market on $289M of daily volume, and CoinMarketCap still counts it. Part of why: the underlying API actually returns Kraken's BTC perpetual market twice, under the same `market_id` (47233), with two conflicting prices in the same response, and flags neither row (see the README for that raw evidence). A trader watching only CoinMarketCap's headline number would see none of this.
+
 ## What it does
 
 | Command | What you get |
@@ -36,7 +49,7 @@ Real examples from the live data: *"BTC: Kraken is -1903 bps off the market"* (a
 | `/v5/real-world-assets/assets/list`, `/v5/real-world-assets/quotes/latest` | Tokenised-asset issuer comparison for `/rwa` |
 | `/v1/cryptocurrency/quotes/latest` | CMC's own published price, checked against the composite in `/check` |
 
-A capture (about 44-46 credits at 38 tracked assets) runs every 30 minutes, on the Startup tier (450k credits/month) after starting on the free Basic tier.
+A capture (about 44-46 credits at 38 tracked assets) runs every 30 minutes on the Startup tier (450k credits/month), granted for the event window after starting on the free Basic tier. Access reverts to Basic at submission close, before judging — the cadence then widens automatically to a few hours rather than exhausting the key (`lib/budget.ts`); every reply states the real time of the reading it used, not a fixed claim.
 
 ## Evidence it runs
 
@@ -56,7 +69,7 @@ A capture (about 44-46 credits at 38 tracked assets) runs every 30 minutes, on t
 
 - Alerts describe what the API returns. They do not show that CoinMarketCap's published price uses the flagged rows.
 - 38 assets are tracked, sized to this project's CoinMarketCap API tier, not the whole market.
-- Data is up to 30 minutes old. This is a risk check, not an execution signal.
+- Data is a recorded snapshot, not live — `/check` states exactly how old the reading is. This is a risk check, not an execution signal.
 
 ## Relationship to the other entries
 
