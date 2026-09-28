@@ -45,6 +45,8 @@ const deps = {
       { issuer: 'VNX', token: 'VNXAU', price_usd: 138, vs_reference_bps: null, kind: 'unit' },
     ],
   } : null),
+  chat: async (text) => `chat-reply:${text}`,
+  chatAllowed: async () => true,
   ...fakeSubscriberStore(),
 };
 
@@ -81,7 +83,21 @@ test('answer: every command produces a reply and unknown chatter produces none',
   assert.match(await answer('/rwa GOLD', 1, deps), /other unit/);
   assert.match(await answer('/rwa NOPE', 1, deps), /No tokenised asset/);
   assert.match(await answer('/wat', 1, deps), /Unknown command/);
-  assert.equal(await answer('good morning', 1, deps), null);
+  assert.equal(await answer('good morning', 1, deps), 'chat-reply:good morning');
+  assert.equal(await answer('  ', 1, deps), null, 'whitespace-only text is not routed to chat');
+  assert.equal(await answer('', 1, deps), null);
+});
+
+test('answer: free text is HTML-escaped, since an LLM reply is not guaranteed valid Telegram HTML', async () => {
+  const htmlDeps = { ...deps, chat: async () => 'a < b & c > d' };
+  assert.equal(await answer('is a < b?', 1, htmlDeps), 'a &lt; b &amp; c &gt; d');
+});
+
+test('answer: a rate-limited chat gets a fixed reply and never reaches the (costly) chat handler', async () => {
+  let chatCalls = 0;
+  const limited = { ...deps, chatAllowed: async () => false, chat: async () => { chatCalls++; return 'should not run'; } };
+  assert.match(await answer('a question', 1, limited), /asked a lot|give it a few minutes/);
+  assert.equal(chatCalls, 0);
 });
 
 test('fmtAsset handles missing funding, gap and venues without printing null or NaN', () => {

@@ -68,3 +68,5 @@ Snapshots up to 30 minutes old; 15 crypto assets and 38 tokenised assets; report
 ## Relationship to the other entries
 
 Same analysis engine and recorder as **Consensus** (Data and Visualisation) and **Consensus Alerts** (Markets and Trading Tools), in one repository, disclosed here on purpose. This entry is the agent interface: the MCP protocol layer ([`lib/mcp.ts`](../lib/mcp.ts)), tool definitions, and the conformance check.
+
+The Telegram bot is itself a client of these exact tool definitions: free-text messages ("is Bitcoin Cash reliable right now?") go through a model tool-use loop ([`lib/agent.ts`](../lib/agent.ts), Gemini by default) that calls the same `TOOLS` array this server exposes over MCP, rather than a second, separately-maintained set of functions. The loop is provider-neutral by design — the model call is a swappable adapter (Gemini or Claude) behind one function — so it's one concrete example of an AI agent using this interface, running in production, independent of which model happens to be behind it.

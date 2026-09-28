@@ -15,6 +15,7 @@ A perpetual-futures price on CoinMarketCap is built from hundreds of venues. Oft
 | `/assets` | All tracked assets, least trustworthy first |
 | `/rwa [SYMBOL]` | Tokenised stocks and commodities: do the issuers agree? |
 | `/subscribe`, `/watch SYMBOL`, `/unwatch SYMBOL`, `/mywatchlist`, `/unsubscribe` | Per-chat alert filtering: watch nothing and get everything, or watch specific symbols and get only those |
+| plain English, no `/` | Any free-text message ("is Bitcoin Cash reliable right now?") is answered by a model tool-use loop ([`lib/agent.ts`](../lib/agent.ts), Gemini by default), grounded in the same tool calls the [MCP entry](../lib/mcp.ts) exposes — it always calls a tool before stating a number, never gives trading advice, and says so when a question is outside the ~15 tracked crypto assets or ~38 tokenised assets. Rate-limited per chat, and replies that it isn't set up yet if no model key is configured — either way, the deterministic commands above are never affected. |
 | automatic | A push message when a *new* alert appears, filtered to each subscriber's watchlist, and never again for one already running |
 
 Alerts (thresholds are judgement calls, stated on the [alerts page](https://consensus-cmc.vercel.app/alerts) and tunable in [`lib/alerts.ts`](../lib/alerts.ts)):

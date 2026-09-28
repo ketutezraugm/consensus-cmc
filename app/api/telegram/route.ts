@@ -2,13 +2,18 @@ import { timingSafeEqual } from 'node:crypto';
 import { answer, send, type Deps } from '@/lib/telegram';
 import { currentAlerts, assetsRanked, assetReport, rwaAssets, rwaReport } from '@/lib/tools';
 import { ensureSubscribed, unsubscribe, watch, unwatch, getSubscriber } from '@/lib/subscribers';
-import { errMsg } from '@/lib/fmt';
+import { runAgent } from '@/lib/agent';
+import { TOOLS } from '@/lib/mcp';
+import { allowChatMessage } from '@/lib/ratelimit';
 
-export const maxDuration = 30;
+// Free-text messages can take a few model round-trips (see lib/agent.ts's MAX_STEPS), so this needs
+// more headroom than a single deterministic command lookup.
+export const maxDuration = 60;
 
 const deps: Deps = {
   alerts: currentAlerts, assets: assetsRanked, asset: assetReport, rwaAssets, rwa: rwaReport,
   subscribe: ensureSubscribed, unsubscribe, watch, unwatch, myWatchlist: getSubscriber,
+  chat: (text) => runAgent(text, TOOLS), chatAllowed: allowChatMessage,
 };
 
 type TelegramMessage = { text?: string; chat: { id: number } };
@@ -30,7 +35,10 @@ export async function POST(req: Request) {
       const text = await answer(m.text, m.chat.id, deps);
       if (text) await send(text, m.chat.id);
     } catch (e: unknown) {
-      await send(`Something went wrong: ${errMsg(e).slice(0, 200)}`, m.chat.id).catch(() => {});
+      // Logged server-side only: the raw error can carry upstream (Anthropic/Supabase) response
+      // detail that shouldn't be echoed to whoever happens to be on the other end of the chat.
+      console.error('telegram handler error:', e);
+      await send('Something went wrong on my end — try again in a moment.', m.chat.id).catch(() => {});
     }
   }
   return Response.json({ ok: true });

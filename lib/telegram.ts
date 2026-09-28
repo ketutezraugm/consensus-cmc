@@ -22,6 +22,9 @@ export const HELP = [
   '/unsubscribe: stop all automatic pushes',
   '/id: show this chat\'s id',
   '',
+  'Or just ask in plain English, e.g. "is Bitcoin Cash reliable right now?" — answered from the same',
+  'live data, grounded in tool calls, never guessed.',
+  '',
   'Data comes from the CoinMarketCap API and is recorded every 30 minutes.',
 ].join('\n');
 
@@ -103,12 +106,24 @@ export type Deps = {
   subscribe: (chatId: number | string) => Promise<void>; unsubscribe: (chatId: number | string) => Promise<void>;
   watch: (chatId: number | string, symbol: string) => Promise<Subscriber>; unwatch: (chatId: number | string, symbol: string) => Promise<Subscriber | null>;
   myWatchlist: (chatId: number | string) => Promise<Subscriber | null>;
+  // Free-text (non-slash) messages, e.g. "is BTC's price trustworthy right now?". Plain text in, plain
+  // text out — the reply is HTML-escaped below, since an LLM's output isn't guaranteed valid Telegram HTML.
+  chat: (text: string) => Promise<string>;
+  // Per-chat frequency cap on the LLM-backed `chat` path (lib/ratelimit.ts), checked before `chat` is
+  // ever called so a spammy chat never reaches the model at all.
+  chatAllowed: (chatId: number | string) => Promise<boolean>;
 };
+
+const RATE_LIMITED = "You've asked a lot in a short time — give it a few minutes, or use a direct command like /check BTC.";
 
 // Returns the HTML reply for one incoming message, or null when the message is not for the bot.
 export async function answer(text: string, chatId: number | string, deps: Deps): Promise<string | null> {
   const c = parseCommand(text);
-  if (!c) return null;
+  if (!c) {
+    if (!text.trim()) return null;
+    if (!(await deps.chatAllowed(chatId))) return RATE_LIMITED;
+    return esc(await deps.chat(text.trim()));
+  }
   switch (c.cmd) {
     case 'start': case 'help': return HELP;
     case 'id': return `This chat's id is <code>${chatId}</code>`;
