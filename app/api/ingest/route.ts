@@ -62,8 +62,10 @@ async function insert(table: string, rows: object[]) {
 }
 
 // Measured cost of one full capture (40 assets + liquidations + DEX + RWA up to 100 + published
-// prices): 46 credits, dry-run measured 2026-09-28 after the Startup-tier upgrade. Padded to 55 so
-// the budget stays conservative rather than running dry a day before the monthly reset.
+// prices): 46 credits, dry-run measured 2026-09-28 after the Startup-tier upgrade (PEPE and SHIB were
+// dropped from the watchlist right after this measurement — see lib/assets.ts — so the real number is
+// now a couple of credits lower; left un-remeasured since the headroom is large either way). Padded to
+// 55 so the budget stays conservative rather than running dry a day before the monthly reset.
 const COST_PER_CAPTURE = 55;
 
 export async function POST(req: Request) {

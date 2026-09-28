@@ -30,7 +30,7 @@ export const TOOLS: Tool[] = [
   {
     name: 'list_assets',
     description:
-      'Rank the tracked crypto assets (40 large caps) by a 0-100 confidence score for how trustworthy their perpetual-futures price is, lowest first. Includes the biggest venue and its share of volume, the share of volume quoting within 50 bps of the median, the share CoinMarketCap itself excludes, and the gap between an independently reconstructed venue composite and CoinMarketCap\'s own published price for that asset.',
+      'Rank the tracked crypto assets (38 large caps) by a 0-100 confidence score for how trustworthy their perpetual-futures price is, lowest first. Includes the biggest venue and its share of volume, the share of volume quoting within 50 bps of the median, the share CoinMarketCap itself excludes, and the gap between an independently reconstructed venue composite and CoinMarketCap\'s own published price for that asset.',
     inputSchema: { type: 'object', properties: {}, additionalProperties: false },
     run: () => assetsRanked(),
   },

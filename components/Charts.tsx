@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { usd, pct, stamp } from '@/lib/fmt';
+import { benchDomain } from '@/lib/bench';
 
 export type V = { name: string; price: number; volume: number; excluded: boolean; priceExcluded: boolean; pair?: string };
 
@@ -235,7 +236,8 @@ export function Gauge({ score, w = 200 }: { score: number; w?: number }) {
 
 /** Benchmark vernier: CoinMarketCap's published price fixed at 0; our rebuilt price(s) marked by gap in bp. */
 export function Bench({ items, domain = 60, tolerance = 25 }: { items: { symbol: string; gapBps: number }[]; domain?: number; tolerance?: number }) {
-  const W = 640, T = tolerance, D = Math.max(domain, ...items.map((i) => Math.abs(i.gapBps)), T + 5);
+  const W = 640, T = tolerance;
+  const D = benchDomain(items, domain, T);
   const H = items.length > 1 ? 118 : 104, pad = 18, y0 = H - 44;
   const x = (g: number) => pad + (g + D) / (2 * D) * (W - 2 * pad);
   const n = items.length;

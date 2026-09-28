@@ -55,7 +55,7 @@ A capture (about 21-23 credits) runs every 30 minutes; the free Basic tier was e
 ## Honest limits
 
 - Alerts describe what the API returns. They do not show that CoinMarketCap's published price uses the flagged rows.
-- 40 assets are tracked, sized to this project's CoinMarketCap API tier, not the whole market.
+- 38 assets are tracked, sized to this project's CoinMarketCap API tier, not the whole market.
 - Data is up to 30 minutes old. This is a risk check, not an execution signal.
 
 ## Relationship to the other entries

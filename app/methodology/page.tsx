@@ -92,7 +92,7 @@ export default async function Methodology() {
       <section className="mt-14 flex flex-col gap-3">
         <h2 className="border-b border-fg pb-2.5 font-serif text-3xl">Known limits</h2>
         <ul className="mt-1 list-disc space-y-2 pl-5 text-sm leading-relaxed text-fg-2">
-          <li>40 crypto assets and around 100 tokenised assets, sized to the CoinMarketCap API tier this project runs on, not the whole market.</li>
+          <li>38 crypto assets and around 100 tokenised assets, sized to the CoinMarketCap API tier this project runs on, not the whole market.</li>
           <li>Decentralised-exchange prices cover only BTC, ETH and LINK, on Uniswap v3 on Ethereum.</li>
           <li>A reading every 30 minutes. Nothing here is real-time.</li>
           <li>Tokenised assets are compared issuer against issuer, not against the real stock price, which the API doesn&apos;t provide.</li>
