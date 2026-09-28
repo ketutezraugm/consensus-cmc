@@ -3,17 +3,25 @@ import { scoreHistory, anomalyRows, captures, rwaObservations } from './data.ts'
 import { latestPerSymbol, venueBoard } from './history.ts';
 import { alerts, type Alert } from './alerts.ts';
 import { scoreAssets } from './rwa.ts';
+import { TRACKED } from './assets.ts';
 
 const round = (x: number | null, d = 1) => (x === null || !Number.isFinite(x) ? null : +x.toFixed(d));
 
+// A symbol dropped from the watchlist (lib/assets.ts) keeps its old rows in these history tables. An
+// explicit lookup for that symbol (e.g. assetReport('PEPE')) is left honest and unfiltered — that's a
+// direct question with a direct, real answer — but an aggregate "everything currently tracked" view
+// must not let its stale, frozen-in-time last reading show up as if it were still active.
 export async function currentAlerts(symbol?: string): Promise<Alert[]> {
-  const [scores, anoms] = await Promise.all([scoreHistory(), anomalyRows()]);
+  const [scoresRaw, anomsRaw] = await Promise.all([scoreHistory(), anomalyRows()]);
+  const scores = symbol ? scoresRaw : scoresRaw.filter((s) => TRACKED.has(s.symbol));
+  const anoms = symbol ? anomsRaw : anomsRaw.filter((a) => TRACKED.has(a.symbol));
   const all = alerts(scores, anoms);
   return symbol ? all.filter((a) => a.symbol === symbol.toUpperCase()) : all;
 }
 
 export async function assetsRanked() {
-  const scores = await scoreHistory();
+  const scoresRaw = await scoreHistory();
+  const scores = scoresRaw.filter((s) => TRACKED.has(s.symbol));
   return latestPerSymbol(scores)
     .sort((a, b) => a.confidence - b.confidence)
     .map((s) => ({
