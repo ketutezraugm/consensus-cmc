@@ -4,7 +4,9 @@
 
 Live: https://consensus-cmc.vercel.app · Track: **Data and Visualisation** · Built for [Build with CMC: API Hackathon](https://dorahacks.io/hackathon/coinmarketcap-api-202609/detail) · #BuildwithCMC
 
-Every 30 minutes a recorder captures per-venue price, volume, open interest, funding and basis for 38 assets (about 3,700 venue rows per capture), plus liquidations and Uniswap v3 pools. The site scores each asset and shows *who sets the price*. Started at 15 assets on the free CMC Basic tier (15k credits/month); widened to 38 after upgrading to the Startup tier (450k credits/month) partway through — two assets (PEPE, SHIB) are deliberately excluded because their perpetual contracts are quoted in two different denominations across exchanges, a unit mismatch this project's scoring doesn't yet detect for crypto (it already does for tokenised gold — see [/methodology](https://consensus-cmc.vercel.app/methodology)).
+A recorder captures per-venue price, volume, open interest, funding and basis for 38 assets (about 3,700 venue rows per capture), plus liquidations and Uniswap v3 pools, on a fixed schedule. The site scores each asset and shows *who sets the price*. Started at 15 assets on the free CMC Basic tier (15k credits/month); widened to 38 after the CMC team upgraded the key to the Startup tier (450k credits/month) for the event window — two assets (PEPE, SHIB) are deliberately excluded because their perpetual contracts are quoted in two different denominations across exchanges, a unit mismatch this project's scoring doesn't yet detect for crypto (it already does for tokenised gold — see [/methodology](https://consensus-cmc.vercel.app/methodology)).
+
+Event API access reverts to the Basic tier when submissions close (30 Sep), before judging (1-16 Oct) begins, so the live site's actual capture cadence will widen from 30 minutes to a few hours during judging — `lib/budget.ts` throttles automatically rather than exhausting the key. The home page always states the real, current cadence from recent capture gaps, not a fixed claim.
 
 ## One repository, three entries
 
@@ -59,7 +61,7 @@ Supabase pg_cron ──POST──> /api/ingest ──> CMC API ──> Supabase 
 | `GET /v5/real-world-assets/quotes/latest` (`rwa_id=` up to 100 ids in one call) | Every issuer's token for each asset: price, market cap, 24h volume | 1 |
 | `GET /v1/cryptocurrency/quotes/latest` (`id=` 38 ids in one call) | CMC's own single published price per asset, checked against our composite — never fed into it | 1 |
 
-About 44-46 credits per capture, roughly 2,100 a day. Started on the free Basic tier (15k credits/month, ~21-23 credits/capture at 15 assets); the CMC team upgraded the key to the Startup tier (450k credits/month) on 2026-09-28, which is what made widening to 38 assets and 100 tokenised assets possible without changing the 30-minute cadence.
+About 44-46 credits per capture. Started on the free Basic tier (15k credits/month, ~21-23 credits/capture at 15 assets); the CMC team upgraded the key to the Startup tier (450k credits/month) on 2026-09-28 for the event window, which is what made widening to 38 assets and 100 tokenised assets possible at a 30-minute cadence. That access reverts to Basic at submission close, so the cadence widens automatically during judging — see the note above.
 
 Also probed during development, not used by the product: `/v5/exchange/derivatives/list`, `/v5/real-world-assets/{map,issuers/list}` (200 on Basic), `/v5/real-world-assets/market-pairs/list` (403 on Basic), and `/v2/cryptocurrency/market-pairs/latest` and `/v1/exchange/listings/latest` (403 on Basic). Raw responses are in [`scripts/out/`](scripts/out).
 
@@ -99,4 +101,4 @@ node --env-file=.env.local scripts/probe.mjs   # call every endpoint family once
 curl -X POST -H "Authorization: Bearer $INGEST_SECRET" localhost:3000/api/ingest   # one capture (?dry=1 to skip the write)
 ```
 
-Scheduling: captures run every 30 minutes from Supabase `pg_cron` calling the ingest endpoint ([`supabase/cron.example.sql`](supabase/cron.example.sql)). `.github/workflows/ingest.yml` is a manual trigger only: GitHub throttled its cron to one run every 3-5 hours, too coarse for the history. Keys live only in environment variables and are never committed.
+Scheduling: Supabase `pg_cron` calls the ingest endpoint every 30 minutes ([`supabase/cron.example.sql`](supabase/cron.example.sql)); `lib/budget.ts` then skips a call when the key's remaining credit budget for the reset period requires it, which is what widens the effective cadence past 30 minutes on the Basic tier. `.github/workflows/ingest.yml` is a manual trigger only: GitHub throttled its cron to one run every 3-5 hours, too coarse for the history. Keys live only in environment variables and are never committed.

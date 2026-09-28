@@ -47,7 +47,7 @@ export default async function Image() {
             </div>
           )}
           <div style={{ fontSize: 26, color: C.muted, display: 'flex' }}>
-            Who sets the price, who disagrees, and for how long — recorded every 30 minutes.
+            Who sets the price, who disagrees, and for how long — recorded on a fixed schedule.
           </div>
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 22, color: C.muted, borderTop: `1px solid ${C.line}`, paddingTop: 24 }}>

@@ -37,7 +37,7 @@ export const TOOLS: Tool[] = [
   {
     name: 'check_asset',
     description:
-      'Pre-trade check for one crypto asset: confidence score and its recent trend, how concentrated the volume is, which venues quote off-market and for how many captures, funding, basis, on-chain gap, CoinMarketCap\'s own published price and the gap to it from an independently reconstructed venue composite, and any active alerts. Data is recorded every 30 minutes from the CoinMarketCap API.',
+      'Pre-trade check for one crypto asset: confidence score and its recent trend, how concentrated the volume is, which venues quote off-market and for how many captures, funding, basis, on-chain gap, CoinMarketCap\'s own published price and the gap to it from an independently reconstructed venue composite, and any active alerts. Data is recorded on a fixed schedule from the CoinMarketCap API; check_asset\'s as_of field has the exact time.',
     inputSchema: symbolArg('BTC, ETH, SOL, BCH'),
     run: async (a) => { const symbol = need(a); return (await assetReport(symbol)) ?? missing(`No data for ${symbol}. Use list_assets to see tracked symbols.`); },
   },
@@ -72,7 +72,7 @@ export async function handleRpc(input: unknown, tools: Tool[] = TOOLS): Promise<
         capabilities: { tools: { listChanged: false } },
         serverInfo: { name: 'consensus', version: '1.0.0' },
         instructions:
-          'Read-only analysis of how CoinMarketCap-listed prices are made across venues. Start with get_alerts or list_assets, then check_asset for detail. Data is a snapshot recorded every 30 minutes and can be up to 30 minutes old.',
+          'Read-only analysis of how CoinMarketCap-listed prices are made across venues. Start with get_alerts or list_assets, then check_asset for detail. Data is a recorded snapshot, not live; check_asset\'s as_of field has the exact time it was captured.',
       });
     case 'ping':
       return ok(id, {});

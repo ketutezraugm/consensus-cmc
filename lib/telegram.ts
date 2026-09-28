@@ -25,7 +25,7 @@ export const HELP = [
   'Or just ask in plain English, e.g. "is Bitcoin Cash reliable right now?" — answered from the same',
   'live data, grounded in tool calls, never guessed.',
   '',
-  'Data comes from the CoinMarketCap API and is recorded every 30 minutes.',
+  'Data comes from the CoinMarketCap API, recorded on a fixed schedule (not live).',
 ].join('\n');
 
 export function fmtAlert(a: Alert) {

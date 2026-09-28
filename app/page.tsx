@@ -3,6 +3,7 @@ import { scoreHistory, anomalyRows, liquidations, observations, captures, toVenu
 import { findings, latestPerSymbol } from '@/lib/history';
 import { score } from '@/lib/consensus';
 import { NAMES, TRACKED } from '@/lib/assets';
+import { cadenceLabel } from '@/lib/budget';
 import { Dispersion, Bench } from '@/components/Charts';
 import { AssetList } from '@/components/AssetList';
 import { stamp, usd } from '@/lib/fmt';
@@ -51,7 +52,7 @@ export default async function Home() {
 
   return (
     <main className="mx-auto w-full max-w-6xl px-5 py-10 sm:py-14">
-      <p className="num text-xs text-fg-2">Updated every 30 minutes &middot; {total} readings since {stamp(all[0].captured_at)}</p>
+      <p className="num text-xs text-fg-2">{cadenceLabel(caps)} &middot; {total} readings since {stamp(all[0].captured_at)}</p>
       <h1 className="mt-4 max-w-4xl text-balance font-serif text-[clamp(2.25rem,6cqw,4.25rem)] leading-[0.98] tracking-tight text-fg">
         One price. {exchangeCount} exchanges. <em className="font-serif italic text-fg-2">This is how far apart they are.</em>
       </h1>

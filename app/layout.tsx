@@ -15,7 +15,7 @@ const plexMono = IBM_Plex_Mono({ variable: "--font-plex-mono", subsets: ["latin"
 
 const title = "Consensus — how CoinMarketCap's price is made";
 const description =
-  "Every exchange's quote behind CoinMarketCap's price, recorded every 30 minutes. Who sets the price, who disagrees, and for how long.";
+  "Every exchange's quote behind CoinMarketCap's price, recorded on a fixed schedule. Who sets the price, who disagrees, and for how long.";
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://consensus-cmc.vercel.app'),
