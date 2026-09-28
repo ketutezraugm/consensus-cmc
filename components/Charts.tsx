@@ -116,8 +116,11 @@ export function ConcGrid({ share, cell = 12, px }: { share: number; cell?: numbe
 export function History({ points, lo = 0, firstLabel, lastLabel }: { points: { t: number; v: number }[]; lo?: number; firstLabel?: string; lastLabel?: string }) {
   if (!points.length) return null;
   const W = 640, H = 120, n = points.length;
+  // Right-aligned axis labels (60/80/100) end at x=W; PR reserves a gutter so the newest points — which
+  // cluster right at the plot's right edge — never render on top of, and obscure, a label's digits.
+  const PR = 26;
   const y = (v: number) => 14 + (1 - (v - lo) / (100 - lo)) * (H - 34);
-  const x = (i: number) => (n === 1 ? W / 2 : 4 + (i / (n - 1)) * (W - 8));
+  const x = (i: number) => (n === 1 ? (4 + (W - PR)) / 2 : 4 + (i / (n - 1)) * (W - PR - 4));
   const bands: [number, number, string][] = [[80, 100, 'var(--color-good)'], [60, 80, 'var(--color-warn)'], [lo, 60, 'var(--color-bad)']];
   return (
     <svg viewBox={`0 0 ${W} ${H}`} className="w-full" style={{ display: 'block' }} role="img" aria-label={`${n} readings, most recent last`}>

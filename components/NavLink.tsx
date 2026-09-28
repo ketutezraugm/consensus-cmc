@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-const OTHER_TOP_LEVEL = ['/alerts', '/rwa', '/methodology', '/anomalies'];
+const OTHER_TOP_LEVEL = ['/alerts', '/rwa', '/methodology', '/anomalies', '/judge'];
 
 export function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
   const pathname = usePathname();
