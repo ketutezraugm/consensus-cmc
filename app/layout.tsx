@@ -6,6 +6,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { NavLink } from "@/components/NavLink";
 import { scoreHistory, anomalyRows } from "@/lib/data";
 import { alerts } from "@/lib/alerts";
+import { TRACKED } from "@/lib/assets";
 import "./globals.css";
 
 const serif = Instrument_Serif({ variable: "--font-instrument-serif", subsets: ["latin"], weight: "400", style: ["normal", "italic"] });
@@ -40,7 +41,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   let watchCount: number | null = null;
   try {
     const [scores, anoms] = await Promise.all([scoreHistory(), anomalyRows()]);
-    watchCount = alerts(scores, anoms).length;
+    watchCount = alerts(scores.filter((s) => TRACKED.has(s.symbol)), anoms.filter((a) => TRACKED.has(a.symbol))).length;
   } catch { /* nav still renders without a count if data isn't up yet */ }
 
   return (

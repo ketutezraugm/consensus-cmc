@@ -20,6 +20,13 @@ export const WATCHLIST: Record<number, string> = {
   36507: 'PUMP', 27075: 'MNT', 6636: 'DOT', 13502: 'WLD', 36341: 'ASTER', 33038: 'SKY', 33251: 'WLFI',
 };
 
+// A symbol dropped from WATCHLIST keeps its old rows in the history tables (asset_scores, anomalies),
+// so anywhere history is aggregated across "every tracked symbol" needs this filter — otherwise a
+// removed symbol's last (possibly stale/wrong) reading keeps surfacing forever, since it never gets
+// a fresh row to replace it. Its own /SYMBOL page is intentionally not filtered: that's a direct,
+// honest look at what was recorded, not a "right now, across everything we track" view.
+export const TRACKED = new Set(Object.values(WATCHLIST));
+
 export const NAMES: Record<string, string> = {
   BTC: 'Bitcoin', ETH: 'Ethereum', BNB: 'BNB', XRP: 'XRP', SOL: 'Solana', TRX: 'Tron', ZEC: 'Zcash', HYPE: 'Hyperliquid',
   DOGE: 'Dogecoin', LINK: 'Chainlink', XMR: 'Monero', ADA: 'Cardano', LEO: 'UNUS SED LEO', XLM: 'Stellar', NEAR: 'NEAR Protocol',

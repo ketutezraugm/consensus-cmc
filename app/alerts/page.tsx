@@ -3,6 +3,7 @@ import { scoreHistory, anomalyRows } from '@/lib/data';
 import { alerts, THRESHOLDS } from '@/lib/alerts';
 import { RunStrip } from '@/components/Charts';
 import { Ago } from '@/components/Ago';
+import { TRACKED } from '@/lib/assets';
 
 // Rendered once per capture: fetches below are tagged 'data' and the recorder revalidates that tag after each capture.
 export const revalidate = 1800;
@@ -12,7 +13,11 @@ export const metadata = { title: 'Watchlist | Consensus' };
 const KIND: Record<string, string> = { concentration: 'Concentrated', 'off-market': 'Off-market', 'confidence-drop': 'Confidence drop', 'dex-gap': 'DEX gap' };
 
 export default async function Alerts() {
-  const [scores, anoms] = await Promise.all([scoreHistory(), anomalyRows()]);
+  const [scoresRaw, anomsRaw] = await Promise.all([scoreHistory(), anomalyRows()]);
+  // A symbol dropped from the watchlist (lib/assets.ts) keeps its old rows here; without this filter
+  // its last, now-stale reading would show as a permanently "active" condition that never resolves.
+  const scores = scoresRaw.filter((s) => TRACKED.has(s.symbol));
+  const anoms = anomsRaw.filter((a) => TRACKED.has(a.symbol));
   const list = alerts(scores, anoms);
   const high = list.filter((a) => a.severity === 'high');
   const medium = list.filter((a) => a.severity === 'medium');
