@@ -4,6 +4,8 @@
 
 Live: https://consensus-cmc.vercel.app · Track: **Data and Visualisation** · Built for [Build with CMC: API Hackathon](https://dorahacks.io/hackathon/coinmarketcap-api-202609/detail) · #BuildwithCMC
 
+![Consensus home page: a live venue-dispersion chart for Bitcoin Cash, showing Deepcoin holding 89% of volume off to one side](docs/assets/hero.png)
+
 A recorder captures per-venue price, volume, open interest, funding and basis for 38 assets (about 3,700 venue rows per capture), plus liquidations and Uniswap v3 pools, on a fixed schedule. The site scores each asset and shows *who sets the price*. Started at 15 assets on the free CMC Basic tier (15k credits/month); widened to 38 after the CMC team upgraded the key to the Startup tier (450k credits/month) for the event window — two assets (PEPE, SHIB) are deliberately excluded because their perpetual contracts are quoted in two different denominations across exchanges, a unit mismatch this project's scoring doesn't yet detect for crypto (it already does for tokenised gold — see [/methodology](https://consensus-cmc.vercel.app/methodology)).
 
 Event API access reverts to the Basic tier when submissions close (30 Sep), before judging (1-16 Oct) begins, so the live site's actual capture cadence will widen from 30 minutes to a few hours during judging — `lib/budget.ts` throttles automatically rather than exhausting the key. The home page always states the real, current cadence from recent capture gaps, not a fixed claim.
