@@ -153,8 +153,12 @@ const NOT_CONFIGURED = "Plain-language questions aren't set up yet — try a com
 // never touch the model, are visibly still an option instead of the chat just looking broken.
 const QUOTA_EXHAUSTED = "Plain-language questions have hit today's usage limit — try a command instead, e.g. /check BTC or /alerts.";
 
+// Default was gemini-3.8-flash; switched after live-testing (2026-09-28) found its free-tier daily quota
+// is a hard 20 requests/day (RESOURCE_EXHAUSTED), trivially exhausted by real use. gemini-3.1-flash-lite
+// went 4/4 on real tool-calling questions (8.7-18.6s each, correct grounded answers, two different tools)
+// against a separate, unexhausted quota bucket. Override via GEMINI_MODEL if this needs to change again.
 export async function runAgent(
-  text: string, tools: Tool[], callModel: ModelCall = callGemini, model = process.env.GEMINI_MODEL || 'gemini-3.8-flash',
+  text: string, tools: Tool[], callModel: ModelCall = callGemini, model = process.env.GEMINI_MODEL || 'gemini-3.1-flash-lite',
 ): Promise<string> {
   if (process.env.AGENT_CHAT_ENABLED === 'false') return "Plain-language questions are switched off right now — try a command, e.g. /help.";
   const messages: AgentMessage[] = [{ role: 'user', blocks: [{ type: 'text', text: text.slice(0, MAX_INPUT) }] }];
