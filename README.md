@@ -25,15 +25,9 @@ Event API access reverts to the Basic tier when submissions close (30 Sep), befo
 
 **The headline finding:** CoinMarketCap's own API returns Kraken's BTC perpetual market twice, under the same `market_id` (47233), with two conflicting prices in the same response — and flags neither row. Consensus catches this because it checks every market for duplicates on every capture; CMC's own `exclusions` field never does, on this or 6 other duplicated markets in the latest capture alone. And it isn't just an alarm system: built only from venue-level data, with no knowledge of CMC's own published number, it independently reconstructs that number to within a median of **19 bps** across 37 assets — checked against ground truth, not just flagged as a risk.
 
-## One repository, three entries
+## Also in this repo
 
-The same recorder and analysis engine power three differently-scoped submissions, disclosed here on purpose:
-
-| Entry | Track | What it is | Doc |
-|---|---|---|---|
-| **Consensus** | Data and Visualisation | The web app: per-venue price dispersion, history, tokenised assets | this README |
-| **Consensus Alerts** | Markets and Trading Tools | Pre-trade venue-risk bot (Telegram) and `/api/alerts` | [docs/submission-trading-alerts.md](docs/submission-trading-alerts.md) |
-| **Consensus MCP** | AI Agents and Automation | Remote MCP server, five tools: `claude mcp add --transport http consensus https://consensus-cmc.vercel.app/api/mcp` | [docs/submission-mcp.md](docs/submission-mcp.md) |
+This submission is the web app above. The same recorder and analysis engine also power a Telegram bot ([docs/submission-trading-alerts.md](docs/submission-trading-alerts.md)) and a remote MCP server (`claude mcp add --transport http consensus https://consensus-cmc.vercel.app/api/mcp`, [docs/submission-mcp.md](docs/submission-mcp.md)) — not submitted as separate entries, included here for completeness.
 
 ## What it found
 

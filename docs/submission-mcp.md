@@ -1,6 +1,6 @@
 # Consensus MCP: give an AI agent the truth about a price
 
-**Track: AI Agents and Automation** · Remote MCP server · #BuildwithCMC
+**Not a separate hackathon entry** — a feature of [Consensus](../README.md), the Data and Visualisation submission. Remote MCP server · #BuildwithCMC
 
 An LLM that quotes a crypto price has no idea whether that price is set by one venue or a hundred, or whether a venue is quoting 20% off the market. This MCP server gives an agent live, structured answers to exactly that, from CoinMarketCap API data recorded on a fixed schedule — `check_asset` and `check_tokenised_asset` include exactly when their reading was captured.
 
@@ -80,8 +80,8 @@ Protocol logic (initialize negotiation, notifications, error codes, tool failure
 
 Recorded snapshots, not live — `check_asset`/`check_tokenised_asset` state exactly how old; 38 crypto assets and around 100 tokenised assets; reports what the API returns, not how CoinMarketCap computes its published price.
 
-## Relationship to the other entries
+## Relationship to the rest of the repo
 
-Same analysis engine and recorder as **Consensus** (Data and Visualisation) and **Consensus Alerts** (Markets and Trading Tools), in one repository, disclosed here on purpose. This entry is the agent interface: the MCP protocol layer ([`lib/mcp.ts`](../lib/mcp.ts)), tool definitions, and the conformance check.
+Same analysis engine and recorder as the main [Consensus](../README.md) submission. This is the agent interface built on top of it: the MCP protocol layer ([`lib/mcp.ts`](../lib/mcp.ts)), tool definitions, and the conformance check.
 
 The Telegram bot is itself a client of these exact tool definitions: free-text messages ("is Bitcoin Cash reliable right now?") go through a model tool-use loop ([`lib/agent.ts`](../lib/agent.ts), Gemini by default) that calls the same `TOOLS` array this server exposes over MCP, rather than a second, separately-maintained set of functions. The loop is provider-neutral by design — the model call is a swappable adapter (Gemini or Claude) behind one function — so it's one concrete example of an AI agent using this interface, running in production, independent of which model happens to be behind it.

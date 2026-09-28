@@ -1,6 +1,6 @@
 # Consensus Alerts: a pre-trade venue-risk bot
 
-**Track: Markets and Trading Tools** · Telegram bot + public alerts API + web page · #BuildwithCMC
+**Not a separate hackathon entry** — a feature of [Consensus](../README.md), the Data and Visualisation submission. Telegram bot + public alerts API + web page · #BuildwithCMC
 
 **The question it answers:** *before I trade this, is the price I see actually set by anything?*
 
@@ -73,6 +73,6 @@ A capture (about 44-46 credits at 38 tracked assets) runs every 30 minutes on th
 - 38 assets are tracked, sized to this project's CoinMarketCap API tier, not the whole market.
 - Data is a recorded snapshot, not live — `/check` states exactly how old the reading is. This is a risk check, not an execution signal.
 
-## Relationship to the other entries
+## Relationship to the rest of the repo
 
-This shares its analysis engine (`lib/consensus.ts`, `lib/alerts.ts`, the recorder) with **Consensus**, the Data and Visualisation entry, and with **Consensus MCP**, the AI Agents entry, all in this repository. That is disclosed here on purpose: the three differ in purpose and interface. This entry is the alerting product (Telegram bot, alert rules, push de-duplication, `/api/alerts`).
+This shares its analysis engine (`lib/consensus.ts`, `lib/alerts.ts`, the recorder) with the main [Consensus](../README.md) submission. This is the alerting product built on top of it: Telegram bot, alert rules, push de-duplication, `/api/alerts`.
