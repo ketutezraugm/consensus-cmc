@@ -4,7 +4,7 @@
 
 Live: https://consensus-cmc.vercel.app · Track: **Data and Visualisation** · Built for [Build with CMC: API Hackathon](https://dorahacks.io/hackathon/coinmarketcap-api-202609/detail) · #BuildwithCMC
 
-Every 30 minutes a recorder captures per-venue price, volume, open interest, funding and basis for 15 assets (about 2,000 venue rows per capture), plus liquidations and Uniswap v3 pools. The site scores each asset and shows *who sets the price*.
+Every 30 minutes a recorder captures per-venue price, volume, open interest, funding and basis for 38 assets (about 3,700 venue rows per capture), plus liquidations and Uniswap v3 pools. The site scores each asset and shows *who sets the price*. Started at 15 assets on the free CMC Basic tier (15k credits/month); widened to 38 after upgrading to the Startup tier (450k credits/month) partway through — two assets (PEPE, SHIB) are deliberately excluded because their perpetual contracts are quoted in two different denominations across exchanges, a unit mismatch this project's scoring doesn't yet detect for crypto (it already does for tokenised gold — see [/methodology](https://consensus-cmc.vercel.app/methodology)).
 
 ## One repository, three entries
 
@@ -18,18 +18,18 @@ The same recorder and analysis engine power three differently-scoped submissions
 
 ## What it found
 
-Recorded 2026-09-25 onward, 64 captures and counting. Reproduce every number below with `node --no-warnings --env-file=.env.local scripts/report.mjs` (fast — it's the exact code the home page runs). Ordered by how defensible the claim is, strongest first.
+Recorded 2026-09-25 onward, 102 captures and counting. Reproduce every number below with `node --no-warnings --env-file=.env.local scripts/report.mjs` (fast — it's the exact code the home page runs). Ordered by how defensible the claim is, strongest first.
 
 | Finding | Evidence |
 |---|---|
-| **We independently reconstructed CMC's own published price to within a median of 9 bps** across 15 assets — a volume-weighted composite built only from venue-level data, with no knowledge of CMC's published number, computed after the fact. One outlier: BCH diverges by 96 bps. | Every capture |
-| **The API returns some markets twice with conflicting prices, on a reputable venue.** Kraken's BTC perp (`market_id` 47233) appears as $84,012 and $66,959 in the same response; neither row is flagged. Same for Kraken ETH/XRP/LTC and DigiFinex ETH — a data-return defect, not a thin-venue quirk. | 6 duplicated markets in the latest capture, present every capture since duplicates were kept |
-| **BCH perp volume is one venue.** Deepcoin holds 90%+ of BCH's 24h perp volume. CMC excludes only a few percent of BCH's volume from its own aggregation. | 90%+ in 64 of 64 captures |
-| **SunX quotes off-market on 14 of 15 assets and is never flagged.** Typically 14% below the median. | 64 of 64 captures. Its volume is small, so it barely moves an aggregate |
-| **CMC excludes a median 48% of perp volume** from its own aggregation (5%-67% by asset). | Every capture |
-| **Tokenised assets mostly agree, with one large exception.** Median weighted disagreement between issuers of the same asset is single-digit bps across 38 assets. SpaceX (SPCX) is the exception: two pre-IPO wrappers (Tessera, PreStocks) price it multiples of the other issuers. The API does not say why. | Latest capture; history accumulating |
+| **We independently reconstructed CMC's own published price to within a median of 19 bps** across 37 assets — a volume-weighted composite built only from venue-level data, with no knowledge of CMC's published number, computed after the fact. Widest: BCH diverges by 531 bps. | Every capture |
+| **The API returns some markets twice with conflicting prices, on a reputable venue.** Kraken's BTC perp (`market_id` 47233) appears as $82,737 and $66,959 in the same response; neither row is flagged. Same for Kraken ETH/XRP/LTC and DigiFinex ETH, plus MemeMax's XLM market since the watchlist widened — a data-return defect, not a thin-venue quirk. | 7 duplicated markets in the latest capture, present every capture since duplicates were kept |
+| **BCH perp volume is one venue.** Deepcoin holds 90%+ of BCH's 24h perp volume. CMC excludes only a few percent of BCH's volume from its own aggregation. | 90%+ in 88 of 102 captures |
+| **SunX quotes off-market on 29 of 38 tracked assets and is never flagged.** Typically 13% below the median. | 102 of 102 captures. Its volume is small, so it barely moves an aggregate |
+| **CMC excludes a median 48% of perp volume** from its own aggregation (1%-80% by asset). | Every capture |
+| **Tokenised assets mostly agree, with one large exception.** Median weighted disagreement between issuers of the same asset is 1.1 bps across 81 scored assets (98 tracked; 17 have no usable price data yet). SpaceX (SPCX) is the exception: two pre-IPO wrappers (Tessera, PreStocks) still price it multiples of the other 9 issuers. The API does not say why. | Latest capture; history accumulating |
 | **Gold tokens priced per gram look like a 97% disagreement** unless units are handled. Consensus detects and excludes them. | Every capture |
-| **DEX and exchange prices agree.** Liquidity-weighted Uniswap v3 prices are within a few bps of the exchange reference for BTC, ETH, LINK. | A consistency result, not an anomaly |
+| **DEX and exchange prices agree.** Liquidity-weighted Uniswap v3 prices are within 20 bps of the exchange reference for BTC (-10 bps), ETH (-2 bps), LINK (+19 bps). | A consistency result, not an anomaly |
 
 What these do **not** show: whether CMC's headline price actually uses the flagged rows, or whether Deepcoin's volume is real. They are observations about what the API returns.
 
@@ -51,15 +51,15 @@ Supabase pg_cron ──POST──> /api/ingest ──> CMC API ──> Supabase 
 
 | Endpoint | Used for | Credits |
 |---|---|---|
-| `GET /v5/cryptocurrency/derivatives/market-pairs/list/latest` (`crypto_id`, `category=perpetual`, `limit=250`) | Per-venue price, volume, open interest, index price, basis, funding, `outlier_detected`, `exclusions`. 15 calls per capture. | 1 per 250 pairs |
+| `GET /v5/cryptocurrency/derivatives/market-pairs/list/latest` (`crypto_id`, `category=perpetual`, `limit=250`) | Per-venue price, volume, open interest, index price, basis, funding, `outlier_detected`, `exclusions`. 38 calls per capture. | 1 per 250 pairs |
 | `GET /v5/derivatives/liquidations/cryptocurrency/list/latest` | Long/short liquidations, 1h/4h/24h, per asset | 1 |
 | `GET /v5/derivatives/liquidations/quotes/latest` | Market-wide liquidations | 1 |
 | `GET /v4/dex/spot-pairs/latest` (`dex_slug=uniswap-v3`, `network_slug=ethereum`) | Pool price, liquidity, volume for WBTC/WETH/LINK vs stablecoins | 1 |
-| `GET /v5/real-world-assets/assets/list` (`limit=40`) | The 40 highest-ranked tokenised assets | 1 |
-| `GET /v5/real-world-assets/quotes/latest` (`rwa_id=` 38 ids in one call) | Every issuer's token for each asset: price, market cap, 24h volume | 1 |
-| `GET /v1/cryptocurrency/quotes/latest` (`id=` 15 ids in one call) | CMC's own single published price per asset, checked against our composite — never fed into it | 1 |
+| `GET /v5/real-world-assets/assets/list` (`limit=100`) | The 100 highest-ranked tokenised assets | 1 |
+| `GET /v5/real-world-assets/quotes/latest` (`rwa_id=` up to 100 ids in one call) | Every issuer's token for each asset: price, market cap, 24h volume | 1 |
+| `GET /v1/cryptocurrency/quotes/latest` (`id=` 38 ids in one call) | CMC's own single published price per asset, checked against our composite — never fed into it | 1 |
 
-About 21-23 credits per capture, roughly 1,100 a day. Everything ran on the free Basic tier.
+About 44-46 credits per capture, roughly 2,100 a day. Started on the free Basic tier (15k credits/month, ~21-23 credits/capture at 15 assets); the CMC team upgraded the key to the Startup tier (450k credits/month) on 2026-09-28, which is what made widening to 38 assets and 100 tokenised assets possible without changing the 30-minute cadence.
 
 Also probed during development, not used by the product: `/v5/exchange/derivatives/list`, `/v5/real-world-assets/{map,issuers/list}` (200 on Basic), `/v5/real-world-assets/market-pairs/list` (403 on Basic), and `/v2/cryptocurrency/market-pairs/latest` and `/v1/exchange/listings/latest` (403 on Basic). Raw responses are in [`scripts/out/`](scripts/out).
 
@@ -92,7 +92,7 @@ Full list with 24 items in [`docs/api-feedback.md`](docs/api-feedback.md). The s
 
 ```bash
 cp .env.example .env.local        # CMC_API_KEY, INGEST_SECRET, SUPABASE_URL, SUPABASE_SERVICE_KEY
-# run every file in supabase/migrations/ (0001-0005, in order) in your Supabase SQL editor
+# run every file in supabase/migrations/ (0001-0007, in order) in your Supabase SQL editor
 npm install && npm run dev
 node --no-warnings --test         # scoring tests
 node --env-file=.env.local scripts/probe.mjs   # call every endpoint family once
