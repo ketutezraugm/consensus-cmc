@@ -5,6 +5,7 @@ import { ensureSubscribed, unsubscribe, watch, unwatch, getSubscriber } from '@/
 import { runAgent } from '@/lib/agent';
 import { TOOLS } from '@/lib/mcp';
 import { allowChatMessage } from '@/lib/ratelimit';
+import { firstTimeSeen } from '@/lib/dedupe';
 
 // Free-text messages can take a few model round-trips (see lib/agent.ts's MAX_STEPS), so this needs
 // more headroom than a single deterministic command lookup.
@@ -17,7 +18,7 @@ const deps: Deps = {
 };
 
 type TelegramMessage = { text?: string; chat: { id: number } };
-type TelegramUpdate = { message?: TelegramMessage; channel_post?: TelegramMessage };
+type TelegramUpdate = { update_id: number; message?: TelegramMessage; channel_post?: TelegramMessage };
 
 const authorized = (req: Request) => {
   const want = Buffer.from(process.env.TELEGRAM_WEBHOOK_SECRET ?? '');
@@ -31,6 +32,13 @@ export async function POST(req: Request) {
   const update = (await req.json().catch(() => null)) as TelegramUpdate | null;
   const m = update?.message ?? update?.channel_post;
   if (m?.text && m.chat?.id !== undefined) {
+    // A slow reply (almost always the LLM chat path) can outlast Telegram's own retry timeout, which
+    // re-sends the exact same update — without this check, that reprocesses it, and the LLM call, a
+    // second time. A dedup-check failure fails open (still answers) rather than blocking the bot
+    // entirely over a Supabase hiccup.
+    const seen = await firstTimeSeen(update!.update_id).catch((e) => { console.error('dedupe check failed, proceeding anyway:', e); return true; });
+    if (!seen) return Response.json({ ok: true, duplicate: true });
+
     try {
       const text = await answer(m.text, m.chat.id, deps);
       if (text) await send(text, m.chat.id);
