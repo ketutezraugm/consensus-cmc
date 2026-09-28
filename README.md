@@ -19,6 +19,7 @@ Event API access reverts to the Basic tier when submissions close (30 Sep), befo
 | **Verify it yourself** | `node --no-warnings --env-file=.env.local scripts/report.mjs` — reproduces every finding below from the live recorded data, no CMC credits spent |
 | **Tests** | 105, `node --no-warnings --test` (~6s, offline — nothing above depends on a live key) |
 | **Raw API evidence** | [`scripts/out/`](scripts/out) — real, saved responses, not paraphrased |
+| **API feedback** | 24 items from real calls: [`docs/api-feedback.md`](docs/api-feedback.md). Strongest: the `market_id` duplicate below; no unit field on tokenised assets (a 97% "disagreement" that's actually gold priced per gram vs per troy ounce); tier docs don't say which endpoints each plan actually gets |
 
 **The headline finding:** CoinMarketCap's own API returns Kraken's BTC perpetual market twice, under the same `market_id` (47233), with two conflicting prices in the same response — and flags neither row. Consensus catches this because it checks every market for duplicates on every capture; CMC's own `exclusions` field never does, on this or 6 other duplicated markets in the latest capture alone. And it isn't just an alarm system: built only from venue-level data, with no knowledge of CMC's own published number, it independently reconstructs that number to within a median of **19 bps** across 37 assets — checked against ground truth, not just flagged as a risk.
 

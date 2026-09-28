@@ -15,6 +15,7 @@ An LLM that quotes a crypto price has no idea whether that price is set by one v
 | **Verify it yourself** | `node --env-file=.env.local scripts/mcp-check.mjs` — the **official MCP SDK client**, not curl: connects, lists tools, calls all five against live data, checks both error paths |
 | **Tests** | 105 total; protocol logic (initialize, notifications, error codes, `isError`) in [`test/mcp.test.mjs`](../test/mcp.test.mjs) with injected tools |
 | **Raw API evidence** | [`scripts/out/`](../scripts/out) |
+| **API feedback** | 24 items from real calls: [`docs/api-feedback.md`](api-feedback.md). Strongest for an agent: `market_id` isn't a unique key, so an agent can't safely join on it; `exclusions` mixes `volume` and `price` meanings in one array; tokens with `price: null` are still returned with no status field explaining why |
 
 **The headline finding:** an agent asking `check_asset` for BCH gets more than a price — it gets `vsPublished`, the gap in basis points between an independently reconstructed venue composite and CMC's own published number for that asset, computed with no knowledge of that published number and only checked against it afterward. Across the 37 assets with a published price to check against, that reconstruction lands within a median of **19 bps**. This is the same tool an agent calling `get_alerts` or `list_assets` already used to find that Deepcoin holds 90% of BCH's volume — so the agent isn't just told a fact, it's given the receipt.
 

@@ -17,6 +17,7 @@ A perpetual-futures price on CoinMarketCap is built from hundreds of venues. Oft
 | **Verify it yourself** | [`https://consensus-cmc.vercel.app/api/alerts`](https://consensus-cmc.vercel.app/api/alerts) — the exact JSON the bot's `/alerts` command sends, no bot needed |
 | **Tests** | 105 total; command handling in [`test/telegram.test.mjs`](../test/telegram.test.mjs) |
 | **Raw API evidence** | [`scripts/out/`](../scripts/out) |
+| **API feedback** | 24 items from real calls: [`docs/api-feedback.md`](api-feedback.md). Strongest for a trader: Kraken's own `index_price` read $104,712 while BTC traded near $84,000, on the same rows as the duplicate below; on-chain pool prices can sit over an hour stale with nothing marking them as such |
 
 **The headline finding:** ask this bot to check BTC before you trade it, and `/check BTC` will tell you Kraken — a top-tier exchange, not a thin or exotic venue — is quoting roughly 2,000 bps off the market on $289M of daily volume, and CoinMarketCap still counts it. Part of why: the underlying API actually returns Kraken's BTC perpetual market twice, under the same `market_id` (47233), with two conflicting prices in the same response, and flags neither row (see the README for that raw evidence). A trader watching only CoinMarketCap's headline number would see none of this.
 
