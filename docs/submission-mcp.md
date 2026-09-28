@@ -43,10 +43,10 @@ Verified with the **official MCP SDK client** against production: [`scripts/mcp-
 ```
 connected to consensus | protocol ok
 tools: get_alerts, list_assets, check_asset, list_tokenised_assets, check_tokenised_asset
-get_alerts    -> 15 alerts | BCH: 90% of perp volume is on Deepcoin
-list_assets   -> 15 assets | lowest: BCH 38
-check_asset   -> {"conf":38,"top":"Deepcoin","share":90.2,"vsPublished":96,"offMarket":4,"alerts":2}
-list_tokenised_assets -> 38 assets | widest: SPCX 1485 bps
+get_alerts    -> 23 alerts | BCH: 90% of perp volume is on Deepcoin
+list_assets   -> 37 assets | lowest: BCH 25
+check_asset   -> {"conf":25,"top":"Deepcoin","share":89.7,"vsPublished":531,"offMarket":5,"alerts":2}
+list_tokenised_assets -> 81 assets | widest: SPCX 1491 bps
 unknown symbol -> isError true | Error: No data for ZZZ.
 ALL OK
 ```
