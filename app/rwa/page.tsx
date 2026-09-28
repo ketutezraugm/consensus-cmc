@@ -1,7 +1,7 @@
-import Link from 'next/link';
 import { captures, rwaObservations } from '@/lib/data';
 import { scoreAssets } from '@/lib/rwa';
 import { SpreadBars } from '@/components/Charts';
+import { RwaList } from '@/components/RwaList';
 import { usd } from '@/lib/fmt';
 import { Ago } from '@/components/Ago';
 
@@ -50,41 +50,7 @@ export default async function Rwa() {
         <h2 className="font-serif text-3xl">Most disagreement first</h2>
         <span className="num text-xs text-fg-2">{shown.length} of {assets.length}</span>
       </div>
-      <div className="flex flex-col">
-        {shown.map(({ symbol, type, r }) => (
-          <Link key={symbol} href={`/rwa/${symbol}`} className="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 gap-y-1 border-b border-line py-3.5 transition-colors hover:bg-raised sm:grid-cols-[280px_140px_minmax(0,1fr)]">
-            <div className="flex items-baseline gap-2.5 truncate">
-              <span className="num text-[15px] font-medium text-fg">{symbol}</span>
-              <span className="truncate text-[13px] text-fg-2">{type}</span>
-            </div>
-            <span className="num text-right text-[15px] font-medium sm:text-left" style={{ color: r.dispersionBps > 100 ? 'var(--color-bad)' : 'var(--color-fg)' }}>{(r.dispersionBps / 100).toFixed(2)}%</span>
-            <span className="col-span-2 text-[13px] text-fg-2 sm:col-span-1">
-              {r.tokens} tokens &middot; {r.liquid} liquid{r.untracked ? ` · ${r.untracked} with no price yet` : ''} &middot; {usd(r.mcap)} tokenised
-            </span>
-          </Link>
-        ))}
-      </div>
-      {rest.length > 0 && (
-        <details className="mt-1">
-          <summary className="cursor-pointer border-b border-line py-3.5 text-sm text-fg underline decoration-accent underline-offset-2">
-            {rest.length} more assets, each with issuers within {(restCeiling / 100).toFixed(2)}% of each other
-          </summary>
-          <div className="flex flex-col">
-            {rest.map(({ symbol, type, r }) => (
-              <Link key={symbol} href={`/rwa/${symbol}`} className="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 gap-y-1 border-b border-line py-3.5 transition-colors hover:bg-raised sm:grid-cols-[280px_140px_minmax(0,1fr)]">
-                <div className="flex items-baseline gap-2.5 truncate">
-                  <span className="num text-[15px] font-medium text-fg">{symbol}</span>
-                  <span className="truncate text-[13px] text-fg-2">{type}</span>
-                </div>
-                <span className="num text-right text-[15px] font-medium text-fg sm:text-left">{(r.dispersionBps / 100).toFixed(2)}%</span>
-                <span className="col-span-2 text-[13px] text-fg-2 sm:col-span-1">
-                  {r.tokens} tokens &middot; {r.liquid} liquid{r.untracked ? ` · ${r.untracked} with no price yet` : ''} &middot; {usd(r.mcap)} tokenised
-                </span>
-              </Link>
-            ))}
-          </div>
-        </details>
-      )}
+      <RwaList shown={shown} rest={rest} restCeiling={restCeiling} />
 
       <p className="mt-8 max-w-3xl text-xs leading-relaxed text-fg-2">
         A token counts as liquid with at least $10k of 24h volume. The reference is the market-cap-weighted median of liquid tokens. Tokens priced at

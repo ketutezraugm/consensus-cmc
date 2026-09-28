@@ -3,8 +3,9 @@ import { scoreHistory, anomalyRows, liquidations, observations, captures, toVenu
 import { findings, latestPerSymbol } from '@/lib/history';
 import { score } from '@/lib/consensus';
 import { NAMES, TRACKED } from '@/lib/assets';
-import { Dispersion, Bench, band } from '@/components/Charts';
-import { pct, stamp, usd } from '@/lib/fmt';
+import { Dispersion, Bench } from '@/components/Charts';
+import { AssetList } from '@/components/AssetList';
+import { stamp, usd } from '@/lib/fmt';
 import { Ago } from '@/components/Ago';
 
 // Rendered once per capture: fetches below are tagged 'data' and the recorder revalidates that tag after each capture.
@@ -114,36 +115,12 @@ export default async function Home() {
         <span className="num text-xs text-fg-2">Trust score 0&ndash;100 &middot; 80+ reliable &middot; 60&ndash;79 watch &middot; under 60 unreliable</span>
       </div>
 
-      <div className="mt-4 hidden grid-cols-[170px_150px_minmax(0,1fr)_190px_96px] gap-6 border-b border-line pb-2.5 text-xs text-fg-2 sm:grid">
-        <span>Asset</span><span>Trust</span><span>Exchanges by distance from the agreed price</span><span>Largest exchange</span><span className="text-right">vs published</span>
-      </div>
-
-      <div className="divide-y divide-line border-b border-line sm:border-t-0">
-        {rows.map(({ symbol, venues, r }) => {
-          const b = band(r.confidence);
-          const pub = latest.find((s) => s.symbol === symbol)?.published_gap_bps ?? null;
-          return (
-            <Link key={symbol} href={`/${symbol}`} className="grid grid-cols-1 gap-3 py-4 transition-colors hover:bg-raised sm:grid-cols-[170px_150px_minmax(0,1fr)_190px_96px] sm:items-center sm:gap-6">
-              <div className="flex items-baseline gap-2.5 truncate">
-                <span className="num text-[15px] font-medium text-fg">{symbol}</span>
-                <span className="truncate text-[13px] text-fg-2">{NAMES[symbol] ?? ''}</span>
-              </div>
-              <div className="num flex items-baseline gap-2">
-                <span className="text-lg text-fg">{r.confidence}</span>
-                <span className="text-xs" style={{ color: b.c }}>{b.word}</span>
-              </div>
-              <Dispersion venues={venues} refPrice={r.ref} h={40} compact />
-              <div className="flex items-baseline gap-2 text-[13px] text-fg-2">
-                <span className="truncate">{r.top.name}</span>
-                <span className="num" style={{ color: r.top.share >= 0.5 ? 'var(--color-bad)' : 'var(--color-fg)' }}>{pct(r.top.share, 0)}</span>
-              </div>
-              <div className="num text-right text-[13px]" style={{ color: pub !== null && Math.abs(pub) > 25 ? 'var(--color-bad)' : 'var(--color-fg-2)' }}>
-                {pub !== null ? `${pub < 0 ? '−' : '+'}${Math.round(Math.abs(pub))} bp` : ''}
-              </div>
-            </Link>
-          );
-        })}
-      </div>
+      <AssetList
+        rows={rows.map(({ symbol, venues, r }) => ({
+          symbol, name: NAMES[symbol] ?? '', venues, r,
+          pub: latest.find((s) => s.symbol === symbol)?.published_gap_bps ?? null,
+        }))}
+      />
 
       <p className="mt-8 max-w-3xl text-xs leading-relaxed text-fg-2">
         Confidence blends how spread out volume is across exchanges (40%), how much volume quotes within 50 bps of the median (30%), how fresh the
