@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Instrument_Serif, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import { Logo } from "@/components/Logo";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { NavLink } from "@/components/NavLink";
 import { scoreHistory, anomalyRows } from "@/lib/data";
 import { alerts } from "@/lib/alerts";
 import "./globals.css";
@@ -54,9 +55,9 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
             </Link>
             <div className="ml-2 flex flex-wrap items-center gap-x-5 gap-y-2">
               {nav.map(([href, label]) => (
-                <Link key={href} href={href} className="text-fg-2 transition-colors hover:text-fg">
+                <NavLink key={href} href={href}>
                   {label}{href === '/alerts' && watchCount !== null ? ` ${watchCount}` : ''}
-                </Link>
+                </NavLink>
               ))}
             </div>
             <div className="ml-auto flex items-center gap-4">

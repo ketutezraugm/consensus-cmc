@@ -19,12 +19,12 @@ const scaleShare = (share: number, floor: number) => Math.min(1, Math.max(floor,
  * beyond the domain don't get clipped: the axis breaks into a log-compressed gutter so outliers still
  * show, at the edge, labelled with their real number.
  */
-export function Dispersion({ venues, refPrice, h = 150, compact = false, domain = 1.5, refLabel = 'agreed price' }: {
-  venues: V[]; refPrice: number; h?: number; compact?: boolean; domain?: number; refLabel?: string;
+export function Dispersion({ venues, refPrice, h = 150, compact = false, domain = 1.5, gutter, refLabel = 'agreed price' }: {
+  venues: V[]; refPrice: number; h?: number; compact?: boolean; domain?: number; gutter?: number; refLabel?: string;
 }) {
   if (!venues.length || !(refPrice > 0)) return null;
   const W = 1000, D = domain;
-  const G = compact ? 14 : 128, top = compact ? 2 : 34, ph = h - top - (compact ? 4 : 44), base = top + ph;
+  const G = gutter ?? (compact ? 14 : 128), top = compact ? 2 : 34, ph = h - top - (compact ? 4 : 44), base = top + ph;
   const x = (d: number) => G + (d + D) / (2 * D) * (W - 2 * G);
   const gx = (d: number) => {
     const k = Math.min(1, Math.log(Math.abs(d) / D) / Math.log(40 / D));
@@ -35,6 +35,11 @@ export function Dispersion({ venues, refPrice, h = 150, compact = false, domain 
   let list = venues.map((v) => ({ v, dev: (v.price / refPrice - 1) * 100, share: v.volume / total }));
   const topVenue = [...list].sort((a, b) => b.share - a.share)[0];
   list = list.sort((a, b) => (a.v.excluded ? 0 : 1) - (b.v.excluded ? 0 : 1) || a.share - b.share);
+  // At most one off-scale label per side (the most prominent by share) — the label band has room for
+  // one line; more than that overflows the chart's own viewBox and gets silently clipped.
+  const offScale = list.filter((e) => Math.abs(e.dev) > D && !e.v.excluded);
+  const leftLabel = offScale.filter((e) => e.dev < 0).sort((a, b) => b.share - a.share)[0];
+  const rightLabel = offScale.filter((e) => e.dev > 0).sort((a, b) => b.share - a.share)[0];
 
   const els: ReactNode[] = [];
   els.push(<rect key="tb" x={x(-0.5)} y={top} width={x(0.5) - x(-0.5)} height={ph} fill="var(--color-good)" opacity={compact ? 0.12 : 0.09} />);
@@ -56,7 +61,6 @@ export function Dispersion({ venues, refPrice, h = 150, compact = false, domain 
     els.push(<text key="gr" x={W - 4} y={base + 20} textAnchor="end" fontSize={10} className="num" fill="var(--color-label)">off-scale</text>);
   }
 
-  let li = 0, ri = 0;
   list.forEach((e, i) => {
     const off = Math.abs(e.dev) > D;
     if (off && compact) return;
@@ -70,10 +74,10 @@ export function Dispersion({ venues, refPrice, h = 150, compact = false, domain 
       </line>
     );
     if (!e.v.excluded && Math.abs(e.dev) >= 2) els.push(<circle key={`c${i}`} cx={X} cy={base - hh - (compact ? 0 : 4)} r={compact ? 1.6 : 3} fill={c} />);
-    if (!compact && !e.v.excluded && (e.v === topVenue.v || off)) {
-      const left = e.dev < 0, k = off ? (left ? li++ : ri++) : 0;
+    if (!compact && !e.v.excluded && (e.v === topVenue.v || e === leftLabel || e === rightLabel)) {
+      const left = e.dev < 0;
       const label = e.v === topVenue.v ? `${e.v.name} · ${Math.round(e.share * 100)}%` : `${e.v.name} ${fmtPct(e.dev)}`;
-      if (off) els.push(<text key={`l${i}`} x={left ? 4 : W - 4} y={base + 36 + k * 14} textAnchor={left ? 'start' : 'end'} fontSize={11} className="num" fill={c}>{label}</text>);
+      if (off) els.push(<text key={`l${i}`} x={left ? 4 : W - 4} y={base + 36} textAnchor={left ? 'start' : 'end'} fontSize={11} className="num" fill={c}>{label}</text>);
       else els.push(<text key={`l${i}`} x={X + (e.dev < 0 ? -6 : 6)} y={base - hh + 4 - (e.v === topVenue.v ? 0 : 6)} textAnchor={e.dev < 0 ? 'end' : 'start'} fontSize={11} className="num" fill={e.v === topVenue.v ? 'var(--color-fg-2)' : c}>{label}</text>);
     }
   });
@@ -89,23 +93,78 @@ export function Dispersion({ venues, refPrice, h = 150, compact = false, domain 
   );
 }
 
-/** One 100%-wide bar split by venue: concentration at a glance. */
-export function Concentration({ venues, h = 12 }: { venues: V[]; h?: number }) {
-  const total = sum(venues.map((v) => v.volume));
-  if (!total) return null;
-  const sorted = [...venues].sort((a, b) => b.volume - a.volume);
-  const bars = sorted.reduce<{ v: V; w: number; at: number }[]>((acc, v) => {
-    const w = (v.volume / total) * 100;
-    return [...acc, { v, w, at: acc.length ? acc[acc.length - 1].at + acc[acc.length - 1].w : 0 }];
-  }, []);
+/** Concentration grid: a 10x10 grid of unit cells, filled = round(largest share x 100). One voice
+ *  drowning the others reads as area, not just a number. */
+export function ConcGrid({ share, cell = 12, px }: { share: number; cell?: number; px?: number }) {
+  const g = 2, n = Math.round(share * 100), W = 10 * (cell + g) - g;
+  const c = share >= 0.5 ? 'var(--color-bad)' : share >= 0.25 ? 'var(--color-warn)' : 'var(--color-fg)';
   return (
-    <svg viewBox={`0 0 100 ${h}`} preserveAspectRatio="none" className="w-full" style={{ height: h }} role="img"
-         aria-label="share of 24h volume by venue">
-      {bars.map(({ v, w, at }, i) => (
-        <rect key={i} x={at} y={0} width={Math.max(w, 0.15)} height={h} fill="var(--color-accent)" opacity={i === 0 ? 1 : Math.max(0.16, 0.6 - i * 0.05)}>
-          <title>{`${v.name}: ${pct(v.volume / total)} of 24h volume`}</title>
-        </rect>
+    <svg viewBox={`0 0 ${W} ${W}`} width={px ?? W} height={px ?? W} style={{ display: 'block', flex: 'none' }} role="img"
+         aria-label={`${n}% of volume on the largest exchange`}>
+      {Array.from({ length: 100 }, (_, i) => {
+        const col = i % 10, row = Math.floor(i / 10), on = i < n;
+        return <rect key={i} x={col * (cell + g)} y={row * (cell + g)} width={cell} height={cell} fill={on ? c : 'transparent'} stroke={on ? 'none' : 'var(--color-line-strong)'} strokeWidth={0.75} />;
+      })}
+    </svg>
+  );
+}
+
+/** History as readings, not a line: one dot per reading, evenly spaced by index (not wall-clock time)
+ *  and plotted at the true 0-100 scale, so "65 steady readings" reads as steady, not as a trend line
+ *  implying more precision than a 30-minute snapshot deserves. */
+export function History({ points, lo = 0, firstLabel, lastLabel }: { points: { t: number; v: number }[]; lo?: number; firstLabel?: string; lastLabel?: string }) {
+  if (!points.length) return null;
+  const W = 640, H = 120, n = points.length;
+  const y = (v: number) => 14 + (1 - (v - lo) / (100 - lo)) * (H - 34);
+  const x = (i: number) => (n === 1 ? W / 2 : 4 + (i / (n - 1)) * (W - 8));
+  const bands: [number, number, string][] = [[80, 100, 'var(--color-good)'], [60, 80, 'var(--color-warn)'], [lo, 60, 'var(--color-bad)']];
+  return (
+    <svg viewBox={`0 0 ${W} ${H}`} className="w-full" style={{ display: 'block' }} role="img" aria-label={`${n} readings, most recent last`}>
+      {bands.map(([a, b, c], i) => b > lo && <rect key={i} x={0} width={W} y={y(b)} height={y(Math.max(a, lo)) - y(b)} fill={c} opacity={0.06} />)}
+      {[60, 80, 100].filter((v) => v > lo).map((v) => <text key={v} x={W} y={y(v) - 3} textAnchor="end" fontSize={10} className="num" fill="var(--color-label)">{v}</text>)}
+      {points.map((p, i) => <circle key={i} cx={x(i)} cy={y(p.v)} r={2} fill="var(--color-fg)"><title>{`${stamp(p.t)}: ${Math.round(p.v)}`}</title></circle>)}
+      <line x1={0} x2={W} y1={H - 20} y2={H - 20} stroke="var(--color-line-strong)" />
+      <text x={0} y={H - 4} fontSize={10} className="num" fill="var(--color-label)">{firstLabel ?? stamp(points[0].t)}</text>
+      <text x={W} y={H - 4} textAnchor="end" fontSize={10} className="num" fill="var(--color-label)">{lastLabel ?? `latest · ${n} readings`}</text>
+    </svg>
+  );
+}
+
+/** A row of 65 ticks, filled for the most recent run where a condition held: how long has this been true. */
+export function RunStrip({ total, held, w = 130 }: { total: number; held: number; w?: number }) {
+  const cell = w / total;
+  return (
+    <svg viewBox={`0 0 ${w} 14`} width={w} height={14} style={{ display: 'block', flex: 'none' }} aria-hidden="true">
+      {Array.from({ length: total }, (_, i) => {
+        const on = i >= total - held;
+        return <rect key={i} x={i * cell} y={on ? 0 : 6} width={Math.max(1, cell - 1)} height={on ? 14 : 2} fill={on ? 'var(--color-fg-2)' : 'var(--color-line-strong)'} />;
+      })}
+    </svg>
+  );
+}
+
+/** Ranked bar strip: one bar per asset, axis 0-domain%, off-scale entries pinned to the right edge. */
+export function SpreadBars({ items, domain = 1 }: { items: { symbol: string; pct: number }[]; domain?: number }) {
+  const W = 560, rh = 22, H = items.length * rh + 28, lx = 40, gx = W - 60;
+  const x = (p: number) => lx + (p / domain) * (gx - 12 - lx);
+  const ticks = [0, 0.25, 0.5, 0.75, 1].map((f) => f * domain);
+  return (
+    <svg viewBox={`0 0 ${W} ${H}`} className="w-full" style={{ display: 'block' }} role="img" aria-label="Issuer disagreement by asset">
+      <line x1={lx} x2={gx - 6} y1={H - 22} y2={H - 22} stroke="var(--color-line-strong)" />
+      {ticks.map((t) => (
+        <text key={t} x={x(t)} y={H - 6} textAnchor="middle" fontSize={11} className="num" fill="var(--color-label)">{t === 0 ? '0' : `${t.toFixed(2)}%`}</text>
       ))}
+      <path d={`M${gx - 10} ${H - 17} L${gx - 6} ${H - 27} M${gx - 4} ${H - 17} L${gx} ${H - 27}`} stroke="var(--color-label)" fill="none" />
+      {items.map((r, i) => {
+        const y = 8 + i * rh, p = r.pct, off = p > domain, X = off ? W - 8 : x(p), c = off ? 'var(--color-bad)' : 'var(--color-fg-2)';
+        return (
+          <g key={r.symbol}>
+            <text x={0} y={y + 9} fontSize={11} className="num" fill="var(--color-fg)">{r.symbol}</text>
+            <line x1={lx} x2={X} y1={y + 5} y2={y + 5} stroke={c} strokeWidth={off ? 2 : 1.5} />
+            <rect x={X - 1.5} y={y} width={3} height={10} fill={c} />
+          </g>
+        );
+      })}
     </svg>
   );
 }

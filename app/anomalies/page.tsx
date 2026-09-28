@@ -15,7 +15,7 @@ export default async function Anomalies() {
   const markets = marketBoard(rows, total).slice(0, 25);
 
   return (
-    <main className="mx-auto w-full max-w-5xl px-5 py-10">
+    <main className="mx-auto w-full max-w-6xl px-5 py-10">
       <p className="text-sm text-fg-2"><Link href="/methodology" className="hover:text-fg">How this works</Link> / Off-market exchanges</p>
       <h1 className="mt-2 font-serif text-4xl tracking-tight text-fg sm:text-5xl">Off-market exchanges</h1>
       <p className="mt-4 max-w-2xl text-lg leading-relaxed text-fg-2">
