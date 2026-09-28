@@ -61,9 +61,10 @@ async function insert(table: string, rows: object[]) {
   }
 }
 
-// Measured cost of one full capture (15 assets + liquidations + DEX + RWA + published prices). Pad
-// slightly so the budget stays conservative rather than running dry a day before the monthly reset.
-const COST_PER_CAPTURE = 23;
+// Measured cost of one full capture (40 assets + liquidations + DEX + RWA up to 100 + published
+// prices): 46 credits, dry-run measured 2026-09-28 after the Startup-tier upgrade. Padded to 55 so
+// the budget stays conservative rather than running dry a day before the monthly reset.
+const COST_PER_CAPTURE = 55;
 
 export async function POST(req: Request) {
   if (!authorized(req)) return new Response('unauthorized', { status: 401 });
@@ -163,7 +164,7 @@ export async function POST(req: Request) {
 
   // Tokenised assets: every issuer's token for the top-ranked underlyings, in two calls.
   try {
-    const list = await cmc<{ rwa_assets: { rwa_id: number | null }[] }>('/v5/real-world-assets/assets/list', { limit: 40 });
+    const list = await cmc<{ rwa_assets: { rwa_id: number | null }[] }>('/v5/real-world-assets/assets/list', { limit: 100 });
     const ids = (list.data.rwa_assets ?? []).map((a) => a.rwa_id).filter((id): id is number => id !== null);
     const q = await cmc<{ rwa_assets: RwaAssetRow[] }>('/v5/real-world-assets/quotes/latest', { rwa_id: ids.join(',') });
     credits += list.credits + q.credits;

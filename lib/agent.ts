@@ -21,7 +21,7 @@ export const SYSTEM_PROMPT = [
   '',
   'Keep replies short — two to five sentences, plain conversational text, no markdown, no HTML, no',
   'bullet lists. This is a Telegram chat, not a report. If the question is outside what Consensus',
-  'tracks (only ~15 crypto assets and ~38 tokenised stocks), say so and suggest /assets or /rwa.',
+  'tracks (only ~40 crypto assets and ~100 tokenised stocks), say so and suggest /assets or /rwa.',
 ].join('\n');
 
 // Provider-neutral conversation shape. 'model' turns hold what the model said/did; 'user' turns hold

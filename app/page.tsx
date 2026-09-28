@@ -108,7 +108,7 @@ export default async function Home() {
       </div>
 
       <div className="mt-14 flex flex-wrap items-end justify-between gap-3 border-t border-fg pt-4">
-        <h2 className="font-serif text-2xl sm:text-[2.5rem]">Fifteen assets, least reliable first</h2>
+        <h2 className="font-serif text-2xl sm:text-[2.5rem]">{rows.length} assets, least reliable first</h2>
         <span className="num text-xs text-fg-2">Trust score 0&ndash;100 &middot; 80+ reliable &middot; 60&ndash;79 watch &middot; under 60 unreliable</span>
       </div>
 

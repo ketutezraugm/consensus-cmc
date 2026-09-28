@@ -25,7 +25,7 @@ Then ask things like:
 | Tool | Returns |
 |---|---|
 | `get_alerts` (optional `symbol`) | Active conditions: concentration, off-market venues CMC still trusts, confidence drops, DEX gaps, each with how long it has lasted |
-| `list_assets` | 15 crypto assets ranked by a 0-100 confidence score, lowest first |
+| `list_assets` | 40 crypto assets ranked by a 0-100 confidence score, lowest first |
 | `check_asset` (`symbol`) | Confidence and trend, biggest venue and share, off-market venues, funding, basis, on-chain gap, gap to CMC's own published price, active alerts |
 | `list_tokenised_assets` | Tokenised stocks/ETFs/commodities ranked by issuer disagreement |
 | `check_tokenised_asset` (`symbol`) | Every issuer token: price, distance from reference, volume, and whether it is liquid, thin, a derivative, a different unit, or unpriced |
@@ -63,7 +63,7 @@ Protocol logic (initialize negotiation, notifications, error codes, tool failure
 
 ## Honest limits
 
-Snapshots up to 30 minutes old; 15 crypto assets and 38 tokenised assets; reports what the API returns, not how CoinMarketCap computes its published price.
+Snapshots up to 30 minutes old; 40 crypto assets and around 100 tokenised assets; reports what the API returns, not how CoinMarketCap computes its published price.
 
 ## Relationship to the other entries
 
