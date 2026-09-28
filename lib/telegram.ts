@@ -112,6 +112,9 @@ export type Deps = {
   // Per-chat frequency cap on the LLM-backed `chat` path (lib/ratelimit.ts), checked before `chat` is
   // ever called so a spammy chat never reaches the model at all.
   chatAllowed: (chatId: number | string) => Promise<boolean>;
+  // Telegram's "typing…" indicator. chat() can take a real multi-second, multi-step model round trip
+  // (see lib/agent.ts), during which the chat would otherwise show nothing at all.
+  typing: (chatId: number | string) => Promise<void>;
 };
 
 const RATE_LIMITED = "You've asked a lot in a short time — give it a few minutes, or use a direct command like /check BTC.";
@@ -122,7 +125,16 @@ export async function answer(text: string, chatId: number | string, deps: Deps):
   if (!c) {
     if (!text.trim()) return null;
     if (!(await deps.chatAllowed(chatId))) return RATE_LIMITED;
-    return esc(await deps.chat(text.trim()));
+    // Telegram's typing indicator fades after ~5s on its own, so it's re-sent every 4s for as long as
+    // the (potentially multi-step, multi-second) model call runs, instead of a single ping that would
+    // vanish long before the reply arrives.
+    void deps.typing(chatId);
+    const keepTyping = setInterval(() => void deps.typing(chatId), 4000);
+    try {
+      return esc(await deps.chat(text.trim()));
+    } finally {
+      clearInterval(keepTyping);
+    }
   }
   switch (c.cmd) {
     case 'start': case 'help': return HELP;
@@ -153,6 +165,15 @@ export async function answer(text: string, chatId: number | string, deps: Deps):
     case 'mywatchlist': return fmtWatchlist(await deps.myWatchlist(chatId));
     default: return `Unknown command. ${HELP}`;
   }
+}
+
+// A UX ping, not a load-bearing reply: never throws, so a Telegram hiccup here never breaks the chat.
+export async function sendTyping(chatId: number | string, token = process.env.TELEGRAM_BOT_TOKEN) {
+  if (!token) return;
+  await fetch(`https://api.telegram.org/bot${token}/sendChatAction`, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ chat_id: chatId, action: 'typing' }),
+  }).catch(() => {});
 }
 
 export async function send(text: string, chatId: number | string, token = process.env.TELEGRAM_BOT_TOKEN) {

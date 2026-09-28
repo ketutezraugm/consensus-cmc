@@ -70,17 +70,37 @@ export async function callGemini(req: ModelRequest): Promise<ModelResponse> {
     generationConfig: { temperature: req.temperature, maxOutputTokens: req.maxTokens },
   };
 
+  // Bounded so a stalled upstream response (the fetch had no timeout at all before this — confirmed live:
+  // a tool-calling request that never returned, still unresolved after 60s+ of real wall-clock time) fails
+  // within a step's fair share of the route's 60s budget, rather than hanging indefinitely. 15s x up to 3
+  // attempts is still generous against the ~5-12s a successful call takes in practice; MAX_STEPS steps each
+  // exhausting their full retry budget could in principle still exceed 60s total — Vercel's maxDuration is
+  // the hard backstop for that pathological case, not something this loop tries to budget for itself.
   const call = () => fetch(`https://generativelanguage.googleapis.com/v1beta/models/${req.model}:generateContent`, {
     method: 'POST',
     headers: { 'content-type': 'application/json', 'x-goog-api-key': key },
     body: JSON.stringify(body),
+    signal: AbortSignal.timeout(15_000),
   });
-  // The free tier returns 503 "high demand" often enough in practice to be worth one retry; anything
-  // else (400 wire-format, 401 auth) is not transient, so it's not worth the extra latency to retry.
-  let res = await call();
-  if (res.status === 503) { await new Promise((r) => setTimeout(r, 800)); res = await call(); }
-  if (!res.ok) throw new Error(`gemini ${res.status}: ${(await res.text()).slice(0, 300)}`);
-  const data = await res.json();
+  // Measured against the live free-tier API: 503 "high demand" and 429 "quota" both happen often enough
+  // in practice that a single retry isn't reliably enough (observed a second straight 503 in testing).
+  // A timed-out/network-failed attempt (call() throwing, not returning a status) is retried the same
+  // way. 400 (wire-format) and 401 (auth) are not transient, so they're not worth the extra latency.
+  let res: Response | undefined;
+  let netErr: unknown;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    if (attempt > 0) await new Promise((r) => setTimeout(r, 800 * attempt));
+    try {
+      res = await call();
+      netErr = undefined;
+      if (res.status !== 503 && res.status !== 429) break;
+    } catch (e) {
+      netErr = e;
+    }
+  }
+  if (netErr) throw netErr instanceof Error ? netErr : new Error(String(netErr));
+  if (!res!.ok) throw new Error(`gemini ${res!.status}: ${(await res!.text()).slice(0, 300)}`);
+  const data = await res!.json();
   const parts: { text?: string; functionCall?: { id?: string; name: string; args?: Record<string, unknown> }; thoughtSignature?: string }[] =
     data.candidates?.[0]?.content?.parts ?? [];
   const blocks: Block[] = parts.map((p, i) => {
@@ -127,6 +147,11 @@ const MAX_INPUT = 400;  // characters; a real question is short, this just stops
 // Per-chat call frequency is rate-limited by the caller (lib/ratelimit.ts, applied in lib/telegram.ts's
 // answer()) before this ever runs, so a spammy chat never reaches here at all, let alone the network.
 const NOT_CONFIGURED = "Plain-language questions aren't set up yet — try a command instead, e.g. /help.";
+// The free tier's daily request quota is small enough (observed: 20/day for one model) to exhaust
+// during real use, and callGemini's retries don't help here — the quota resets on its own clock, not
+// in the few seconds a retry can wait. Surfaced as a plain reply so the deterministic commands, which
+// never touch the model, are visibly still an option instead of the chat just looking broken.
+const QUOTA_EXHAUSTED = "Plain-language questions have hit today's usage limit — try a command instead, e.g. /check BTC or /alerts.";
 
 export async function runAgent(
   text: string, tools: Tool[], callModel: ModelCall = callGemini, model = process.env.GEMINI_MODEL || 'gemini-3.8-flash',
@@ -141,7 +166,9 @@ export async function runAgent(
     try {
       res = await callModel({ model, system: SYSTEM_PROMPT, tools, messages, maxTokens: 500, temperature: 0 });
     } catch (e) {
-      if (/_API_KEY not set/.test(errMsg(e))) return NOT_CONFIGURED;
+      const msg = errMsg(e);
+      if (/_API_KEY not set/.test(msg)) return NOT_CONFIGURED;
+      if (/gemini 429/.test(msg)) return QUOTA_EXHAUSTED;
       throw e;
     }
 

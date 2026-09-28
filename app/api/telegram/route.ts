@@ -1,5 +1,5 @@
 import { timingSafeEqual } from 'node:crypto';
-import { answer, send, type Deps } from '@/lib/telegram';
+import { answer, send, sendTyping, type Deps } from '@/lib/telegram';
 import { currentAlerts, assetsRanked, assetReport, rwaAssets, rwaReport } from '@/lib/tools';
 import { ensureSubscribed, unsubscribe, watch, unwatch, getSubscriber } from '@/lib/subscribers';
 import { runAgent } from '@/lib/agent';
@@ -14,7 +14,7 @@ export const maxDuration = 60;
 const deps: Deps = {
   alerts: currentAlerts, assets: assetsRanked, asset: assetReport, rwaAssets, rwa: rwaReport,
   subscribe: ensureSubscribed, unsubscribe, watch, unwatch, myWatchlist: getSubscriber,
-  chat: (text) => runAgent(text, TOOLS), chatAllowed: allowChatMessage,
+  chat: (text) => runAgent(text, TOOLS), chatAllowed: allowChatMessage, typing: sendTyping,
 };
 
 type TelegramMessage = { text?: string; chat: { id: number } };

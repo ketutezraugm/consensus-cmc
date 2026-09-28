@@ -47,6 +47,7 @@ const deps = {
   } : null),
   chat: async (text) => `chat-reply:${text}`,
   chatAllowed: async () => true,
+  typing: async () => {},
   ...fakeSubscriberStore(),
 };
 
@@ -98,6 +99,20 @@ test('answer: a rate-limited chat gets a fixed reply and never reaches the (cost
   const limited = { ...deps, chatAllowed: async () => false, chat: async () => { chatCalls++; return 'should not run'; } };
   assert.match(await answer('a question', 1, limited), /asked a lot|give it a few minutes/);
   assert.equal(chatCalls, 0);
+});
+
+test('answer: free text pings the typing indicator before the (slow) chat call, and stops after', async () => {
+  let typingCalls = 0;
+  const slow = { ...deps, typing: async () => { typingCalls++; }, chat: async () => { await new Promise((r) => setTimeout(r, 5)); return 'done'; } };
+  assert.equal(await answer('a question', 1, slow), 'done');
+  assert.equal(typingCalls, 1, 'one immediate ping for a fast reply; the 4s keep-alive interval never fires');
+});
+
+test('answer: a command (not free text) never pings typing, since it is never the slow path', async () => {
+  let typingCalls = 0;
+  const withTyping = { ...deps, typing: async () => { typingCalls++; } };
+  await answer('/alerts', 1, withTyping);
+  assert.equal(typingCalls, 0);
 });
 
 test('fmtAsset handles missing funding, gap and venues without printing null or NaN', () => {
