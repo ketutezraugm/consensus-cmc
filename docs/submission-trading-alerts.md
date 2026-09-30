@@ -39,7 +39,7 @@ Alerts (thresholds are judgement calls, stated on the [alerts page](https://cons
 3. **Confidence drop:** score falls 15+ points below its recent median.
 4. **DEX gap:** liquidity-weighted Uniswap v3 pools sit 30+ bps from exchanges.
 
-Real examples from the live data: *"BTC: Kraken is -1903 bps off the market"* (a duplicated market the API returns twice with a conflicting price, on a reputable venue — not flagged), *"BCH: 90% of perp volume is on Deepcoin"*, *"SOL: Zoomex is -285 bps off the market, $285.1M volume, and CMC does not exclude it"*. Every `/check` also shows the tracked asset's independently reconstructed composite against CMC's own published price — a median of 19 bps across 37 assets, so it isn't just an alarm system: it's checked against ground truth.
+Real examples from the live data: *"BTC: Kraken is -2015 bps off the market"* (a duplicated market the API returns twice with a conflicting price, on a reputable venue — not flagged), *"BCH: 94% of perp volume is on Deepcoin"*. Every `/check` also shows the tracked asset's independently reconstructed composite against CMC's own published price — a median of 5 bps across 37 assets, so it isn't just an alarm system: it's checked against ground truth.
 
 ## CMC endpoints used
 

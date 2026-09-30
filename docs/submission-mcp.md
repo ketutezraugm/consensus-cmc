@@ -17,7 +17,7 @@ An LLM that quotes a crypto price has no idea whether that price is set by one v
 | **Raw API evidence** | [`scripts/out/`](../scripts/out) |
 | **API feedback** | 24 items from real calls: [`docs/api-feedback.md`](api-feedback.md). Strongest for an agent: `market_id` isn't a unique key, so an agent can't safely join on it; `exclusions` mixes `volume` and `price` meanings in one array; tokens with `price: null` are still returned with no status field explaining why |
 
-**The headline finding:** an agent asking `check_asset` for BCH gets more than a price — it gets `vsPublished`, the gap in basis points between an independently reconstructed venue composite and CMC's own published number for that asset, computed with no knowledge of that published number and only checked against it afterward. Across the 37 assets with a published price to check against, that reconstruction lands within a median of **19 bps**. This is the same tool an agent calling `get_alerts` or `list_assets` already used to find that Deepcoin holds 90% of BCH's volume — so the agent isn't just told a fact, it's given the receipt.
+**The headline finding:** an agent asking `check_asset` for BCH gets more than a price — it gets `vsPublished`, the gap in basis points between an independently reconstructed venue composite and CMC's own published number for that asset, computed with no knowledge of that published number and only checked against it afterward. Across the 37 assets with a published price to check against, that reconstruction lands within a median of **5 bps**. This is the same tool an agent calling `get_alerts` or `list_assets` already used to find that Deepcoin holds 90% of BCH's volume — so the agent isn't just told a fact, it's given the receipt.
 
 ## Connect
 
@@ -58,10 +58,10 @@ Verified with the **official MCP SDK client** against production: [`scripts/mcp-
 ```
 connected to consensus | protocol ok
 tools: get_alerts, list_assets, check_asset, list_tokenised_assets, check_tokenised_asset
-get_alerts    -> 23 alerts | BCH: 90% of perp volume is on Deepcoin
-list_assets   -> 37 assets | lowest: BCH 25
-check_asset   -> {"conf":25,"top":"Deepcoin","share":89.7,"vsPublished":531,"offMarket":5,"alerts":2}
-list_tokenised_assets -> 81 assets | widest: SPCX 1491 bps
+get_alerts    -> 30 alerts | BCH: 94% of perp volume is on Deepcoin
+list_assets   -> 37 assets | lowest: BCH 21
+check_asset   -> {"conf":21,"top":"Deepcoin","share":93.9,"vsPublished":-161,"offMarket":5,"alerts":2}
+list_tokenised_assets -> 82 assets | widest: SPCX 4029 bps
 unknown symbol -> isError true | Error: No data for ZZZ.
 ALL OK
 ```
