@@ -1,0 +1,721 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<!-- Self-playing demo reel for the hackathon submission. Open in a browser, press F then R, and screen-record. -->
+</head>
+<body>
+<title>Consensus Demo Reel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* Layout: one 16:9 frame, a surveyor's field notebook page per scene; the chart is the picture, the caption is the voice.
+     Tokens are the product's own (app/globals.css), unchanged. */
+  :root {
+    --paper: #F2F1EC; --card: #FBFAF7; --sunk: #E9E7E0; --ink: #1B2027; --ink-2: #4A515B; --ink-3: #6E747C;
+    --rule: #DEDBD2; --rule-strong: #BDB9AE; --brass: #A67C3D; --brass-ink: #86612A; --sage: #4F7A62;
+    --ochre: #B8862B; --ochre-ink: #8A6417; --verm: #B8462F; --discard: #A3A49F;
+    --serif: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+    --sans: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+    --mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1D1B18; --card: #25231F; --sunk: #171513; --ink: #EDE9E1; --ink-2: #BDB7AB; --ink-3: #948E83;
+      --rule: #35322C; --rule-strong: #524E45; --brass: #C9A064; --brass-ink: #D8B47C; --sage: #83B295;
+      --ochre: #D6AC58; --ochre-ink: #DDB566; --verm: #E07A62; --discard: #6A665E;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #1D1B18; --card: #25231F; --sunk: #171513; --ink: #EDE9E1; --ink-2: #BDB7AB; --ink-3: #948E83;
+    --rule: #35322C; --rule-strong: #524E45; --brass: #C9A064; --brass-ink: #D8B47C; --sage: #83B295;
+    --ochre: #D6AC58; --ochre-ink: #DDB566; --verm: #E07A62; --discard: #6A665E;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body { background: var(--paper); color: var(--ink); font-family: var(--sans); margin: 0; }
+
+  .shell { min-height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding-inline: 16px; padding-block: 14px; }
+  .stage { width: 100%; display: flex; justify-content: center; align-items: center; }
+  .stage:fullscreen { background: var(--paper); }
+
+  /* The frame is the container every size below is measured against. u = one unit of the 1080-line grid. */
+  .frame {
+    position: relative; overflow: hidden; cursor: pointer;
+    width: min(100%, max(320px, calc((100dvh - 92px) * 16 / 9))); aspect-ratio: 16 / 9;
+    background: var(--paper); border: 1px solid var(--rule);
+    container: frame / size;
+  }
+  .stage:fullscreen .frame { width: min(100vw, calc(100vh * 16 / 9)); border: 0; }
+  @media (max-width: 820px) and (orientation: portrait) {
+    .frame { aspect-ratio: auto; width: 100%; height: max(600px, calc(100dvh - 92px)); }
+  }
+  .frame * { --u: min(1cqh, 1.6cqw); }
+
+  .num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+  /* ---- chrome that stays put across scenes ---- */
+  .top { position: absolute; z-index: 3; top: 0; left: 0; right: 0; display: flex; align-items: center; justify-content: space-between; gap: calc(var(--u) * 2); padding: calc(var(--u) * 4) calc(var(--u) * 6) 0; pointer-events: none; }
+  .brand { display: flex; align-items: flex-end; gap: calc(var(--u) * 1.1); color: var(--ink); font-family: var(--serif); font-size: calc(var(--u) * 3.1); line-height: 1; }
+  .brand svg { height: calc(var(--u) * 2.9); width: auto; }
+  .kicker { font-family: var(--mono); font-size: calc(var(--u) * 1.45); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); display: flex; gap: calc(var(--u) * 1.4); align-items: baseline; white-space: nowrap; }
+  .kicker b { color: var(--brass-ink); font-weight: 500; }
+
+  .progress { position: absolute; z-index: 3; left: calc(var(--u) * 6); right: calc(var(--u) * 6); bottom: calc(var(--u) * 2.8); display: flex; gap: calc(var(--u) * 0.7); }
+  .seg { height: calc(var(--u) * 0.45); background: var(--rule); position: relative; overflow: hidden; }
+  .seg i { position: absolute; inset: 0 auto 0 0; width: 0; background: var(--brass); }
+
+  /* ---- scenes ---- */
+  .scene { position: absolute; inset: 0; padding: calc(var(--u) * 10.5) calc(var(--u) * 6) calc(var(--u) * 6.4); display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: calc(var(--u) * 2.6); opacity: 0; visibility: hidden; transition: opacity .6s ease, visibility 0s linear .6s; }
+  .scene.on { opacity: 1; visibility: visible; transition: opacity .6s ease; }
+  .visual { min-height: 0; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: calc(var(--u) * 2); }
+  .cap { margin: 0; padding-top: calc(var(--u) * 2); border-top: 1px solid var(--ink); font-size: calc(var(--u) * 2.75); line-height: 1.38; color: var(--ink); max-width: calc(var(--u) * 132); text-wrap: pretty; }
+  .cap .f { font-family: var(--mono); font-size: 0.92em; font-weight: 500; color: var(--brass-ink); font-variant-numeric: tabular-nums; }
+  .cap .bad { color: var(--verm); }
+  svg text { font-family: var(--mono); }
+  svg { display: block; overflow: visible; }
+  .note { font-family: var(--mono); font-size: calc(var(--u) * 1.3); color: var(--ink-3); letter-spacing: 0.02em; }
+  .h-serif { font-family: var(--serif); font-weight: 400; line-height: 0.98; letter-spacing: -0.01em; margin: 0; text-wrap: balance; }
+  .label { font-family: var(--mono); font-size: calc(var(--u) * 1.35); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+
+  /* legend, same wording as the live chart */
+  .legend { display: flex; flex-wrap: wrap; gap: calc(var(--u) * 2.2); font-family: var(--mono); font-size: calc(var(--u) * 1.35); color: var(--ink-2); }
+  .legend span { display: inline-flex; align-items: center; gap: calc(var(--u) * 0.7); }
+  .legend span::before { content: ''; width: 2px; height: calc(var(--u) * 1.5); background: var(--c); }
+
+  /* 1 — hook */
+  .s1 .headline { font-size: calc(var(--u) * 8.6); }
+  .s1 .headline em { color: var(--ink-2); }
+  .s1 .chart-head { display: flex; justify-content: space-between; align-items: baseline; gap: calc(var(--u) * 2); flex-wrap: wrap; }
+  .s1 .chart { flex: 1 1 auto; min-height: 0; }
+  .s1 .chart svg { width: 100%; height: 100%; }
+
+  /* 2 — the duplicate */
+  .s2 .pair { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: calc(var(--u) * 3); }
+  .ticket { background: var(--card); border: 1px solid var(--rule-strong); padding: calc(var(--u) * 2.6) calc(var(--u) * 3); display: grid; gap: calc(var(--u) * 1.2); position: relative; }
+  .ticket .row { display: flex; justify-content: space-between; gap: calc(var(--u) * 2); font-family: var(--mono); font-size: calc(var(--u) * 1.6); color: var(--ink-2); border-top: 1px dashed var(--rule-strong); padding-top: calc(var(--u) * 0.9); }
+  .ticket .row b { color: var(--ink); font-weight: 500; }
+  .ticket .venue { font-size: calc(var(--u) * 2.1); color: var(--ink); }
+  .ticket .price { font-family: var(--serif); font-size: calc(var(--u) * 9); line-height: 0.95; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .ticket .price small { font-size: 0.45em; color: var(--ink-3); vertical-align: 0.9em; margin-right: 0.1em; }
+  .stamp { position: absolute; top: calc(var(--u) * 2.2); right: calc(var(--u) * 2.4); font-family: var(--mono); font-size: calc(var(--u) * 1.35); letter-spacing: 0.1em; text-transform: uppercase; color: var(--verm); border: 1.5px solid var(--verm); padding: calc(var(--u) * 0.4) calc(var(--u) * 0.9); transform: rotate(-3deg); }
+  .neq { font-family: var(--serif); font-size: calc(var(--u) * 11); color: var(--verm); line-height: 1; text-align: center; }
+  .s2 .foot { display: flex; justify-content: space-between; gap: calc(var(--u) * 3); flex-wrap: wrap; align-items: baseline; }
+  .s2 .count { font-size: calc(var(--u) * 2.1); color: var(--ink-2); }
+  .s2 .count b { font-family: var(--mono); color: var(--verm); font-weight: 500; }
+
+  /* 3 — built blind, checked after */
+  .s3 .flow { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; align-items: stretch; gap: calc(var(--u) * 2); }
+  .box { border: 1px solid var(--rule-strong); background: var(--card); padding: calc(var(--u) * 2) calc(var(--u) * 2.4); display: grid; gap: calc(var(--u) * 0.8); align-content: start; }
+  .box .t { font-family: var(--serif); font-size: calc(var(--u) * 3.3); line-height: 1; }
+  .box p { margin: 0; font-size: calc(var(--u) * 1.65); line-height: 1.4; color: var(--ink-2); }
+  .box.blind { border-color: var(--brass); }
+  .box svg { height: calc(var(--u) * 4.4); width: 100%; }
+  .arrow { align-self: center; font-family: var(--mono); font-size: calc(var(--u) * 2.6); color: var(--ink-3); text-align: center; line-height: 1; }
+  .arrow small { display: block; font-size: calc(var(--u) * 1.2); letter-spacing: 0.08em; text-transform: uppercase; margin-top: calc(var(--u) * 0.6); }
+  .s3 .result { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: calc(var(--u) * 4); align-items: center; }
+  .big { font-family: var(--serif); font-size: calc(var(--u) * 13); line-height: 0.85; color: var(--ink); white-space: nowrap; }
+  .big small { font-family: var(--mono); font-size: 0.2em; color: var(--brass-ink); margin-left: 0.3em; letter-spacing: 0.04em; }
+  .big-sub { font-family: var(--mono); font-size: calc(var(--u) * 1.5); color: var(--ink-3); margin-top: calc(var(--u) * 1); }
+  .s3 .vern svg { width: 100%; height: auto; }
+
+  /* 4 — one asset, scored */
+  .s4 .cols { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 2fr); gap: calc(var(--u) * 4); height: 100%; min-height: 0; }
+  .roll { display: grid; grid-template-rows: auto minmax(0, 1fr); gap: calc(var(--u) * 1.2); min-height: 0; }
+  .weights { font-family: var(--mono); font-size: calc(var(--u) * 1.35); color: var(--ink-2); line-height: 1.6; }
+  .weights b { color: var(--brass-ink); font-weight: 500; }
+  .window { position: relative; overflow: hidden; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--rule-strong); min-height: 0;
+    -webkit-mask-image: linear-gradient(transparent, #000 22%, #000 78%, transparent); mask-image: linear-gradient(transparent, #000 22%, #000 78%, transparent); }
+  .list { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(var(--land)); }
+  .list div { height: calc(var(--u) * 4.2); display: flex; align-items: center; gap: calc(var(--u) * 1.6); border-bottom: 1px solid var(--rule); padding-inline: calc(var(--u) * 1); font-size: calc(var(--u) * 1.75); color: var(--ink-2); }
+  .list div b { font-family: var(--mono); font-weight: 500; color: var(--ink); width: calc(var(--u) * 7); }
+  .list div.hit { background: var(--card); color: var(--ink); box-shadow: inset 3px 0 0 var(--verm); }
+  .detail { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); gap: calc(var(--u) * 1.6) calc(var(--u) * 4); min-height: 0; }
+  .detail .name { grid-column: 1 / -1; display: flex; align-items: baseline; gap: calc(var(--u) * 2); flex-wrap: wrap; }
+  .detail .name h3 { font-size: calc(var(--u) * 7.4); }
+  .gaugebox, .concbox { display: flex; flex-direction: column; gap: calc(var(--u) * 1.2); min-height: 0; }
+  .gaugebox svg { width: 100%; max-height: calc(var(--u) * 24); }
+  .score { display: flex; align-items: baseline; justify-content: center; gap: calc(var(--u) * 1.4); }
+  .score b { font-family: var(--serif); font-weight: 400; font-size: calc(var(--u) * 10); line-height: 0.85; }
+  .score span { color: var(--verm); font-size: calc(var(--u) * 2.3); font-weight: 500; }
+  .score i { font-style: normal; font-family: var(--mono); font-size: calc(var(--u) * 1.6); color: var(--ink-3); }
+  .concbox .grid-wrap { display: flex; gap: calc(var(--u) * 2.4); align-items: flex-end; }
+  .concbox svg { width: calc(var(--u) * 24); height: calc(var(--u) * 24); flex: none; }
+  .concbox .pct { font-family: var(--serif); font-size: calc(var(--u) * 10); line-height: 0.85; color: var(--verm); }
+  .concbox p { margin: 0; font-size: calc(var(--u) * 1.8); line-height: 1.4; color: var(--ink-2); max-width: 22ch; }
+  .concbox p b { color: var(--ink); font-weight: 600; }
+
+  /* 5 — tokenised */
+  .s5 .rwa svg { width: 100%; height: auto; }
+  .s5 .head { display: flex; gap: calc(var(--u) * 4); align-items: flex-end; justify-content: space-between; flex-wrap: wrap; }
+  .s5 .head .h-serif { font-size: calc(var(--u) * 6.4); }
+  .s5 .head .h-serif em { color: var(--verm); }
+
+  /* 6 — receipts */
+  .s6 .receipts { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: calc(var(--u) * 1.6) calc(var(--u) * 5); counter-reset: r; }
+  .s6 .receipts li { display: grid; grid-template-columns: calc(var(--u) * 4) minmax(0, 1fr) auto; gap: calc(var(--u) * 1.4); align-items: baseline; border-top: 1px solid var(--rule-strong); padding-top: calc(var(--u) * 1.2); counter-increment: r; }
+  .s6 .receipts li::before { content: counter(r); font-family: var(--serif); font-size: calc(var(--u) * 3.6); line-height: 0.9; color: var(--brass-ink); }
+  .s6 .receipts p { margin: 0; font-size: calc(var(--u) * 1.95); line-height: 1.35; color: var(--ink); }
+  .s6 .receipts p .num { color: var(--brass-ink); font-weight: 500; }
+  .s6 .receipts svg { width: calc(var(--u) * 2.2); height: calc(var(--u) * 2.2); color: var(--sage); }
+  .s6 .where { display: flex; gap: calc(var(--u) * 3); flex-wrap: wrap; align-items: baseline; justify-content: space-between; padding-top: calc(var(--u) * 1.4); border-top: 1px solid var(--ink); }
+  .s6 .where .url { font-family: var(--mono); font-size: calc(var(--u) * 2.3); color: var(--ink); }
+  .s6 .where .url b { color: var(--brass-ink); font-weight: 500; }
+  .s6 .where .facts { font-family: var(--mono); font-size: calc(var(--u) * 1.5); color: var(--ink-3); }
+
+  /* 7 — close */
+  .s7 { grid-template-rows: minmax(0, 1fr); }
+  .s7 .visual { align-items: flex-start; gap: calc(var(--u) * 3.4); }
+  .s7 .mark { display: flex; align-items: flex-end; gap: calc(var(--u) * 2.4); }
+  .s7 .mark svg { height: calc(var(--u) * 10); width: auto; color: var(--ink); }
+  .s7 .mark span { font-family: var(--serif); font-size: calc(var(--u) * 11); line-height: 0.8; }
+  .s7 .line1 { font-family: var(--serif); font-size: calc(var(--u) * 6.4); line-height: 1.05; margin: 0; max-width: 30ch; text-wrap: balance; }
+  .s7 .line1 em { color: var(--ink-2); }
+  .s7 .meta { display: flex; gap: calc(var(--u) * 4); flex-wrap: wrap; align-items: baseline; border-top: 1px solid var(--ink); padding-top: calc(var(--u) * 2); width: 100%; }
+  .s7 .meta .url { font-family: var(--mono); font-size: calc(var(--u) * 3); color: var(--brass-ink); font-weight: 500; }
+  .s7 .meta .tag { font-family: var(--mono); font-size: calc(var(--u) * 2.2); color: var(--ink); }
+  .s7 .meta .track { font-size: calc(var(--u) * 1.8); color: var(--ink-2); }
+
+  /* ---- controls under the frame (outside the recorded area) ---- */
+  .controls { width: min(100%, max(320px, calc((100dvh - 92px) * 16 / 9))); display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 13px; color: var(--ink-2); }
+  .controls button { font: 500 13px var(--sans); color: var(--ink); background: var(--card); border: 1px solid var(--rule-strong); padding: 6px 12px; cursor: pointer; }
+  .controls button:hover { border-color: var(--ink-3); }
+  .controls button:focus-visible, .frame:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+  .controls .time { font-family: var(--mono); font-variant-numeric: tabular-nums; color: var(--ink); }
+  .controls .keys { margin-left: auto; font-family: var(--mono); font-size: 12px; color: var(--ink-3); }
+  .controls kbd { font-family: var(--mono); border: 1px solid var(--rule-strong); padding: 0 4px; background: var(--card); }
+  @media (max-width: 820px) and (orientation: portrait) { .controls { width: 100%; } .controls .keys { display: none; } }
+
+  /* ---- motion: every element's resting style is its final state; animations only travel toward it ---- */
+  .frame.paused *, .frame.paused *::before { animation-play-state: paused !important; }
+  .run .grow { animation: grow .7s cubic-bezier(.2,.7,.2,1) backwards; transform-box: fill-box; transform-origin: 50% 100%; }
+  @keyframes grow { from { transform: scaleY(0); } }
+  .run .pop { animation: pop .5s cubic-bezier(.2,.8,.3,1.2) backwards; transform-box: fill-box; transform-origin: 50% 50%; }
+  @keyframes pop { from { transform: scale(0); opacity: 0; } }
+  .run .rise { animation: rise .7s cubic-bezier(.2,.7,.2,1) backwards; }
+  @keyframes rise { from { transform: translateY(calc(var(--u) * 2)); opacity: 0.001; } }
+  .run .fade { animation: fade .6s ease backwards; }
+  @keyframes fade { from { opacity: 0; } }
+  .run .stamp { animation: stamp .45s cubic-bezier(.3,1.4,.4,1) backwards; }
+  @keyframes stamp { from { transform: rotate(-3deg) scale(1.8); opacity: 0; } }
+  .run .needle { animation: needle 2.6s cubic-bezier(.3,.1,.2,1) .6s backwards; transform-box: view-box; }
+  @keyframes needle { from { transform: rotate(142.2deg); } }
+  .run .list { animation: roll 5.2s cubic-bezier(.35,.05,.15,1) backwards; }
+  @keyframes roll { from { transform: translateY(0); } }
+  .run .slide { animation: slide 1.6s cubic-bezier(.3,.1,.2,1) backwards; transform-box: fill-box; }
+  @keyframes slide { from { transform: translateX(var(--from, 0)); } }
+  .run .hit { animation: hit 1s ease 5s backwards; }
+  @keyframes hit { from { background: transparent; box-shadow: inset 0 0 0 var(--verm); } }
+  @media (prefers-reduced-motion: reduce) {
+    .run .grow, .run .pop, .run .rise, .run .stamp, .run .needle, .run .list, .run .slide, .run .hit { animation: none !important; }
+    .run .fade { animation-duration: .4s; }
+  }
+
+  /* ---- portrait: the same scenes, stacked ---- */
+  @container frame (aspect-ratio < 1) {
+    .top { padding: calc(var(--u) * 3) calc(var(--u) * 3) 0; }
+    .kicker span { display: none; }
+    .progress { left: calc(var(--u) * 3); right: calc(var(--u) * 3); bottom: calc(var(--u) * 2.4); }
+    .scene { padding: calc(var(--u) * 9) calc(var(--u) * 3) calc(var(--u) * 5.5); gap: calc(var(--u) * 2); }
+    .cap { font-size: calc(var(--u) * 2.35); }
+    .s1 .headline { font-size: calc(var(--u) * 6); }
+    .s2 .pair { grid-template-columns: 1fr; gap: calc(var(--u) * 1); }
+    .neq { font-size: calc(var(--u) * 5); }
+    .ticket .price { font-size: calc(var(--u) * 6.5); }
+    .s3 .flow { grid-template-columns: 1fr; gap: calc(var(--u) * 0.8); }
+    .s3 .flow .arrow { transform: rotate(90deg); }
+    .s3 .flow .arrow small { display: none; }
+    .box p { display: none; }
+    .box svg { display: none; }
+    .s3 .result { grid-template-columns: 1fr; gap: calc(var(--u) * 1.5); }
+    .big { font-size: calc(var(--u) * 8); }
+    .s4 .cols { grid-template-columns: 1fr; grid-template-rows: calc(var(--u) * 14) minmax(0, 1fr); gap: calc(var(--u) * 2); }
+    .weights { display: none; }
+    .roll { grid-template-rows: minmax(0, 1fr); }
+    .detail .name h3 { font-size: calc(var(--u) * 5); }
+    .gaugebox svg { max-height: calc(var(--u) * 14); }
+    .score b, .concbox .pct { font-size: calc(var(--u) * 6.5); }
+    .concbox svg { width: calc(var(--u) * 13); height: calc(var(--u) * 13); }
+    .concbox .grid-wrap { flex-direction: column; align-items: flex-start; gap: calc(var(--u) * 1); }
+    .concbox p { font-size: calc(var(--u) * 1.6); }
+    .s5 .head .h-serif { font-size: calc(var(--u) * 4.6); }
+    .s6 .receipts { grid-template-columns: 1fr; gap: calc(var(--u) * 0.8); }
+    .s6 .receipts p { font-size: calc(var(--u) * 1.7); }
+    .s6 .receipts li::before { font-size: calc(var(--u) * 2.6); }
+    .s6 .where .url { font-size: calc(var(--u) * 1.8); }
+    .s7 .mark svg { height: calc(var(--u) * 6.5); }
+    .s7 .mark span { font-size: calc(var(--u) * 7.5); }
+    .s7 .line1 { font-size: calc(var(--u) * 4.4); }
+    .s7 .meta .url { font-size: calc(var(--u) * 2.2); }
+  }
+</style>
+
+<div class="shell">
+  <div class="stage" id="stage">
+    <div class="frame" id="frame" tabindex="0" role="region" aria-label="Consensus demo, 7 scenes. Space pauses, click skips ahead.">
+
+      <div class="top">
+        <div class="brand"><svg id="logo" aria-hidden="true"></svg><span>Consensus</span></div>
+        <div class="kicker"><b id="kn">1 / 7</b><span id="kt">Hook</span></div>
+      </div>
+
+      <!-- 1 · Hook -->
+      <section class="scene s1" data-dur="15" data-title="Hook">
+        <div class="visual">
+          <h1 class="h-serif headline fade">One price. 128 exchanges. <em>This is how far apart they are.</em></h1>
+          <div class="chart-head">
+            <div class="legend fade" style="animation-delay:.4s">
+              <span style="--c:var(--sage)">within 0.5%</span>
+              <span style="--c:var(--ochre)">drifting</span>
+              <span style="--c:var(--verm)">off-market</span>
+              <span style="--c:var(--discard)">CoinMarketCap doesn’t count</span>
+            </div>
+            <div class="note">schematic · each stroke one exchange, height = share of trading</div>
+          </div>
+          <div class="chart" id="disp"></div>
+        </div>
+        <p class="cap">CoinMarketCap publishes one price per crypto asset. But that price is built from over a hundred exchanges, and they don’t agree. This is Consensus: who’s really setting the price, and who’s quietly off.</p>
+      </section>
+
+      <!-- 2 · The API defect -->
+      <section class="scene s2" data-dur="20" data-title="The API defect">
+        <div class="visual">
+          <div class="label fade">One API response · BTC market pairs · both rows last updated 25 Sep 2026, 16:33 UTC</div>
+          <div class="pair">
+            <div class="ticket rise">
+              <div class="venue">Kraken · XBT/USD perpetual</div>
+              <div class="price"><small>$</small>84,012</div>
+              <div class="row"><span>market_id</span><b>47233</b></div>
+              <div class="row"><span>exclusions</span><b>[ ]</b></div>
+              <div class="row"><span>outlier_detected</span><b>false</b></div>
+              <div class="stamp" style="animation-delay:1.3s">not flagged</div>
+            </div>
+            <div class="neq pop" style="animation-delay:.9s" aria-label="does not equal">≠</div>
+            <div class="ticket rise" style="animation-delay:.35s">
+              <div class="venue">Kraken · XBT/USD perpetual</div>
+              <div class="price"><small>$</small>66,959</div>
+              <div class="row"><span>market_id</span><b>47233</b></div>
+              <div class="row"><span>exclusions</span><b>[ ]</b></div>
+              <div class="row"><span>outlier_detected</span><b>false</b></div>
+              <div class="stamp" style="animation-delay:1.6s">not flagged</div>
+            </div>
+          </div>
+          <div class="foot fade" style="animation-delay:2.2s">
+            <div class="count">Same market, same timestamp, two prices. <b>7</b> markets came back twice like this, none of them flagged.</div>
+            <div class="note">raw rows, saved in the repo</div>
+          </div>
+        </div>
+        <p class="cap">CoinMarketCap’s own API returns the same Bitcoin market twice, from Kraken, a top exchange, with two different prices in one response. <span class="bad">Neither is flagged.</span></p>
+      </section>
+
+      <!-- 3 · The validation loop -->
+      <section class="scene s3" data-dur="25" data-title="The validation loop">
+        <div class="visual">
+          <div class="flow">
+            <div class="box rise">
+              <div class="label">Input</div>
+              <div class="t">Raw exchange quotes</div>
+              <svg id="mini-quotes" viewBox="0 0 200 44" preserveAspectRatio="none" aria-hidden="true"></svg>
+              <p>Every venue’s price and volume, nothing else.</p>
+            </div>
+            <div class="arrow fade" style="animation-delay:.5s">→<small>rebuild</small></div>
+            <div class="box blind rise" style="animation-delay:.6s">
+              <div class="label" style="color:var(--brass-ink)">Built blind</div>
+              <div class="t">Consensus price</div>
+              <p>CoinMarketCap’s own number is never an input.</p>
+            </div>
+            <div class="arrow fade" style="animation-delay:1.2s">↔<small>then check</small></div>
+            <div class="box rise" style="animation-delay:1.3s">
+              <div class="label">Ground truth</div>
+              <div class="t">CoinMarketCap published</div>
+              <p>Compared only after the rebuild is done.</p>
+            </div>
+          </div>
+          <div class="result">
+            <div class="fade" style="animation-delay:1.8s">
+              <div class="big">7<small>bps</small></div>
+              <div class="big-sub">median gap · 37 assets</div>
+            </div>
+            <div class="vern" id="vern"></div>
+          </div>
+        </div>
+        <p class="cap">And this isn’t just an alarm system. Consensus rebuilds each price independently, with zero knowledge of CoinMarketCap’s own number, then checks itself. It lands within <span class="f">7 basis points</span>, across <span class="f">37 assets</span>.</p>
+      </section>
+
+      <!-- 4 · One asset, scored -->
+      <section class="scene s4" data-dur="35" data-title="One asset, scored">
+        <div class="visual">
+          <div class="cols">
+            <div class="roll">
+              <div class="weights">Every asset, one method:<br><b>spread 40</b> · <b>agreement 30</b> · <b>freshness 15</b> · <b>cleanliness 15</b></div>
+              <div class="window"><div class="list" id="list"></div></div>
+            </div>
+            <div class="detail">
+              <div class="name"><h3 class="h-serif">Bitcoin Cash</h3><span class="label">BCH · how reliable is this price</span></div>
+              <div class="gaugebox">
+                <svg id="gauge" viewBox="0 0 400 204" role="img" aria-label="Trust score 21 of 100"></svg>
+                <div class="score"><b>21</b><i>/100</i><span>Unreliable</span></div>
+              </div>
+              <div class="concbox">
+                <div class="label">Where the volume sits</div>
+                <div class="grid-wrap">
+                  <svg id="conc" viewBox="0 0 138 138" role="img" aria-label="94% of volume on one exchange"></svg>
+                  <div>
+                    <div class="pct">94%</div>
+                    <p>on one exchange, <b>Deepcoin</b>. CoinMarketCap counts all of it.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="cap">Every tracked asset gets scored the same way. Bitcoin Cash: <span class="f bad">21 out of 100</span>. Why? <span class="f">94%</span> of its volume sits on a single exchange, Deepcoin, and CoinMarketCap counts every bit of it.</p>
+      </section>
+
+      <!-- 5 · Tokenised assets -->
+      <section class="scene s5" data-dur="25" data-title="Tokenised assets">
+        <div class="visual">
+          <div class="head">
+            <h2 class="h-serif fade">Issuers mostly agree. <em>SpaceX doesn’t.</em></h2>
+            <div class="note">each dot one issuer’s token · positions schematic, spreads as measured</div>
+          </div>
+          <div class="rwa" id="rwa"></div>
+        </div>
+        <p class="cap">We also track tokenised stocks and commodities. Issuers mostly agree, within half a percent. Except SpaceX: eleven tokens, and they disagree by <span class="f bad">14.6%</span>. The API doesn’t say why.</p>
+      </section>
+
+      <!-- 6 · Receipts -->
+      <section class="scene s6" data-dur="20" data-title="Receipts">
+        <div class="visual">
+          <ol class="receipts" id="receipts">
+            <li class="rise"><p>Kraken’s BTC perpetual returned twice with two prices; <span class="num">7</span> duplicated markets, none flagged.</p></li>
+            <li class="rise"><p>Rebuilt blind, the price lands a median <span class="num">7 bps</span> from CoinMarketCap’s, across <span class="num">37</span> assets.</p></li>
+            <li class="rise"><p>Bitcoin Cash scores <span class="num">21/100</span>: <span class="num">94%</span> of its volume on Deepcoin.</p></li>
+            <li class="rise"><p>SunX quotes <span class="num">29</span> assets about <span class="num">14%</span> under the median, in <span class="num">197 of 197</span> captures. Never excluded.</p></li>
+            <li class="rise"><p>CoinMarketCap leaves out a median <span class="num">47%</span> of volume from its own price (range <span class="num">1–80%</span>).</p></li>
+            <li class="rise"><p>SpaceX tokens from <span class="num">11</span> issuers disagree by <span class="num">14.6%</span>.</p></li>
+          </ol>
+          <div class="where fade" style="animation-delay:1.6s">
+            <div class="url">consensus-cmc.vercel.app<b>/judge</b></div>
+            <div class="facts">197 captures since 25 Sep 2026 · raw API responses in the repo · 105+ tests</div>
+          </div>
+        </div>
+        <p class="cap">Every number here is reproducible. A live page walks through the evidence in 90 seconds, linked straight to its source, alongside the raw API responses and the test suite.</p>
+      </section>
+
+      <!-- 7 · Close -->
+      <section class="scene s7" data-dur="25" data-title="Close">
+        <div class="visual">
+          <div class="mark fade"><svg id="logo-big" aria-hidden="true"></svg><span>Consensus</span></div>
+          <p class="line1 rise" style="animation-delay:.5s">CoinMarketCap tells you the price. <em>Consensus tells you who’s actually setting it.</em></p>
+          <div class="meta fade" style="animation-delay:1.2s">
+            <span class="url">consensus-cmc.vercel.app</span>
+            <span class="tag">#BuildwithCMC</span>
+            <span class="track">Build with CMC: API Hackathon · Data and Visualisation track</span>
+          </div>
+        </div>
+      </section>
+
+      <div class="progress" id="progress" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button id="b-play" type="button">Pause</button>
+    <button id="b-restart" type="button">Restart</button>
+    <button id="b-full" type="button">Full screen</button>
+    <span class="time" id="time">0:00 / 2:45</span>
+    <span class="keys"><kbd>Space</kbd> pause · <kbd>←</kbd><kbd>→</kbd> scene · <kbd>R</kbd> restart · <kbd>F</kbd> full screen</span>
+  </div>
+</div>
+
+<script>
+(() => {
+  const NS = 'http://www.w3.org/2000/svg';
+  const el = (tag, attrs = {}, parent) => {
+    const n = document.createElementNS(NS, tag);
+    for (const k in attrs) n.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(n);
+    return n;
+  };
+  const svgRoot = (w, h, label) => {
+    const s = el('svg', { viewBox: `0 0 ${w} ${h}`, role: 'img' });
+    if (label) s.setAttribute('aria-label', label);
+    return s;
+  };
+  // Seeded, so the schematic is identical on every playback and every recording take.
+  let seed = 20260930;
+  const rnd = () => ((seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296);
+  const gauss = () => { let u = 0, v = 0; while (!u) u = rnd(); while (!v) v = rnd(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); };
+
+  // ---- logo: seven strokes around a taller brass centre stroke (components/Logo.tsx) ----
+  const drawLogo = (svg) => {
+    const hs = [0.3, 0.48, 0.66, 1, 0.7, 0.46, 0.28], u = 10, sw = 2, H = 44, W = (hs.length - 1) * u + sw * 2;
+    svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    hs.forEach((v, i) => {
+      const c = i === 3, h = v * (H - 6), x = sw / 2 + i * u - (c ? sw * 0.75 : sw / 2) + sw / 2;
+      el('rect', { x, y: H - 4 - h, width: c ? sw * 1.5 : sw, height: h, fill: c ? 'var(--brass)' : 'currentColor' }, svg);
+    });
+    el('rect', { x: 0, y: H - 2, width: W, height: 1.2, fill: 'currentColor' }, svg);
+  };
+  drawLogo(document.getElementById('logo'));
+  drawLogo(document.getElementById('logo-big'));
+
+  // ---- 1 · dispersion (components/Charts.tsx Dispersion, same scale, colours and off-scale gutter) ----
+  (() => {
+    const W = 1000, H = 250, G = 100, top = 28, base = 206, ph = base - top, D = 1.5;
+    const x = (d) => G + (d + D) / (2 * D) * (W - 2 * G);
+    const sev = (d, ex) => ex ? 'var(--discard)' : Math.abs(d) <= 0.5 ? 'var(--sage)' : Math.abs(d) <= 2 ? 'var(--ochre)' : 'var(--verm)';
+    const hOf = (share) => ph * Math.min(1, Math.max(0.08, Math.sqrt(share / 0.25)));
+    const s = svgRoot(W, H, 'Schematic: dozens of exchanges clustered at the agreed price, a few drifting, one far off-market');
+    s.setAttribute('preserveAspectRatio', 'xMidYMax meet');
+    el('rect', { x: x(-0.5), y: top, width: x(0.5) - x(-0.5), height: ph, fill: 'var(--sage)', opacity: 0.09 }, s);
+    [-0.5, 0.5].forEach((d) => el('line', { x1: x(d), x2: x(d), y1: top, y2: base, stroke: 'var(--sage)', 'stroke-dasharray': '2 3', opacity: 0.7 }, s));
+    el('line', { x1: G - 6, x2: W - G + 6, y1: base + 0.5, y2: base + 0.5, stroke: 'var(--rule-strong)' }, s);
+    for (let d = -D; d <= D + 1e-9; d += 0.5) {
+      el('line', { x1: x(d), x2: x(d), y1: base, y2: base + 5, stroke: 'var(--rule-strong)' }, s);
+      const t = el('text', { x: x(d), y: base + 20, 'text-anchor': 'middle', 'font-size': 11, fill: 'var(--ink-3)' }, s);
+      t.textContent = Math.abs(d) < 1e-9 ? '0' : `${d < 0 ? '−' : '+'}${Math.abs(d).toFixed(1)}%`;
+    }
+    [G - 6, W - G + 6].forEach((X) => el('path', { d: `M${X - 4} ${base + 5} L${X} ${base - 5} M${X} ${base + 5} L${X + 4} ${base - 5}`, stroke: 'var(--ink-3)', fill: 'none' }, s));
+    const off = el('text', { x: 4, y: base + 20, 'font-size': 10, fill: 'var(--ink-3)' }, s); off.textContent = 'off-scale';
+    const off2 = el('text', { x: W - 4, y: base + 20, 'text-anchor': 'end', 'font-size': 10, fill: 'var(--ink-3)' }, s); off2.textContent = 'off-scale';
+
+    const v = [];
+    for (let i = 0; i < 58; i++) v.push({ d: Math.max(-0.46, Math.min(0.46, gauss() * 0.13)), share: 0.0004 + rnd() * rnd() * 0.02, ex: false });
+    for (let i = 0; i < 14; i++) v.push({ d: gauss() * 0.28, share: 0.0005 + rnd() * 0.004, ex: true });
+    [-0.92, 0.71, 1.18, -0.63].forEach((d) => v.push({ d, share: 0.001 + rnd() * 0.004, ex: false }));
+    v.push({ d: 0.02, share: 0.2, ex: false, big: true });
+    v.sort((a, b) => (a.ex ? 0 : 1) - (b.ex ? 0 : 1) || a.share - b.share);
+    v.forEach((e, i) => {
+      const X = x(e.d), hh = hOf(e.share);
+      el('line', { x1: X, x2: X, y1: base, y2: base - hh, stroke: sev(e.d, e.ex), 'stroke-width': e.big ? 3 : 2, opacity: e.ex ? 0.55 : 1, class: 'grow', style: `animation-delay:${(0.5 + rnd() * 1.4).toFixed(2)}s` }, s);
+    });
+    // the one that's quietly off: into the off-scale gutter, like SunX on the live chart
+    const rX = G - 52, rH = hOf(0.01);
+    const g = el('g', {}, s);
+    el('line', { x1: rX, x2: rX, y1: base, y2: base - rH, stroke: 'var(--verm)', 'stroke-width': 2.5, class: 'grow', style: 'animation-delay:2.4s' }, g);
+    el('circle', { cx: rX, cy: base - rH - 4, r: 3.5, fill: 'var(--verm)', class: 'pop', style: 'animation-delay:3s' }, g);
+    const rl = el('text', { x: 4, y: base + 36, 'font-size': 11, fill: 'var(--verm)', class: 'fade', style: 'animation-delay:3s' }, g); rl.textContent = 'off-market';
+    el('line', { x1: x(0), x2: x(0), y1: top - 12, y2: base, stroke: 'var(--brass)', 'stroke-width': 1.5 }, s);
+    const al = el('text', { x: x(0), y: top - 18, 'text-anchor': 'middle', 'font-size': 11, fill: 'var(--brass-ink)' }, s); al.textContent = 'agreed price';
+    s.setAttribute('viewBox', `0 -14 ${W} ${H + 14}`);
+    document.getElementById('disp').appendChild(s);
+  })();
+
+  // ---- 3 · mini quotes icon + gap vernier ----
+  (() => {
+    const m = document.getElementById('mini-quotes');
+    for (let i = 0; i < 34; i++) {
+      const X = 100 + gauss() * 22, h = 6 + rnd() * rnd() * 34;
+      el('line', { x1: X, x2: X, y1: 44, y2: 44 - h, stroke: 'var(--ink-3)', 'stroke-width': 1.4, class: 'grow', style: `animation-delay:${(0.2 + rnd() * 0.8).toFixed(2)}s` }, m);
+    }
+    const W = 1000, H = 150, pad = 30, y0 = 92, MAX = 120, TOL = 25;
+    const x = (g) => pad + g / MAX * (W - 2 * pad);
+    const s = svgRoot(W, H, 'Gap to CoinMarketCap published price: median 7 basis points, widest BCH at 108');
+    el('rect', { x: x(0), y: 14, width: x(TOL) - x(0), height: y0 - 14, fill: 'var(--sage)', opacity: 0.1 }, s);
+    el('line', { x1: x(TOL), x2: x(TOL), y1: 14, y2: y0, stroke: 'var(--sage)', 'stroke-dasharray': '2 3', opacity: 0.8 }, s);
+    const tl = el('text', { x: x(TOL) - 6, y: 28, 'text-anchor': 'end', 'font-size': 12, fill: 'var(--sage)' }, s); tl.textContent = 'tolerance';
+    el('line', { x1: pad, x2: W - pad, y1: y0 + 0.5, y2: y0 + 0.5, stroke: 'var(--rule-strong)' }, s);
+    for (let g = 0; g <= MAX; g += 10) {
+      const maj = g % 20 === 0;
+      el('line', { x1: x(g), x2: x(g), y1: y0, y2: y0 + (maj ? 9 : 5), stroke: maj ? 'var(--ink-3)' : 'var(--rule-strong)' }, s);
+      if (maj) { const t = el('text', { x: x(g), y: y0 + 25, 'text-anchor': 'middle', 'font-size': 13, fill: 'var(--ink-3)' }, s); t.textContent = g === 0 ? '0' : `${g} bp`; }
+    }
+    const cap = el('text', { x: pad, y: H - 2, 'font-size': 12.5, fill: 'var(--ink-3)' }, s); cap.textContent = 'gap to CoinMarketCap’s published price, per asset (absolute, basis points)';
+    // CMC at zero
+    el('line', { x1: x(0), x2: x(0), y1: 6, y2: y0, stroke: 'var(--ink)', 'stroke-width': 1.2 }, s);
+    // median marker slides in from the far end of the scale to where it actually lands
+    const med = el('g', { class: 'slide', style: `--from:${(x(MAX) - x(7)).toFixed(0)}px; animation-delay:1.9s` }, s);
+    el('path', { d: `M${x(7)} ${y0 - 1} l-8 -14 h16 z`, fill: 'var(--brass)' }, med);
+    const ml = el('text', { x: x(7) + 14, y: y0 - 30, 'font-size': 15, fill: 'var(--ink)' }, med); ml.textContent = 'median 7 bp';
+    el('line', { x1: x(7), x2: x(7) + 10, y1: y0 - 16, y2: y0 - 26, stroke: 'var(--ink-3)' }, med);
+    // widest
+    const wide = el('g', { class: 'fade', style: 'animation-delay:3.2s' }, s);
+    el('line', { x1: x(108), x2: x(108), y1: 44, y2: y0, stroke: 'var(--verm)' }, wide);
+    el('circle', { cx: x(108), cy: 44, r: 5, fill: 'var(--verm)' }, wide);
+    const wl = el('text', { x: x(108) - 12, y: 48, 'text-anchor': 'end', 'font-size': 15, fill: 'var(--verm)' }, wide); wl.textContent = 'widest: BCH 108 bp';
+    document.getElementById('vern').appendChild(s);
+  })();
+
+  // ---- 4 · watchlist roll, gauge, concentration grid ----
+  (() => {
+    const names = { BTC: 'Bitcoin', ETH: 'Ethereum', BNB: 'BNB', XRP: 'XRP', SOL: 'Solana', TRX: 'Tron', ZEC: 'Zcash', HYPE: 'Hyperliquid', DOGE: 'Dogecoin', LINK: 'Chainlink', XMR: 'Monero', ADA: 'Cardano', LEO: 'UNUS SED LEO', XLM: 'Stellar', NEAR: 'NEAR Protocol', BCH: 'Bitcoin Cash', UNI: 'Uniswap', CC: 'Canton', LTC: 'Litecoin', SUI: 'Sui', AVAX: 'Avalanche', TON: 'Toncoin', HBAR: 'Hedera', TAO: 'Bittensor', QNT: 'Quant', CRO: 'Cronos', ONDO: 'Ondo', ENA: 'Ethena', M: 'MemeCore', OKB: 'OKB', AAVE: 'Aave', PUMP: 'Pump.fun', MNT: 'Mantle', DOT: 'Polkadot', WLD: 'Worldcoin', ASTER: 'Aster', SKY: 'Sky', WLFI: 'World Liberty Financial' };
+    const syms = Object.keys(names);
+    const list = document.getElementById('list');
+    // run through the whole watchlist once, then settle on BCH on the second pass
+    const seq = [...syms, ...syms.slice(0, syms.indexOf('BCH') + 4)];
+    const landAt = syms.length + syms.indexOf('BCH');
+    seq.forEach((sym, i) => {
+      const d = document.createElement('div');
+      if (i === landAt) d.className = 'hit';
+      d.innerHTML = `<b></b><span></span>`;
+      d.firstChild.textContent = sym; d.lastChild.textContent = names[sym];
+      list.appendChild(d);
+    });
+    list.style.setProperty('--land', `calc(var(--u) * -4.2 * ${landAt + 0.5})`);
+
+    const gs = document.getElementById('gauge');
+    const w = 400, cx = w / 2, r = w * 0.42, cy = r + 12;
+    const p = (v, rr = r) => { const t = Math.PI * (1 - v / 100); return [cx + rr * Math.cos(t), cy - rr * Math.sin(t)]; };
+    const arc = (a, b, rr) => { const [x0, y0] = p(a, rr), [x1, y1] = p(b, rr); return `M${x0} ${y0} A${rr} ${rr} 0 0 1 ${x1} ${y1}`; };
+    [[0, 60, 'var(--verm)'], [60, 80, 'var(--ochre)'], [80, 100, 'var(--sage)']].forEach(([a, b, c]) => el('path', { d: arc(a + 0.4, b - 0.4, r), stroke: c, 'stroke-width': 6, fill: 'none', opacity: 0.85 }, gs));
+    for (let v = 0; v <= 100; v += 2) {
+      const maj = v % 10 === 0, [x0, y0] = p(v, r - 9), [x1, y1] = p(v, r - (maj ? 20 : 14));
+      el('line', { x1: x0, y1: y0, x2: x1, y2: y1, stroke: maj ? 'var(--ink-2)' : 'var(--rule-strong)', 'stroke-width': maj ? 1.3 : 0.9 }, gs);
+    }
+    [0, 60, 80, 100].forEach((v) => { const [X, Y] = p(v, r - 34); const t = el('text', { x: X, y: Y + (v === 0 || v === 100 ? -8 : 5), 'text-anchor': 'middle', 'font-size': 15, fill: 'var(--ink-3)' }, gs); t.textContent = v; });
+    const needle = el('g', { class: 'needle', style: `transform-origin:${cx}px ${cy}px` }, gs);
+    const [nx, ny] = p(21, r - 5);
+    el('line', { x1: cx, y1: cy, x2: nx, y2: ny, stroke: 'var(--ink)', 'stroke-width': 2.5, 'stroke-linecap': 'round' }, needle);
+    el('circle', { cx, cy, r: 7, fill: 'var(--brass)' }, gs);
+    el('line', { x1: cx - r - 5, x2: cx + r + 5, y1: cy + 0.5, y2: cy + 0.5, stroke: 'var(--rule-strong)' }, gs);
+    gs.setAttribute('viewBox', `0 0 ${w} ${cy + 8}`);
+
+    // concentration grid: 94 of 100 cells, vermilion above 50% as on the live page
+    const cs = document.getElementById('conc'), cell = 12, g = 2;
+    for (let i = 0; i < 100; i++) {
+      const on = i < 94, col = i % 10, row = Math.floor(i / 10);
+      el('rect', { x: col * (cell + g), y: row * (cell + g), width: cell, height: cell, fill: on ? 'var(--verm)' : 'none', stroke: on ? 'none' : 'var(--rule-strong)', 'stroke-width': 0.75, class: on ? 'pop' : '', style: on ? `animation-delay:${(3.4 + i * 0.012).toFixed(3)}s` : '' }, cs);
+    }
+  })();
+
+  // ---- 5 · tokenised issuers ----
+  (() => {
+    const W = 1000, rowH = 62, L = 330, R = 880, D = 8, top = 40;
+    const x = (pct) => L + (pct + D) / (2 * D) * (R - L);
+    const rows = [
+      { k: 'NVDA', n: 'Nvidia', tight: true },
+      { k: 'TSLA', n: 'Tesla', tight: true },
+      { k: 'GOLD', n: 'Gold', tight: true },
+      { k: 'SPCX', n: 'SpaceX · 11 tokens, 10 liquid', tight: false },
+    ];
+    const H = top + rows.length * rowH + 50;
+    const s = svgRoot(W, H, 'Issuer prices: Nvidia, Tesla and gold issuers agree within 0.46%; SpaceX issuers disagree by 14.6%');
+    el('rect', { x: x(-0.46), y: top - 16, width: x(0.46) - x(-0.46), height: rows.length * rowH + 4, fill: 'var(--sage)', opacity: 0.12 }, s);
+    el('line', { x1: x(0), x2: x(0), y1: top - 22, y2: top + rows.length * rowH - 8, stroke: 'var(--brass)', 'stroke-width': 1.5 }, s);
+    const rl = el('text', { x: x(0), y: top - 28, 'text-anchor': 'middle', 'font-size': 13, fill: 'var(--brass-ink)' }, s); rl.textContent = 'reference price';
+    const axY = top + rows.length * rowH - 4;
+    el('line', { x1: L, x2: R, y1: axY, y2: axY, stroke: 'var(--rule-strong)' }, s);
+    for (let d = -D; d <= D; d += 2) {
+      el('line', { x1: x(d), x2: x(d), y1: axY, y2: axY + 6, stroke: 'var(--rule-strong)' }, s);
+      const t = el('text', { x: x(d), y: axY + 22, 'text-anchor': 'middle', 'font-size': 13, fill: 'var(--ink-3)' }, s);
+      t.textContent = d === 0 ? '0' : `${d < 0 ? '−' : '+'}${Math.abs(d)}%`;
+    }
+    rows.forEach((row, ri) => {
+      const y = top + ri * rowH + 14;
+      el('line', { x1: L, x2: R, y1: y, y2: y, stroke: 'var(--rule)', 'stroke-dasharray': '1 4' }, s);
+      const a = el('text', { x: 0, y: y + 5, 'font-size': 17, fill: row.tight ? 'var(--ink)' : 'var(--verm)', 'font-weight': 500 }, s); a.textContent = row.k;
+      const b = el('text', { x: 64, y: y + 5, 'font-size': 14, fill: 'var(--ink-3)' }, s); b.textContent = row.n;
+      const right = el('text', { x: W, y: y + 6, 'text-anchor': 'end', 'font-size': row.tight ? 15 : 19, fill: row.tight ? 'var(--sage)' : 'var(--verm)', 'font-weight': 500 }, s);
+      right.textContent = row.tight ? '≤ 0.46%' : '14.6%';
+      if (row.tight) {
+        for (let i = 0; i < 6; i++) el('circle', { cx: x((rnd() - 0.5) * 0.5), cy: y, r: 6, fill: 'var(--sage)', opacity: 0.7, class: 'pop', style: `animation-delay:${(0.4 + ri * 0.25 + i * 0.05).toFixed(2)}s` }, s);
+      } else {
+        // the 10 liquid tokens, spread across the measured 14.6-point range
+        const pts = [-6.8, -5.1, -3.9, -2.2, -0.3, 0.6, 1.9, 3.4, 5.6, 7.8];
+        pts.forEach((pv) => {
+          el('circle', { cx: x(pv), cy: y, r: 7, fill: 'var(--verm)', class: 'slide', style: `--from:${(x(0) - x(pv)).toFixed(0)}px; animation-delay:1.8s` }, s);
+        });
+        const by = y - 22, bg = el('g', { class: 'fade', style: 'animation-delay:3.2s' }, s);
+        el('path', { d: `M${x(-6.8)} ${by + 6} V${by} H${x(7.8)} V${by + 6}`, stroke: 'var(--verm)', fill: 'none', 'stroke-width': 1.3 }, bg);
+        const bl = el('text', { x: x(7.8), y: by - 6, 'text-anchor': 'end', 'font-size': 14, fill: 'var(--verm)' }, bg); bl.textContent = '14.6% apart';
+      }
+    });
+    const leg = el('text', { x: L, y: H - 2, 'font-size': 12.5, fill: 'var(--ink-3)' }, s); leg.textContent = 'shaded band: within 0.46%, where every other tracked asset’s issuers sit';
+    document.getElementById('rwa').appendChild(s);
+  })();
+
+  // ---- 6 · receipts: link glyph + stagger ----
+  document.querySelectorAll('#receipts li').forEach((li, i) => {
+    li.style.animationDelay = `${0.2 + i * 0.18}s`;
+    const s = svgRoot(24, 24); s.setAttribute('aria-hidden', 'true');
+    el('path', { d: 'M10 14 L20 4 M13 4 H20 V11 M18 14 V20 H4 V6 H10', stroke: 'currentColor', 'stroke-width': 2, fill: 'none', 'stroke-linecap': 'square' }, s);
+    li.appendChild(s);
+  });
+
+  // ---- playback ----
+  const frame = document.getElementById('frame'), stage = document.getElementById('stage');
+  const scenes = [...frame.querySelectorAll('.scene')];
+  const durs = scenes.map((s) => +s.dataset.dur);
+  const total = durs.reduce((a, b) => a + b, 0);
+  const prog = document.getElementById('progress');
+  const fills = durs.map((d) => { const seg = document.createElement('div'); seg.className = 'seg'; seg.style.flex = `${d} 1 0`; const i = document.createElement('i'); seg.appendChild(i); prog.appendChild(seg); return i; });
+  const kn = document.getElementById('kn'), kt = document.getElementById('kt');
+  const bPlay = document.getElementById('b-play'), timeEl = document.getElementById('time');
+  let idx = 0, t = 0, playing = false, ended = false, last = 0;
+  const mmss = (s) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
+
+  const show = (i) => {
+    idx = Math.max(0, Math.min(scenes.length - 1, i)); t = 0; ended = false;
+    scenes.forEach((s, j) => { s.classList.toggle('on', j === idx); s.classList.remove('run'); });
+    void frame.offsetWidth;
+    scenes[idx].classList.add('run');
+    kn.textContent = `${idx + 1} / ${scenes.length}`;
+    kt.textContent = scenes[idx].dataset.title;
+    paint();
+  };
+  const paint = () => {
+    fills.forEach((f, j) => { f.style.width = j < idx ? '100%' : j > idx ? '0%' : `${Math.min(100, t / durs[idx] * 100)}%`; });
+    const at = durs.slice(0, idx).reduce((a, b) => a + b, 0) + t;
+    timeEl.textContent = `${mmss(at)} / ${mmss(total)}`;
+  };
+  const setPlaying = (on) => {
+    playing = on; frame.classList.toggle('paused', !on);
+    bPlay.textContent = ended ? 'Replay' : on ? 'Pause' : 'Play';
+  };
+  const loop = (ts) => {
+    const dt = last ? Math.min(0.25, (ts - last) / 1000) : 0; last = ts;
+    if (playing) {
+      t += dt;
+      if (t >= durs[idx]) {
+        if (idx < scenes.length - 1) show(idx + 1);
+        else { t = durs[idx]; ended = true; setPlaying(false); }
+      }
+      paint();
+    }
+    requestAnimationFrame(loop);
+  };
+  const restart = () => { show(0); setPlaying(true); };
+  const toggle = () => { if (ended) restart(); else setPlaying(!playing); };
+  const next = () => { if (idx < scenes.length - 1) { show(idx + 1); setPlaying(playing || !ended); } };
+  const prev = () => { show(t > 1.5 ? idx : idx - 1); };
+  const full = () => {
+    try {
+      if (document.fullscreenElement) document.exitFullscreen();
+      else stage.requestFullscreen?.().catch(() => {});
+    } catch (e) {}
+  };
+
+  frame.addEventListener('click', next);
+  bPlay.addEventListener('click', toggle);
+  document.getElementById('b-restart').addEventListener('click', restart);
+  document.getElementById('b-full').addEventListener('click', full);
+  document.addEventListener('keydown', (e) => {
+    if (e.target.closest && e.target.closest('button') && (e.key === ' ' || e.key === 'Enter')) return;
+    if (e.key === ' ') { e.preventDefault(); toggle(); }
+    else if (e.key === 'ArrowRight') next();
+    else if (e.key === 'ArrowLeft') prev();
+    else if (e.key === 'r' || e.key === 'R') restart();
+    else if (e.key === 'f' || e.key === 'F') full();
+  });
+
+  show(0);
+  frame.classList.add('paused');
+  requestAnimationFrame(loop);
+  // Start once the three faces are in, so the first frame on camera is set in the real type.
+  let started = false;
+  const go = () => { if (!started) { started = true; show(0); setPlaying(true); } };
+  (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(() => setTimeout(go, 300));
+  setTimeout(go, 2500);
+})();
+</script>
+
+</body>
+</html>
