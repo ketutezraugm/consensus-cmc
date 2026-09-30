@@ -74,7 +74,7 @@ Supabase pg_cron ──POST──> /api/ingest ──> CMC API ──> Supabase 
 
 About 44-46 credits per capture. Started on the free Basic tier (15k credits/month, ~21-23 credits/capture at 15 assets); the CMC team upgraded the key to the Startup tier (450k credits/month) on 2026-09-28 for the event window, which is what made widening to 38 assets and 100 tokenised assets possible at a 30-minute cadence. That access reverts to Basic at submission close, so the cadence widens automatically during judging — see the note above.
 
-Also probed during development, not used by the product: `/v5/exchange/derivatives/list`, `/v5/real-world-assets/{map,issuers/list}` (200 on Basic), `/v5/real-world-assets/market-pairs/list` (403 on Basic), and `/v2/cryptocurrency/market-pairs/latest` and `/v1/exchange/listings/latest` (403 on Basic). Raw responses are in [`scripts/out/`](scripts/out).
+Also probed during development, not used by the product: `/v5/exchange/derivatives/list`, `/v5/real-world-assets/{map,issuers/list}` (200 on Basic), `/v5/real-world-assets/market-pairs/list`, `/v2/cryptocurrency/market-pairs/latest` (spot markets) and `/v1/exchange/listings/latest` — all three 403 on Basic, rechecked 403 on Startup too, so this isn't a scope we could add without a further tier upgrade. Raw responses are in [`scripts/out/`](scripts/out).
 
 ## Evidence of real API calls
 
